@@ -101,3 +101,45 @@ button { font-family: inherit; cursor: pointer; }
 @media (max-width: 720px) {
   .section { padding: var(--space-8) var(--space-5); }
 }
+
+/* HERO */
+.section--hero {
+  padding-top: clamp(6rem, 12vw, 9rem);
+  padding-bottom: clamp(4rem, 10vw, 7rem);
+  background: linear-gradient(180deg, var(--bg) 0%, #fff 100%);
+}
+.hero__inner {
+  max-width: var(--max-content);
+  margin: 0 auto;
+  text-align: left;
+}
+.hero__title {
+  font-size: var(--fs-hero);
+  font-weight: 700;
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.05;
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-3);
+  color: var(--text);
+}
+.hero__byline {
+  font-size: 1.125rem;
+  color: var(--text-muted);
+  margin-bottom: var(--space-6);
+}
+.hero__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-bottom: var(--space-7);
+}
+.hero__stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  opacity: 0.85;
+}
+.hero__stack .chip {
+  background: transparent;
+  border-color: var(--border);
+}

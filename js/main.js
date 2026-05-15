@@ -1,28 +1,8 @@
 (() => {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // --- Scroll progress bar ---
-  const progress = document.querySelector('.scroll-progress');
-  if (progress) {
-    let ticking = false;
-    const update = () => {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      const pct = max > 0 ? Math.min(100, (scrollTop / max) * 100) : 0;
-      progress.style.width = pct + '%';
-      ticking = false;
-    };
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        window.requestAnimationFrame(update);
-        ticking = true;
-      }
-    }, { passive: true });
-    update();
-  }
-
-  // --- Scroll fade-up (independent elements; AI cards are handled separately for staggered reveal) ---
-  const fadeTargets = document.querySelectorAll('.section, .decision-case, .project__sub, .dashboard-card, .metric-card');
+  // --- Scroll fade-up ---
+  const fadeTargets = document.querySelectorAll('section, .project__sub, .dashboard-card, .keynote, .case-compact, .gallery figure, .ba-section');
   if (prefersReducedMotion) {
     fadeTargets.forEach((el) => el.classList.add('is-visible'));
   } else {
@@ -43,24 +23,24 @@
     });
   }
 
-  // --- AI grid staggered reveal ---
-  const aiGrid = document.querySelector('.ai__grid');
-  if (aiGrid) {
+  // --- Feature grid staggered reveal ---
+  const featureGrids = document.querySelectorAll('.feature-grid');
+  if (featureGrids.length) {
     if (prefersReducedMotion) {
-      aiGrid.classList.add('is-visible');
+      featureGrids.forEach((g) => g.classList.add('is-visible'));
     } else {
-      const aiObserver = new IntersectionObserver(
+      const fgObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
               entry.target.classList.add('is-visible');
-              aiObserver.unobserve(entry.target);
+              fgObserver.unobserve(entry.target);
             }
           });
         },
         { rootMargin: '0px 0px -15% 0px', threshold: 0.1 }
       );
-      aiObserver.observe(aiGrid);
+      featureGrids.forEach((g) => fgObserver.observe(g));
     }
   }
 

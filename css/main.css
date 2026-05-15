@@ -385,6 +385,13 @@ button { font-family: inherit; cursor: pointer; }
   font-family: var(--font-mono);
   letter-spacing: 0.01em;
 }
+.stats__source {
+  margin-top: var(--space-5);
+  font-size: 0.75rem;
+  color: var(--brown);
+  font-style: italic;
+  text-align: right;
+}
 
 /* AI Engineering Practice */
 .section--ai { background: var(--bg); }

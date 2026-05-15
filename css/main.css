@@ -106,11 +106,14 @@ button { font-family: inherit; cursor: pointer; }
 
 /* HERO */
 .section--hero {
-  padding-top: clamp(6rem, 12vw, 9rem);
+  min-height: 100vh;
+  padding-top: clamp(7rem, 14vw, 11rem);
   padding-bottom: clamp(4rem, 10vw, 7rem);
   background: linear-gradient(180deg, var(--bg) 0%, #fff 100%);
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
 }
 .section--hero::before {
   content: '';
@@ -119,10 +122,27 @@ button { font-family: inherit; cursor: pointer; }
   background-image: radial-gradient(circle, rgba(148, 106, 71, 0.12) 1px, transparent 1px);
   background-size: 24px 24px;
   background-position: 0 0;
-  mask-image: radial-gradient(ellipse 70% 60% at 85% 30%, #000 0%, transparent 70%);
-  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 85% 30%, #000 0%, transparent 70%);
+  mask-image: radial-gradient(ellipse 70% 60% at 85% 25%, #000 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 85% 25%, #000 0%, transparent 70%);
   pointer-events: none;
-  opacity: 0.85;
+  opacity: 0.95;
+}
+.section--hero::after {
+  content: '〔 차 〕';
+  position: absolute;
+  top: 4rem;
+  right: 4rem;
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 1;
+}
+@media (max-width: 720px) {
+  .section--hero::after { display: none; }
 }
 .hero__inner {
   max-width: var(--max-content);
@@ -130,6 +150,25 @@ button { font-family: inherit; cursor: pointer; }
   text-align: left;
   position: relative;
   z-index: 1;
+  width: 100%;
+}
+.hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brown);
+}
+.hero__meta-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border) 0%, transparent 100%);
+  min-width: 60px;
 }
 .hero__title {
   font-family: var(--font-display);
@@ -247,11 +286,39 @@ button { font-family: inherit; cursor: pointer; }
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
+  overflow: hidden;
+}
+.ai-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0;
+  background: var(--accent);
+  transition: width var(--t-med) var(--ease-out);
 }
 .ai-card:hover {
   transform: translateY(-2px);
   border-color: var(--accent);
   box-shadow: var(--shadow-card-hover);
+}
+.ai-card:hover::before { width: 100%; }
+/* Staggered fade-in: when .ai__grid enters viewport, children animate in sequence */
+.ai__grid.is-visible .ai-card {
+  animation: aiCardIn 0.55s var(--ease-out) backwards;
+}
+.ai__grid.is-visible .ai-card:nth-child(1) { animation-delay: 0ms; }
+.ai__grid.is-visible .ai-card:nth-child(2) { animation-delay: 80ms; }
+.ai__grid.is-visible .ai-card:nth-child(3) { animation-delay: 160ms; }
+.ai__grid.is-visible .ai-card:nth-child(4) { animation-delay: 240ms; }
+@keyframes aiCardIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ai__grid.is-visible .ai-card { animation: none !important; }
+  .ai-card::before { transition: none; }
 }
 .ai-card__num {
   font-family: var(--font-mono);

@@ -1,8 +1,8 @@
 (() => {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // --- Scroll fade-up ---
-  const fadeTargets = document.querySelectorAll('.section, .ai-card, .decision-case, .project__sub, .dashboard-card, .metric-card');
+  // --- Scroll fade-up (independent elements; AI cards are handled separately for staggered reveal) ---
+  const fadeTargets = document.querySelectorAll('.section, .decision-case, .project__sub, .dashboard-card, .metric-card');
   if (prefersReducedMotion) {
     fadeTargets.forEach((el) => el.classList.add('is-visible'));
   } else {
@@ -21,6 +21,27 @@
       el.classList.add('fade-up');
       fadeObserver.observe(el);
     });
+  }
+
+  // --- AI grid staggered reveal ---
+  const aiGrid = document.querySelector('.ai__grid');
+  if (aiGrid) {
+    if (prefersReducedMotion) {
+      aiGrid.classList.add('is-visible');
+    } else {
+      const aiObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              aiObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { rootMargin: '0px 0px -15% 0px', threshold: 0.1 }
+      );
+      aiObserver.observe(aiGrid);
+    }
   }
 
   // --- Number countup ---

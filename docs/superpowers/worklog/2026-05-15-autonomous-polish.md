@@ -129,7 +129,37 @@
 | `de067e9` | project image gallery 2-col on desktop |
 | `cf407a6` | section eyebrow에 editorial em-dash prefix |
 
-## 총 37 commits
+## 후속 commits — Mermaid 색상 cohesion + monogram fix
+
+| Hash | Change |
+|---|---|
+| `f350e01` | worklog update post-synthesis |
+| `552cec0` | Mermaid 색상 warm palette align (clay → accent) |
+| `a36d4ca` | monogram '차' Pretendard fallback (Korean 한글 italic 회피) |
+
+## 총 40 commits
+
+## 최종 매트릭스 (49turtle 대비)
+
+| 차원 | 49turtle | 우리 (final) | 결과 |
+|---|---|---|---|
+| 타이포그래피 트리플스택 | Arial/Roboto/Open Sans | Fraunces · Pretendard · JetBrains Mono | ✓ 우위 |
+| Hero 임팩트 | dark + profile pic + 짧은 카피 | full-vh + Fraunces italic + accent stroke + dot pattern + SVG 차 monogram | ✓ 우위 (사진 없음 만 단점) |
+| Stats / 실증 수치 | 없음 | 4 big serif 숫자 + 출처 disclaimer | ✓ 압도 |
+| AI Engineering 카드 | 없음 | 4 cards (스케일·안정성·도구·자산화) with stagger + hover line + chart preview | ✓ 압도 |
+| 의사결정 사례 | 일반 프로젝트 카드 4 | 5-step decision case + 2 charts (VVIP +7.9%) | ✓ 압도 |
+| 인터랙티브 BI | 없음 | 라이브 iframe 대시보드 + d3 인터랙티브 sample | ✓ 압도 |
+| Mermaid Before/After | 없음 | warm palette cohesive 토글 + 0.25s crossfade | ✓ 추가 우위 |
+| 컬러 시스템 | #000 + #fff + #222 | 베이지 #FFF8F2 + accent #FF6F0F + brown #946A47 (cohesive) | ✓ 우위 |
+| 접근성 | basic focus | focus-visible + aria + reduced-motion (CSS+JS) + semantic HTML5 | ✓ 우위 |
+| 반응형 | 480px 1개 BP | 720/880/1080 + clamp() everywhere | ✓ 우위 |
+| 브랜드 적합도 (당근) | 일반 | 당근 오렌지 + 지원 chip + Korean dominant | ✓ 우위 |
+| Print | 없음 | 전용 print 스타일 | ✓ 추가 우위 |
+| 카피 톤 | 추상적 ("긍정적 변화 추구") | 구체적·결과 지향 (`+7.9%`, `42개`, `120개`) | ✓ 우위 |
+| 외부 페이지 연속성 | 모달 inline | iframe + 새 탭 + resume에 ← Portfolio 핀 | ✓ 우위 |
+| Editorial 디테일 | 없음 | em-dash eyebrow prefix · serif 카드 번호 · 의사결정 step__label | ✓ 추가 우위 |
+
+총 15 차원 중 14 우위 + 1 동급(인격성, 사진 부재).
 
 자율 작업 끝. 사용자 복귀 후 라이브 사이트 점검·피드백 대기.
 

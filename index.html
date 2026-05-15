@@ -204,8 +204,91 @@
       </div>
     </section>
     <section id="project-01" class="section section--project" aria-label="Project 01">
-      <p class="section__eyebrow">PROJECT 01</p>
-      <h2 class="section__title">KPI · 매출 예측 자동화</h2>
+      <div class="section__inner">
+        <p class="section__eyebrow">PROJECT 01</p>
+        <h2 class="section__title">KPI · 매출 예측 자동화</h2>
+        <p class="project__lead">
+          주단위 매출 예측 → 주간 KPI 정의 → 4주 변화율 스코어링 자동화 →
+          이상치 발견 시 액션 제언 → <strong>실제 의사결정</strong>까지 이어진 파이프라인.
+        </p>
+
+        <div class="project__subs">
+          <div class="project__sub">
+            <p class="sub__label">문제 정의</p>
+            <p>배포·이벤트 영향도를 정량 평가할 기준이 없었음.</p>
+          </div>
+          <div class="project__sub">
+            <p class="sub__label">접근</p>
+            <p>주단위 매출 예측을 KPI 임계선으로 사용, 4주 평균 대비 변화율을 스코어화.</p>
+          </div>
+          <div class="project__sub">
+            <p class="sub__label">액션 트리거</p>
+            <p>변화율 ±N% 이상 또는 KPI 임계선 이탈 시 알럿 + 원인 후보 제언.</p>
+          </div>
+        </div>
+
+        <h3 class="project__h3">의사결정 사례 — 데이터로 가격 정책을 바꿔 매출을 끌어올림</h3>
+        <p class="project__note">
+          이 PROJECT의 핵심은 "지표를 본다"가 아니라
+          <strong>"지표에서 발견한 신호를 실제 액션으로 옮긴다"</strong>.
+        </p>
+
+        <article class="decision-case">
+          <header class="decision-case__head">
+            <span class="chip chip--accent"><span class="chip__dot"></span>CASE A · 2026-04-09 확정</span>
+            <h4>VVIP 가격대 정책 리뉴얼</h4>
+          </header>
+
+          <ol class="decision-case__steps">
+            <li>
+              <p class="step__label">1 · 문제 인지</p>
+              <p>인플레이션 영향으로 고액 결제 상품의 상대적 매력도(요율 후함)가 떨어지고 있음을 KPI 보고에서 감지.</p>
+            </li>
+            <li>
+              <p class="step__label">2 · 데이터 분석</p>
+              <p>"결제 코인 대비 배팅 금액(최빈)" 차트로 결제 가격대별 유저 행동 패턴 분석.</p>
+              <figure class="decision-case__figure">
+                <img src="/assets/img/project1_decision_betting.png" alt="결제 코인 대비 배팅 금액 차트 — $499 ~ $999 구간에서 비선형 급증" loading="lazy" />
+                <figcaption>
+                  <strong>발견</strong>: $9 ~ $299는 평탄,
+                  $499 ~ $999에서 비선형 급증 →
+                  <em>고액 결제자가 결제 코인 대비 과도하게 큰 배팅 → 현재 offering이 박함</em>
+                </figcaption>
+              </figure>
+            </li>
+            <li>
+              <p class="step__label">3 · 시뮬레이션</p>
+              <p>가격대별 <code>BaseCoin / 판매가격 % 요율</code> 변경안 작성.</p>
+              <figure class="decision-case__figure">
+                <img src="/assets/img/project1_decision_pricing.png" alt="가격대별 BaseCoin / 판매가격 % 요율 변경안 — $99~$999 구간 절대 코인량 증가" loading="lazy" />
+                <figcaption>
+                  <strong>변경 정책</strong>: $1 ~ $59는 그대로, $99 ~ $999는 $1당 지급 코인을 2.25 ~ 1.3배 증가.
+                  prestige 비율($1 대비 %)은 일부 축소 — 절대 코인량은 늘리되 등급 간 격차는 유지.
+                </figcaption>
+              </figure>
+            </li>
+            <li>
+              <p class="step__label">4 · 사전 검증</p>
+              <p>상위상품 요율 증가가 게임 내 인플레이션(코인 가치 하락)을 야기하지 않는지 시뮬레이션.</p>
+            </li>
+            <li>
+              <p class="step__label">5 · 액션 → 결과</p>
+              <p>2026-04-09 변경안 적용. 인플레이션 이후 m/m 매출 <span class="metric metric--lg" data-target="7.9" data-suffix="%" data-prefix="+">+7.9%</span> 증가, 고액상품 건수 구매 비율 유지.</p>
+            </li>
+          </ol>
+        </article>
+
+        <article class="decision-case decision-case--minor">
+          <header class="decision-case__head">
+            <span class="chip"><span class="chip__dot"></span>CASE B</span>
+            <h4>Facebook 팬페이지 정지 대응</h4>
+          </header>
+          <p>
+            KPI 보고에서 AU 하락 감지 → 외부 채널(Facebook 팬페이지) 정지 원인 식별 →
+            대체 페이지 정보를 유저에게 PUSH로 안내하는 UE 채널 대응 → 유저 복귀 확인.
+          </p>
+        </article>
+      </div>
     </section>
     <section id="project-02" class="section section--project" aria-label="Project 02">
       <p class="section__eyebrow">PROJECT 02</p>

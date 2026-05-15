@@ -260,3 +260,120 @@ button { font-family: inherit; cursor: pointer; }
   margin-top: var(--space-3);
   align-self: flex-start;
 }
+
+/* Project section common */
+.section--project { background: var(--bg); }
+.project__lead {
+  max-width: var(--max-content);
+  margin: 0 auto var(--space-7);
+  font-size: 1.0625rem;
+  color: var(--text-muted);
+}
+.project__lead strong { color: var(--text); }
+.project__subs {
+  max-width: var(--max-content);
+  margin: 0 auto var(--space-7);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+@media (max-width: 720px) {
+  .project__subs { grid-template-columns: 1fr; }
+}
+.project__sub {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: var(--space-4);
+}
+.sub__label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brown);
+  margin-bottom: var(--space-2);
+  font-weight: 700;
+}
+.project__h3 {
+  font-size: var(--fs-sub);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  max-width: var(--max-content);
+  margin: var(--space-7) auto var(--space-2);
+}
+.project__note {
+  max-width: var(--max-content);
+  margin: 0 auto var(--space-6);
+  color: var(--text-muted);
+}
+.project__note strong { color: var(--accent); }
+
+/* Decision case */
+.decision-case {
+  max-width: var(--max-content);
+  margin: 0 auto var(--space-6);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-card);
+}
+.decision-case--minor { box-shadow: none; }
+.decision-case__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-5);
+}
+.decision-case__head h4 {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+.decision-case__steps {
+  list-style: none;
+  counter-reset: case-step;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+.decision-case__steps > li {
+  border-left: 2px solid var(--accent-soft);
+  padding-left: var(--space-4);
+}
+.step__label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: var(--space-2);
+}
+.decision-case__figure {
+  margin-top: var(--space-3);
+}
+.decision-case__figure img {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.decision-case__figure figcaption {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-top: var(--space-2);
+  line-height: 1.55;
+}
+.decision-case__figure figcaption strong { color: var(--text); }
+.decision-case__figure figcaption em {
+  font-style: normal;
+  color: var(--accent);
+  font-weight: 600;
+}
+.metric {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--accent);
+}
+.metric--lg { font-size: 1.25em; }

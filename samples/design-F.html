@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>차한영 — Design F · Apple Refined</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono.css" />
+  <style>
+    :root {
+      --bg: #FBFBFD;
+      --bg-soft: #F5F5F7;
+      --ink: #1D1D1F;
+      --ink-soft: #424245;
+      --ink-mute: #86868B;
+      --rule: #D2D2D7;
+      --accent: #0071E3;
+      --accent-dark: #0058B0;
+      --highlight: #FA586A;
+      --highlight-2: #FFB200;
+      --font-sans: 'Inter', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', SF Mono, monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      font-size: 17px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    a:hover { color: var(--accent); }
+
+    /* Top nav — Apple-style */
+    .topnav {
+      position: sticky;
+      top: 0;
+      background: rgba(251,251,253,0.72);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--rule);
+      z-index: 100;
+    }
+    .topnav__inner {
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 12px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+    }
+    .topnav__brand { font-weight: 600; }
+    .topnav__links { display: flex; gap: 24px; color: var(--ink-soft); }
+
+    /* HERO — large product page hero */
+    .hero {
+      text-align: center;
+      padding: 80px 22px 96px;
+      max-width: 1024px;
+      margin: 0 auto;
+    }
+    .hero__eyebrow {
+      font-size: 19px;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .hero__title {
+      font-size: clamp(40px, 7vw, 80px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.05;
+      margin-bottom: 6px;
+    }
+    .hero__title em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--highlight) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero__sub {
+      font-size: clamp(20px, 2.6vw, 28px);
+      color: var(--ink-soft);
+      font-weight: 400;
+      max-width: 720px;
+      margin: 24px auto 32px;
+      line-height: 1.3;
+    }
+    .hero__cta { display: inline-flex; gap: 24px; font-size: 17px; }
+    .hero__cta a {
+      color: var(--accent);
+      font-weight: 500;
+    }
+    .hero__cta a:hover { text-decoration: underline; }
+    .hero__cta a.primary {
+      background: var(--accent);
+      color: #fff;
+      padding: 10px 22px;
+      border-radius: 980px;
+      font-weight: 600;
+    }
+    .hero__cta a.primary:hover { background: var(--accent-dark); text-decoration: none; }
+
+    /* Hero product hero card (visual element) */
+    .hero__hero {
+      margin-top: 56px;
+      max-width: 980px;
+      margin-left: auto;
+      margin-right: auto;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(0,113,227,0.25) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(250,88,106,0.20) 0%, transparent 40%),
+        linear-gradient(135deg, #f5f5f7 0%, #eaeaef 100%);
+      border-radius: 24px;
+      padding: 48px 32px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      overflow: hidden;
+      position: relative;
+    }
+    @media (max-width: 720px) { .hero__hero { grid-template-columns: repeat(2, 1fr); gap: 20px; } }
+    .hero__stat__num {
+      font-size: clamp(36px, 4.5vw, 56px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .hero__stat__desc {
+      font-size: 13px;
+      color: var(--ink-soft);
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+    .hero__stat .em {
+      background: linear-gradient(135deg, var(--accent), var(--highlight));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* Section base — Apple-like */
+    section { padding: 100px 22px; }
+    .section__inner { max-width: 980px; margin: 0 auto; }
+    .section__eyebrow {
+      font-size: 17px;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+    .section__title {
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+    .section__title em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--accent), var(--highlight));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .section__sub {
+      font-size: 20px;
+      color: var(--ink-soft);
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto 56px;
+      line-height: 1.45;
+    }
+
+    /* Two big cards (Apple feature blocks) */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+    @media (max-width: 720px) { .feature-grid { grid-template-columns: 1fr; } }
+    .feature {
+      background: var(--bg-soft);
+      border-radius: 22px;
+      padding: 36px 32px 40px;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .feature:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.06);
+    }
+    .feature__num {
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .feature h3 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .feature p {
+      color: var(--ink-soft);
+      font-size: 17px;
+      line-height: 1.5;
+    }
+    .feature__chips {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .chip {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #fff;
+      color: var(--ink-soft);
+      border: 1px solid var(--rule);
+    }
+
+    /* Decision case — Apple keynote style */
+    .keynote {
+      background: linear-gradient(180deg, #fff 0%, var(--bg-soft) 100%);
+      border-radius: 24px;
+      overflow: hidden;
+      padding: 56px 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.04) inset;
+    }
+    @media (max-width: 880px) { .keynote { grid-template-columns: 1fr; padding: 40px 28px; } }
+    .keynote__text small {
+      display: block;
+      font-size: 17px;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .keynote__text h3 {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+    .keynote__text h3 .pop {
+      background: linear-gradient(135deg, var(--accent), var(--highlight));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .keynote__text p { color: var(--ink-soft); margin-bottom: 14px; }
+    .keynote__text .verdict {
+      margin-top: 20px;
+      font-size: 17px;
+      color: var(--ink);
+    }
+    .keynote__text .verdict b { color: var(--highlight); font-size: 24px; }
+    .keynote__img img {
+      width: 100%;
+      border-radius: 14px;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.10);
+    }
+
+    /* AI Practice big number list */
+    .number-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 56px 40px;
+      margin-top: 56px;
+    }
+    @media (max-width: 720px) { .number-list { grid-template-columns: 1fr; gap: 40px; } }
+    .nl-item h4 {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+    .nl-item__num {
+      font-size: 13px;
+      color: var(--accent);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .nl-item p { color: var(--ink-soft); font-size: 16px; }
+
+    /* CTA — Apple style mega CTA */
+    .cta {
+      background: var(--ink);
+      color: #fff;
+      padding: 100px 22px;
+      text-align: center;
+    }
+    .cta h2 {
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+    .cta h2 em {
+      font-style: normal;
+      background: linear-gradient(135deg, #5AC8FA, #FA586A);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .cta p { color: #A1A1A6; font-size: 19px; margin-bottom: 28px; }
+    .cta__mail {
+      display: inline-block;
+      font-size: 22px;
+      color: #5AC8FA;
+      border-bottom: 1px solid #5AC8FA;
+      padding-bottom: 2px;
+    }
+    .cta__row {
+      margin-top: 32px;
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      font-size: 15px;
+      color: #A1A1A6;
+    }
+    .cta__row a { color: #A1A1A6; }
+    .cta__row a:hover { color: #5AC8FA; }
+
+    footer {
+      background: var(--bg-soft);
+      padding: 24px 22px;
+      font-size: 12px;
+      color: var(--ink-mute);
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+  </style>
+</head>
+<body>
+  <nav class="topnav">
+    <div class="topnav__inner">
+      <div class="topnav__brand">차한영</div>
+      <div class="topnav__links">
+        <a href="#practice">Practice</a>
+        <a href="#case">Case</a>
+        <a href="#contact">Contact</a>
+        <a href="../index.html">← back</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero__eyebrow">DAANGN · DATA ANALYTICS ENGINEER 지원</div>
+    <h1 class="hero__title"><em>End-to-end</em><br/>Data Analytics Engineer.</h1>
+    <p class="hero__sub">
+      지표 정의 · 파이프라인 · BI를 한 손에서.<br/>
+      AI를 동료로 운영해 의사결정 속도를 끌어올립니다.
+    </p>
+    <div class="hero__cta">
+      <a class="primary" href="mailto:chy0107@afewgoodsoft.com">Get in touch ↗</a>
+      <a href="../resume.html" target="_blank">Resume ›</a>
+    </div>
+
+    <div class="hero__hero">
+      <div class="hero__stat">
+        <div class="hero__stat__num"><span class="em">42</span></div>
+        <div class="hero__stat__desc">크론탭 → Dagster 마이그레이션 알럿</div>
+      </div>
+      <div class="hero__stat">
+        <div class="hero__stat__num"><span class="em">120</span></div>
+        <div class="hero__stat__desc">Agent Team 병렬 처리 이슈</div>
+      </div>
+      <div class="hero__stat">
+        <div class="hero__stat__num"><span class="em">62.5%</span></div>
+        <div class="hero__stat__desc">Q1 AB Test 채택률</div>
+      </div>
+      <div class="hero__stat">
+        <div class="hero__stat__num"><span class="em">+7.9%</span></div>
+        <div class="hero__stat__desc">VVIP 정책 m/m 매출 증가</div>
+      </div>
+    </div>
+  </header>
+
+  <section id="practice">
+    <div class="section__inner">
+      <div class="section__eyebrow">AI Engineering Practice</div>
+      <h2 class="section__title">AI를 도구가 아닌 <em>동료</em>로 운영합니다.</h2>
+      <p class="section__sub">스케일, 안정성, 도구 결합력, 학습 연속성 — 네 축으로 일하는 방식.</p>
+
+      <div class="feature-grid">
+        <article class="feature">
+          <div class="feature__num">01 · SCALE</div>
+          <h3>에이전트 팀으로<br/>이슈 병렬 처리</h3>
+          <p>26H1 개발 이슈 120개를 Leader 에이전트가 Agent Team을 spawn해 병렬 학습·평가. Claude와 Codex 의도적 병용으로 단일 모델 편향 회피.</p>
+          <div class="feature__chips">
+            <span class="chip">Agent Team</span><span class="chip">Claude Code</span><span class="chip">Codex</span>
+          </div>
+        </article>
+        <article class="feature">
+          <div class="feature__num">02 · SAFETY</div>
+          <h3>라이브 이중 환경<br/>+ 에이전트</h3>
+          <p>aiops_dev ↔ aiops_gsdetection Bitbucket 동시 관리. CLAUDE.md로 라이브 직접 수정 차단, 개발 검증 → 승인 → 라이브 강제.</p>
+          <div class="feature__chips">
+            <span class="chip">Dagster</span><span class="chip">Bitbucket</span><span class="chip">CLAUDE.md</span>
+          </div>
+        </article>
+        <article class="feature">
+          <div class="feature__num">03 · TOOLING</div>
+          <h3>플러그인·스킬을<br/>적재적소에 결합</h3>
+          <p>superpowers 공식 플러그인 + 외부 goal 스킬 + 직접 만든 creator_team 6 페이즈 워크플로우.</p>
+          <div class="feature__chips">
+            <span class="chip">superpowers</span><span class="chip">goal</span><span class="chip">creator_team</span>
+          </div>
+        </article>
+        <article class="feature">
+          <div class="feature__num">04 · LEARNING</div>
+          <h3>분석 데이터를<br/>자산으로 진화시킴</h3>
+          <p>redshift_agent에서 spec → plan → 실행 → knowledge 승격. 같은 지적을 두 번 받지 않는 AI 운영.</p>
+          <div class="feature__chips">
+            <span class="chip">Redshift</span><span class="chip">Auto Memory</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="case" style="background:var(--bg-soft);">
+    <div class="section__inner">
+      <div class="section__eyebrow">Decision Case · 2026.04.09</div>
+      <h2 class="section__title">데이터로<br/>의사결정을 <em>바꿉니다.</em></h2>
+      <p class="section__sub">지표는 발견이 아니라 의사결정에 쓰여야 한다.</p>
+
+      <div class="keynote">
+        <div class="keynote__text">
+          <small>VVIP 가격대 정책 리뉴얼</small>
+          <h3>고액 상품 환산을<br/><span class="pop">10% 인상</span>했더니<br/>매출이 <span class="pop">+7.9%</span></h3>
+          <p>KPI 보고에서 고액 상품 매력도 하락 신호 감지. "결제 코인 대비 배팅 금액" 차트로 가격대별 행동 패턴을 분석.</p>
+          <p>$499~$999 구간에서 배팅 금액이 비선형 급증 — 현재 offering이 박했음을 확인.</p>
+          <div class="verdict">결과 · m/m 매출 <b>+7.9%</b> 증가, 고액상품 구매 비율 유지.</div>
+        </div>
+        <div class="keynote__img">
+          <img src="../assets/img/project1_decision_betting.png" alt="결제 코인 대비 배팅 금액 차트" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section__inner">
+      <div class="section__eyebrow">Live work</div>
+      <h2 class="section__title">실제 작품으로<br/><em>확인하세요.</em></h2>
+      <p class="section__sub">데이터 운영 산출물 두 가지가 라이브로 열립니다.</p>
+
+      <div class="feature-grid">
+        <a class="feature" href="../dashboards/duc-ops.html" target="_blank">
+          <div class="feature__num">자사 앱 대시보드</div>
+          <h3>AB Test + 신규 슬롯<br/>운영 대시보드 ↗</h3>
+          <p>Pretendard · Chart.js · Tailwind. 사이드바·필터·차트 인터랙티브.</p>
+        </a>
+        <a class="feature" href="../samples/mobile-ccu-anomaly.html" target="_blank">
+          <div class="feature__num">분석 리포트</div>
+          <h3>모바일 CCU 이상탐지<br/>인터랙티브 리포트 ↗</h3>
+          <p>2026-04-06 ~ 04-07 모바일 CCU 이상치를 d3.js로 시각화한 자기완결형 HTML.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" id="contact">
+    <h2>대화를 시작해주세요.</h2>
+    <p>당근 데이터팀에 어울리는 사람일지, 메일 한 통으로 확인해주세요.</p>
+    <a class="cta__mail" href="mailto:chy0107@afewgoodsoft.com">chy0107@afewgoodsoft.com</a>
+    <div class="cta__row">
+      <a href="https://github.com/chahanyeong" target="_blank">GitHub ›</a>
+      <a href="../resume.html" target="_blank">Resume ›</a>
+    </div>
+  </section>
+
+  <footer>
+    Design F · Apple Refined · 차한영 © 2026
+  </footer>
+</body>
+</html>

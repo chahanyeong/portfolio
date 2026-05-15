@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>차한영 — Design E · Brutalist Terminal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" />
+  <style>
+    :root {
+      --bg: #FAFAF7;
+      --ink: #0A0A0A;
+      --paper: #ECEAE3;
+      --rule: #0A0A0A;
+      --accent: #FF3B00;
+      --dim: #6B6B68;
+      --green: #006B3C;
+      --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+      --font-kr: 'IBM Plex Sans KR', 'Pretendard', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    body * { font-feature-settings: "ss01" on; }
+    a { color: inherit; text-decoration: none; }
+    /* Korean chars use sans-mono blend */
+    :lang(ko), p, h1, h2, h3, li, span, td { font-family: var(--font-mono); }
+
+    /* Mono pre-formatted blocks */
+    .ascii { white-space: pre; font-family: var(--font-mono); }
+
+    /* Top tape */
+    .tape {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--ink);
+      color: var(--bg);
+      padding: 6px 16px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      text-transform: uppercase;
+    }
+    .tape__blink {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      margin-right: 6px;
+      animation: blink 1s steps(2) infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 60px 24px 32px;
+    }
+
+    /* Section frame */
+    .frame {
+      border: 2px solid var(--ink);
+      padding: 20px;
+      margin-bottom: 24px;
+      background: var(--bg);
+      position: relative;
+    }
+    .frame__head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--ink);
+      margin: -20px -20px 20px;
+      padding: 10px 16px;
+      background: var(--ink);
+      color: var(--bg);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+    .frame__head .right { color: var(--accent); }
+
+    /* HERO frame */
+    .hero {
+      border: 2px solid var(--ink);
+      background: var(--bg);
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .hero__bar {
+      background: var(--ink);
+      color: var(--bg);
+      padding: 8px 16px;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: space-between;
+    }
+    .hero__body {
+      padding: 48px 32px 40px;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 32px;
+      align-items: end;
+    }
+    @media (max-width: 880px) { .hero__body { grid-template-columns: 1fr; } }
+    .hero__name {
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 16px;
+    }
+    .hero__title {
+      font-size: clamp(32px, 6vw, 64px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.02;
+      margin-bottom: 20px;
+    }
+    .hero__title span {
+      background: var(--accent);
+      color: var(--bg);
+      padding: 0 8px;
+    }
+    .hero__lines { font-size: 13px; color: var(--ink); line-height: 1.8; }
+    .hero__lines b { font-weight: 600; }
+    .hero__lines .arrow { color: var(--accent); }
+
+    .hero__panel {
+      border-left: 2px solid var(--ink);
+      padding-left: 24px;
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    @media (max-width: 880px) { .hero__panel { border-left: none; border-top: 2px solid var(--ink); padding: 24px 0 0; } }
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px dotted var(--dim);
+      font-size: 12px;
+    }
+    .meta-row span:first-child { color: var(--dim); }
+
+    .actions {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .btn {
+      border: 2px solid var(--ink);
+      background: var(--bg);
+      padding: 8px 14px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn:hover { background: var(--ink); color: var(--bg); }
+    .btn--primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .btn--primary:hover { background: var(--ink); border-color: var(--ink); }
+
+    /* STATS terminal output style */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+    @media (max-width: 720px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+    .stats-grid > div {
+      padding: 20px 16px;
+      border-right: 1px dotted var(--ink);
+    }
+    .stats-grid > div:last-child { border-right: none; }
+    @media (max-width: 720px) { .stats-grid > div:nth-child(2) { border-right: none; } }
+    .stat__label {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 10px;
+    }
+    .stat__big {
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .stat__desc {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--ink);
+      line-height: 1.45;
+    }
+
+    /* AI Practice — table-ish */
+    .work-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .work-table th, .work-table td {
+      padding: 14px 8px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px dotted var(--ink);
+    }
+    .work-table th {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--dim);
+      font-weight: 600;
+      border-bottom: 2px solid var(--ink);
+    }
+    .work-table tr:last-child td { border-bottom: none; }
+    .work-table .ix {
+      font-weight: 700;
+      color: var(--accent);
+      width: 50px;
+    }
+    .work-table .title { font-weight: 700; }
+    .work-table .stack {
+      font-size: 11px;
+      color: var(--dim);
+    }
+
+    /* Decision case */
+    .case-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    @media (max-width: 720px) { .case-box { grid-template-columns: 1fr; } }
+    .case-box figure { margin: 0; border: 2px solid var(--ink); padding: 12px; background: var(--paper); }
+    .case-box figure img { width: 100%; display: block; }
+    .case-box figcaption { font-size: 11px; color: var(--dim); margin-top: 10px; }
+    .case-box .narrative h3 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      line-height: 1.15;
+    }
+    .case-box .narrative h3 span { background: var(--accent); color: var(--bg); padding: 0 6px; }
+    .case-box .narrative p { margin-bottom: 12px; }
+    .case-box .narrative .verdict {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border: 2px solid var(--green);
+      background: rgba(0,107,60,0.06);
+      font-weight: 700;
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .case-box .verdict .check {
+      display: inline-block;
+      background: var(--green);
+      color: var(--bg);
+      padding: 2px 8px;
+    }
+
+    /* Contact frame */
+    .contact-frame {
+      background: var(--ink);
+      color: var(--bg);
+      padding: 40px 32px;
+      margin-top: 8px;
+    }
+    .contact-frame .title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 18px;
+    }
+    .contact-frame .mail {
+      font-size: 22px;
+      color: var(--accent);
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 4px;
+      display: inline-block;
+      margin-bottom: 24px;
+    }
+    .contact-frame .channels {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .contact-frame .channels a {
+      padding: 8px 14px;
+      border: 1px solid var(--bg);
+    }
+    .contact-frame .channels a:hover { background: var(--accent); border-color: var(--accent); }
+
+    /* Bottom tape */
+    .bottom-tape {
+      margin-top: 16px;
+      padding: 10px 16px;
+      background: var(--ink);
+      color: var(--bg);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .ascii-line { color: var(--ink); font-family: var(--font-mono); user-select: none; }
+  </style>
+</head>
+<body>
+  <div class="tape">
+    <span><span class="tape__blink"></span>LIVE · 2026.05.15 · STATUS=OK</span>
+    <span>차한영 / hanyeong cha · portfolio v3</span>
+    <a href="../index.html">[← back]</a>
+  </div>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero__bar">
+        <span>$ portfolio --identity</span>
+        <span style="color:var(--accent)">DAANGN · DA-ENGINEER · 지원</span>
+      </div>
+      <div class="hero__body">
+        <div>
+          <div class="hero__name">차한영 / Hanyeong Cha</div>
+          <h1 class="hero__title">End-to-end<br/><span>Data Analytics</span> Engineer.</h1>
+          <div class="hero__lines">
+            <div><span class="arrow">→</span> <b>지표 정의</b>부터 <b>BI 전달</b>까지 한 손에서.</div>
+            <div><span class="arrow">→</span> AI를 동료로 운영해 의사결정 속도를 끌어올림.</div>
+            <div><span class="arrow">→</span> 작품으로 증명: live dashboard / interactive analysis.</div>
+          </div>
+        </div>
+        <div class="hero__panel">
+          <div>
+            <div class="meta-row"><span>ROLE</span><span>Live Ops Strategy</span></div>
+            <div class="meta-row"><span>STACK</span><span>Dagster · DBT · SQL</span></div>
+            <div class="meta-row"><span>AI</span><span>Claude · Codex · superpowers</span></div>
+            <div class="meta-row"><span>BUILT</span><span>HTML · CSS · Vanilla JS</span></div>
+          </div>
+          <div class="actions">
+            <a class="btn btn--primary" href="mailto:chy0107@afewgoodsoft.com">[EMAIL]</a>
+            <a class="btn" href="https://github.com/chahanyeong" target="_blank">[GITHUB ↗]</a>
+            <a class="btn" href="../resume.html" target="_blank">[RESUME ↗]</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <div class="frame">
+      <div class="frame__head">
+        <span>// IMPACT — 2026 H1</span>
+        <span class="right">★ 실제 운영 결과</span>
+      </div>
+      <div class="stats-grid">
+        <div>
+          <div class="stat__label">[01] MIGRATION</div>
+          <div class="stat__big">42</div>
+          <div class="stat__desc">크론탭 → Dagster 알럿 이관 완료</div>
+        </div>
+        <div>
+          <div class="stat__label">[02] PARALLEL</div>
+          <div class="stat__big">120</div>
+          <div class="stat__desc">Agent Team 병렬 처리 이슈</div>
+        </div>
+        <div>
+          <div class="stat__label">[03] ADOPTION</div>
+          <div class="stat__big">62.5%</div>
+          <div class="stat__desc">Q1 AB Test 채택률 (5/8)</div>
+        </div>
+        <div>
+          <div class="stat__label">[04] REVENUE</div>
+          <div class="stat__big">+7.9%</div>
+          <div class="stat__desc">VVIP 정책 m/m 매출</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI PRACTICE -->
+    <div class="frame">
+      <div class="frame__head">
+        <span>// AI ENGINEERING PRACTICE</span>
+        <span class="right">[ scale / safety / tools / memory ]</span>
+      </div>
+      <table class="work-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Practice</th>
+            <th>Concrete case</th>
+            <th>Stack</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="ix">01</td>
+            <td class="title">에이전트 팀 병렬 처리</td>
+            <td>26H1 개발 이슈 <b>120개</b>를 Leader가 Agent Team spawn해 학습·평가</td>
+            <td class="stack">Agent Team · Claude · Codex</td>
+          </tr>
+          <tr>
+            <td class="ix">02</td>
+            <td class="title">라이브 이중 환경 + 에이전트</td>
+            <td>aiops_dev ↔ aiops_gsdetection. CLAUDE.md로 라이브 직수정 차단</td>
+            <td class="stack">Dagster · Bitbucket · CLAUDE.md</td>
+          </tr>
+          <tr>
+            <td class="ix">03</td>
+            <td class="title">플러그인·스킬 결합</td>
+            <td>superpowers + 외부 goal + 커스텀 creator_team 6 페이즈</td>
+            <td class="stack">superpowers · goal · creator_team</td>
+          </tr>
+          <tr>
+            <td class="ix">04</td>
+            <td class="title">분석 자산화</td>
+            <td>redshift_agent에서 spec → plan → 실행 → knowledge 승격</td>
+            <td class="stack">Redshift · Auto Memory</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- DECISION CASE -->
+    <div class="frame">
+      <div class="frame__head">
+        <span>// DECISION CASE · 2026-04-09</span>
+        <span class="right">VVIP 가격대 정책 리뉴얼</span>
+      </div>
+      <div class="case-box">
+        <div class="narrative">
+          <h3>고액 상품 환산을<br/><span>10% 인상</span>했더니<br/>매출이 <span>+7.9%</span></h3>
+          <p><b>1.</b> KPI 보고에서 고액 상품 매력도 하락 신호 감지.</p>
+          <p><b>2.</b> "결제 코인 대비 배팅 금액(최빈)" 차트로 가격대별 행동 패턴 분석.</p>
+          <p><b>3.</b> $499~$999 구간에서 배팅 금액 비선형 급증 → offering이 박했음 확인.</p>
+          <p><b>4.</b> <b>$99 이상 고액 상품의 환산 코인 비율을 약 10% 인상</b>해서 시정.</p>
+          <div class="verdict">
+            <span class="check">RESULT</span>
+            <span>m/m 매출 +7.9% 증가, 고액상품 구매 비율 유지</span>
+          </div>
+        </div>
+        <figure>
+          <img src="../assets/img/project1_decision_betting.png" alt="결제 코인 대비 배팅 금액 차트" />
+          <figcaption>FIG.01 — 결제 가격대별 배팅 금액 분포</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="contact-frame">
+      <div style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;">// CONTACT</div>
+      <div class="title">대화를 시작해주세요.</div>
+      <a class="mail" href="mailto:chy0107@afewgoodsoft.com">chy0107@afewgoodsoft.com</a>
+      <div class="channels">
+        <a href="https://github.com/chahanyeong" target="_blank">[GITHUB]</a>
+        <a href="../resume.html" target="_blank">[RESUME]</a>
+        <a href="../dashboards/duc-ops.html" target="_blank">[LIVE DASHBOARD]</a>
+        <a href="../samples/mobile-ccu-anomaly.html" target="_blank">[SAMPLE ANALYSIS]</a>
+      </div>
+    </div>
+
+    <div class="bottom-tape">
+      <span>DESIGN E · BRUTALIST TERMINAL</span>
+      <span>차한영 © 2026 · IBM PLEX MONO</span>
+    </div>
+
+  </main>
+</body>
+</html>

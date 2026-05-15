@@ -438,7 +438,6 @@ button { font-family: inherit; cursor: pointer; }
 }
 .ai-card:hover {
   transform: translateY(-2px);
-  border-color: var(--accent);
   box-shadow: var(--shadow-card-hover);
 }
 .ai-card:hover::before { width: 100%; }

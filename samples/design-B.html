@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>차한영 — Design B · Minimal Typographic</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono.css" />
+  <style>
+    :root {
+      --bg: #FAFAFA;
+      --text: #1c1c1c;
+      --text-dim: #6B6B6B;
+      --rule: #E5E5E5;
+      --accent: #1c1c1c;
+      --link: #0066CC;
+      --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+      padding: 0;
+    }
+    a { color: var(--link); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(0,102,204,0.3); }
+    a:hover { text-decoration-color: var(--link); }
+    code, .mono { font-family: var(--font-mono); font-size: 0.875em; }
+
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 96px 32px 64px;
+    }
+    @media (max-width: 720px) {
+      main { padding: 56px 24px 48px; }
+    }
+
+    /* Top meta */
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 64px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+    .top a { color: var(--text-dim); text-decoration: none; }
+    .top a:hover { color: var(--text); }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+    .role {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-bottom: 48px;
+    }
+
+    p { margin-bottom: 20px; max-width: 65ch; }
+    p.lead {
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    h2 {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-top: 64px;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-top: 32px;
+      margin-bottom: 8px;
+    }
+    h3 + .meta {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+    }
+
+    ul.bare { list-style: none; padding: 0; }
+    ul.bare > li {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--rule);
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 16px;
+      align-items: baseline;
+    }
+    ul.bare > li .date {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+    ul.bare > li strong { font-weight: 600; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin: 24px 0 16px;
+      padding: 24px 0;
+      border-top: 1px solid var(--text);
+      border-bottom: 1px solid var(--rule);
+    }
+    @media (max-width: 600px) {
+      .stats { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    }
+    .stat__num {
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat__desc {
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.4;
+    }
+
+    figure {
+      margin: 24px 0;
+      max-width: 100%;
+    }
+    figure img {
+      width: 100%;
+      display: block;
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+    }
+    figcaption {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-top: 8px;
+      line-height: 1.55;
+    }
+
+    .quote {
+      font-size: 17px;
+      font-style: italic;
+      color: var(--text);
+      padding-left: 16px;
+      border-left: 2px solid var(--text);
+      margin: 24px 0;
+    }
+
+    .footnote {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      padding-top: 32px;
+      margin-top: 64px;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .tags {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+    }
+    .tags span {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 2px 8px;
+      border: 1px solid var(--rule);
+      color: var(--text-dim);
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="top">
+      <span>차한영 — Portfolio 2026</span>
+      <a href="../index.html">← back</a>
+    </div>
+
+    <h1>차한영</h1>
+    <p class="role mono">End-to-end Data Analytics Engineer · Live Ops Strategy</p>
+
+    <p class="lead">
+      지표를 정의하고 파이프라인으로 만들고 BI로 전달합니다.
+      AI를 동료로 운영해 의사결정 속도를 끌어올립니다.
+    </p>
+
+    <div class="stats">
+      <div><div class="stat__num">42</div><div class="stat__desc">크론탭→Dagster 마이그레이션 알럿</div></div>
+      <div><div class="stat__num">120</div><div class="stat__desc">Agent Team 병렬 처리 이슈</div></div>
+      <div><div class="stat__num">62.5%</div><div class="stat__desc">Q1 AB Test 채택률</div></div>
+      <div><div class="stat__num">+7.9%</div><div class="stat__desc">VVIP 정책 m/m 매출</div></div>
+    </div>
+
+    <h2>지금</h2>
+    <ul class="bare">
+      <li>
+        <span class="date">2024 –</span>
+        <span><strong>Live Ops Strategy</strong>, DUC Games. 자사 게임 라이브 운영의 지표 정의·파이프라인·BI를 한 손에서 운영.</span>
+      </li>
+      <li>
+        <span class="date">2026.05</span>
+        <span><strong>당근 Data Analytics Engineer</strong> 지원 중.</span>
+      </li>
+    </ul>
+
+    <h2>핵심 작업</h2>
+
+    <h3>에이전트 팀으로 다수 이슈 병렬 처리</h3>
+    <div class="meta mono">auto_report/projects/issue_timeline_extractor</div>
+    <p>
+      26H1 개발 이슈 120개를 Leader 에이전트가 Agent Team을 spawn해 병렬 학습·평가했습니다.
+      Claude(<code>opus-4-7</code>)와 Codex(<code>gpt-5.x</code>)를 의도적으로 병용해 단일 모델 편향을 회피했습니다.
+    </p>
+    <div class="tags">
+      <span>Agent Team</span><span>Claude Code</span><span>Codex</span><span>Slack API</span>
+    </div>
+
+    <h3>Dagster 기반 운영 인프라로 전환</h3>
+    <div class="meta mono">aiops_dev ↔ aiops_gsdetection</div>
+    <p>
+      크론탭 + 주피터 기반 임시 운영을 Dagster + Bitbucket(CI/CD) 기반 표준 인프라로 옮겼습니다.
+      <strong>크론탭 기반 얼럿 42개 Dagster 마이그레이션 완료.</strong>
+    </p>
+    <div class="tags">
+      <span>Dagster</span><span>Bitbucket</span><span>CI/CD</span>
+    </div>
+
+    <h3>자사 앱 대시보드 운영</h3>
+    <div class="meta mono">Chart.js · Tailwind · Pretendard · <a href="../dashboards/duc-ops.html" target="_blank">라이브 ↗</a></div>
+    <p>
+      <strong>AB Test 운영 대시보드</strong>와 <strong>신규 슬롯 평가 대시보드</strong> 두 가지를 직접 설계·구축.
+      실험 채택 여부와 신규 슬롯 출시 결정에 사용됩니다.
+    </p>
+
+    <h2>의사결정 사례 — VVIP 가격대 정책 리뉴얼</h2>
+    <div class="meta mono">2026-04-09 확정 · m/m 매출 +7.9%</div>
+    <p>
+      KPI 보고에서 고액 상품 매력도가 떨어지는 신호를 감지했습니다.
+      결제 코인 대비 배팅 금액 차트로 가격대별 행동 패턴을 분석한 뒤,
+      <strong>$99 이상 고액 상품의 환산 코인 비율을 약 10% 인상</strong>해서 offering을 바로잡기로 결정했습니다.
+    </p>
+    <figure>
+      <img src="../assets/img/project1_decision_betting.png" alt="결제 코인 대비 배팅 금액 차트" />
+      <figcaption>$499~$999 구간에서 배팅 금액이 비선형 급증 — 고액 결제자 환산이 박했음을 시사.</figcaption>
+    </figure>
+    <p>적용 후 m/m 매출 <strong>+7.9% 증가</strong>, 고액상품 구매 비율은 유지되었습니다.</p>
+
+    <div class="quote">
+      "지표는 발견이 아니라 의사결정에 쓰여야 한다."
+    </div>
+
+    <h2>연락</h2>
+    <p>
+      <a href="mailto:chy0107@afewgoodsoft.com">chy0107@afewgoodsoft.com</a> ·
+      <a href="https://github.com/chahanyeong" target="_blank">GitHub</a> ·
+      <a href="../resume.html" target="_blank">Resume</a>
+    </p>
+
+    <div class="footnote">
+      <span>Design B · Minimal Typographic</span>
+      <span>차한영 © 2026</span>
+    </div>
+  </main>
+</body>
+</html>

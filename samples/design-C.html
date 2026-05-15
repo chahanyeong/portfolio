@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>차한영 — Design C · Bold Magazine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;500;700&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <style>
+    :root {
+      --bg: #F4EFE8;
+      --surface: #FFFDF7;
+      --ink: #1A1612;
+      --ink-soft: #5C4F42;
+      --accent: #E04E1B;
+      --accent-deep: #7A1F00;
+      --moss: #44513A;
+      --paper: #EDE6D9;
+      --rule: rgba(26, 22, 18, 0.12);
+      --font-serif: 'Instrument Serif', 'Fraunces', Georgia, serif;
+      --font-sans: 'Pretendard', -apple-system, sans-serif;
+      --font-mono: 'Geist Mono', ui-monospace, monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* Magazine masthead */
+    .masthead {
+      border-bottom: 2px solid var(--ink);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    .masthead a:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      padding: 80px 32px 96px;
+      max-width: 1500px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    @media (max-width: 720px) {
+      .hero { padding: 48px 24px 64px; }
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 80px;
+      right: -10%;
+      width: 60vw;
+      max-width: 720px;
+      height: 60vw;
+      max-height: 720px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, var(--accent) 0%, transparent 60%);
+      opacity: 0.15;
+      pointer-events: none;
+    }
+    .hero__chip {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      background: var(--ink);
+      color: var(--bg);
+      padding: 6px 14px;
+      margin-bottom: 32px;
+      position: relative;
+      z-index: 1;
+    }
+    .hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(48px, 9vw, 124px);
+      font-weight: 400;
+      line-height: 0.92;
+      letter-spacing: -0.025em;
+      max-width: 1100px;
+      position: relative;
+      z-index: 1;
+    }
+    .hero__title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .hero__byline {
+      margin-top: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 32px;
+      flex-wrap: wrap;
+      max-width: 1100px;
+      position: relative;
+      z-index: 1;
+    }
+    .hero__name {
+      font-family: var(--font-serif);
+      font-size: 28px;
+      font-style: italic;
+    }
+    .hero__meta {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    /* Edition / section divider */
+    .rule {
+      max-width: 1500px;
+      margin: 64px auto 48px;
+      padding: 0 32px;
+    }
+    .rule__inner {
+      border-top: 1px solid var(--ink);
+      padding-top: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+    .rule__num {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      text-transform: none;
+      color: var(--accent);
+    }
+
+    /* Article layout */
+    section { max-width: 1500px; margin: 0 auto; padding: 0 32px; }
+    .article {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 64px;
+      margin-bottom: 96px;
+    }
+    @media (max-width: 880px) {
+      .article { grid-template-columns: 1fr; gap: 24px; }
+    }
+    .article__intro h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(36px, 5vw, 56px);
+      line-height: 1;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .article__intro h2 em { font-style: italic; color: var(--accent); }
+    .article__intro p {
+      color: var(--ink-soft);
+      max-width: 360px;
+    }
+
+    /* Featured big number */
+    .feature {
+      background: var(--ink);
+      color: var(--bg);
+      padding: 56px 32px;
+      max-width: 1500px;
+      margin: 64px auto;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature::before {
+      content: '+7.9%';
+      position: absolute;
+      right: -3vw;
+      bottom: -8vw;
+      font-family: var(--font-serif);
+      font-size: 38vw;
+      font-style: italic;
+      line-height: 1;
+      color: var(--accent);
+      opacity: 0.85;
+      pointer-events: none;
+    }
+    .feature__label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .feature h3 {
+      font-family: var(--font-serif);
+      font-size: clamp(36px, 5vw, 64px);
+      line-height: 1.05;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      max-width: 720px;
+      position: relative;
+      z-index: 1;
+    }
+    .feature p {
+      max-width: 540px;
+      margin-top: 24px;
+      color: rgba(255, 253, 247, 0.75);
+      position: relative;
+      z-index: 1;
+    }
+    .feature__meta {
+      margin-top: 32px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Numbers row */
+    .numbers {
+      max-width: 1500px;
+      margin: 96px auto;
+      padding: 0 32px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border-top: 2px solid var(--ink);
+      border-bottom: 2px solid var(--ink);
+    }
+    @media (max-width: 720px) {
+      .numbers { grid-template-columns: repeat(2, 1fr); }
+    }
+    .number {
+      padding: 32px 24px;
+      border-right: 1px solid var(--rule);
+    }
+    .number:last-child { border-right: none; }
+    @media (max-width: 720px) {
+      .number:nth-child(2) { border-right: none; }
+    }
+    .number__big {
+      font-family: var(--font-serif);
+      font-size: clamp(48px, 6vw, 84px);
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--accent);
+    }
+    .number__desc {
+      margin-top: 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      line-height: 1.5;
+    }
+
+    /* Cards */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 880px) {
+      .cards { grid-template-columns: 1fr; }
+    }
+    .ccard {
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      padding: 32px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .ccard:hover { background: var(--paper); border-color: var(--ink); }
+    .ccard__num {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 48px;
+      line-height: 1;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .ccard h4 {
+      font-family: var(--font-serif);
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+    }
+    .ccard p { font-size: 14px; color: var(--ink-soft); }
+
+    /* Decision case figure */
+    .case {
+      max-width: 1500px;
+      margin: 0 auto 96px;
+      padding: 0 32px;
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 48px;
+      align-items: center;
+    }
+    @media (max-width: 880px) {
+      .case { grid-template-columns: 1fr; }
+    }
+    .case figure { margin: 0; }
+    .case figure img {
+      width: 100%;
+      border: 1px solid var(--rule);
+      display: block;
+    }
+    .case h3 {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 3.5vw, 40px);
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .case h3 em { font-style: italic; color: var(--accent); }
+    .case p { color: var(--ink-soft); margin-bottom: 16px; }
+
+    /* Contact */
+    .contact {
+      background: var(--paper);
+      padding: 96px 32px;
+      text-align: center;
+    }
+    .contact h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(40px, 6vw, 80px);
+      line-height: 1;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .contact h2 em { font-style: italic; color: var(--accent); }
+    .contact a.mail {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(20px, 3vw, 32px);
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent);
+      padding-bottom: 4px;
+    }
+    .contact .row {
+      margin-top: 32px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .contact .row a {
+      margin: 0 12px;
+      padding-bottom: 2px;
+      border-bottom: 1px solid var(--ink);
+    }
+    .contact .row a:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* Colophon */
+    .colophon {
+      padding: 24px 32px;
+      border-top: 2px solid var(--ink);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: var(--ink-soft);
+    }
+
+    .back {
+      position: fixed;
+      top: 12px;
+      right: 32px;
+      z-index: 10;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+    .back:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <span>차한영 — Portfolio · Vol. I · 2026</span>
+    <a href="../index.html" class="back">← back</a>
+  </header>
+
+  <section class="hero">
+    <div class="hero__chip">DAANGN · DATA ANALYTICS ENGINEER 지원</div>
+    <h1 class="hero__title"><em>End-to-end</em><br/>Data Analytics<br/>Engineer.</h1>
+    <div class="hero__byline">
+      <div class="hero__name">— 차한영 (Hanyeong Cha)</div>
+      <div class="hero__meta">Live Ops Strategy · DUC Games · 2026.05</div>
+    </div>
+  </section>
+
+  <div class="rule">
+    <div class="rule__inner">
+      <span>Volume I</span>
+      <span class="rule__num">Impact</span>
+      <span>01 / 04</span>
+    </div>
+  </div>
+
+  <div class="numbers">
+    <div class="number"><div class="number__big">42</div><div class="number__desc">크론탭 → Dagster 마이그레이션 알럿</div></div>
+    <div class="number"><div class="number__big">120</div><div class="number__desc">Agent Team 병렬 처리 이슈</div></div>
+    <div class="number"><div class="number__big">62.5<small style="font-size:0.55em">%</small></div><div class="number__desc">Q1 AB Test 채택률</div></div>
+    <div class="number"><div class="number__big">+7.9<small style="font-size:0.55em">%</small></div><div class="number__desc">VVIP 정책 m/m 매출</div></div>
+  </div>
+
+  <div class="rule">
+    <div class="rule__inner">
+      <span>Practice</span>
+      <span class="rule__num">AI Engineering</span>
+      <span>02 / 04</span>
+    </div>
+  </div>
+
+  <section>
+    <div class="article">
+      <div class="article__intro">
+        <h2><em>네 축</em>으로 운영하는 AI</h2>
+        <p>도구가 아니라 동료로. 스케일, 안정성, 도구 결합력, 학습 연속성.</p>
+      </div>
+      <div class="cards">
+        <article class="ccard">
+          <div class="ccard__num">01</div>
+          <h4>에이전트 팀으로 병렬 처리</h4>
+          <p>26H1 개발 이슈 120개를 Leader 에이전트가 Agent Team을 spawn해 병렬 학습·평가. Claude + Codex 의도적 병용.</p>
+        </article>
+        <article class="ccard">
+          <div class="ccard__num">02</div>
+          <h4>라이브 이중 환경</h4>
+          <p>aiops_dev ↔ aiops_gsdetection Bitbucket 동시 관리. CLAUDE.md 규칙으로 라이브 직수정 차단.</p>
+        </article>
+        <article class="ccard">
+          <div class="ccard__num">03</div>
+          <h4>분석 자산화</h4>
+          <p>redshift_agent에서 분석 결과를 knowledge로 승격. "같은 지적을 두 번 받지 않는 AI."</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div class="feature">
+    <div class="feature__label">Decision Case · 2026-04-09 확정</div>
+    <h3>고액 상품의 환산을 <em>10% 인상</em>했더니<br/>매출이 <em>+7.9%</em> 올라갔다.</h3>
+    <p>KPI 보고에서 고액 상품 매력도 하락을 감지. 결제 코인 대비 배팅 금액 차트로 가격대별 행동 패턴을 분석. 환산 비율 인상 결정.</p>
+    <div class="feature__meta">VVIP 가격대 정책 리뉴얼 · m/m 매출 +7.9%</div>
+  </div>
+
+  <div class="rule">
+    <div class="rule__inner">
+      <span>Evidence</span>
+      <span class="rule__num">Decision</span>
+      <span>03 / 04</span>
+    </div>
+  </div>
+
+  <div class="case">
+    <figure>
+      <img src="../assets/img/project1_decision_betting.png" alt="결제 코인 대비 배팅 금액 차트" />
+    </figure>
+    <div>
+      <h3>$499~$999 구간에서<br/>배팅이 <em>비선형 급증</em></h3>
+      <p>$9~$299 구간은 평탄, 그러나 고액 결제자에서 배팅 금액이 가파르게 늘었습니다.</p>
+      <p>이는 곧 <strong>현재 offering이 박했다</strong>는 신호 — 환산 비율을 약 10% 인상해 시정.</p>
+    </div>
+  </div>
+
+  <div class="rule">
+    <div class="rule__inner">
+      <span>Contact</span>
+      <span class="rule__num">Let's talk.</span>
+      <span>04 / 04</span>
+    </div>
+  </div>
+
+  <section class="contact">
+    <h2>대화를<br/><em>시작해주세요.</em></h2>
+    <a class="mail" href="mailto:chy0107@afewgoodsoft.com">chy0107@afewgoodsoft.com</a>
+    <div class="row">
+      <a href="https://github.com/chahanyeong" target="_blank">GitHub</a>
+      <a href="../resume.html" target="_blank">Resume</a>
+      <a href="../dashboards/duc-ops.html" target="_blank">Live Dashboard</a>
+    </div>
+  </section>
+
+  <footer class="colophon">
+    <span>Design C · Bold Magazine</span>
+    <span>차한영 © 2026 · Instrument Serif · Pretendard · Geist Mono</span>
+  </footer>
+</body>
+</html>

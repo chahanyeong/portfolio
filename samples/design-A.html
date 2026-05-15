@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>차한영 — Design A · Dark Editorial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono.css" />
+  <style>
+    :root {
+      --bg: #0B1120;
+      --surface: #111827;
+      --text: #cbd5e1;
+      --text-strong: #f1f5f9;
+      --text-dim: #64748b;
+      --accent: #22d3ee;
+      --accent-dim: #0e7490;
+      --border: rgba(148, 163, 184, 0.12);
+      --font-sans: 'Inter', 'Pretendard', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+    a:hover { color: var(--accent); }
+    main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 96px;
+      min-height: 100vh;
+    }
+    @media (max-width: 1024px) {
+      main { grid-template-columns: 1fr; gap: 48px; padding: 0 32px; }
+    }
+
+    /* LEFT: Sticky sidebar */
+    .side {
+      padding: 96px 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    @media (max-width: 1024px) {
+      .side { position: static; height: auto; padding: 64px 0 0; }
+    }
+    .side__top h1 {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--text-strong);
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      margin-bottom: 12px;
+    }
+    .side__top h2 {
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--text-strong);
+      margin-bottom: 16px;
+    }
+    .side__top p {
+      max-width: 360px;
+      font-size: 15px;
+      color: var(--text);
+      margin-bottom: 32px;
+    }
+    .side__nav { display: flex; flex-direction: column; gap: 12px; }
+    .side__nav a {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 4px 0;
+    }
+    .side__nav a::before {
+      content: '';
+      display: inline-block;
+      width: 32px;
+      height: 1px;
+      background: var(--text-dim);
+      transition: width 0.2s, background 0.2s;
+    }
+    .side__nav a:hover { color: var(--accent); }
+    .side__nav a:hover::before { width: 56px; background: var(--accent); }
+    .side__bottom {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      color: var(--text-dim);
+      font-size: 13px;
+    }
+    .side__bottom a { font-family: var(--font-mono); font-size: 12px; }
+
+    /* RIGHT: Scrolling content */
+    .content { padding: 96px 0; }
+    @media (max-width: 1024px) { .content { padding: 0 0 64px; } }
+
+    .section { margin-bottom: 96px; }
+    .section__label {
+      display: none;
+    }
+    @media (max-width: 1024px) {
+      .section__label {
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.2em;
+        color: var(--text-strong);
+        text-transform: uppercase;
+        position: sticky;
+        top: 0;
+        background: rgba(11, 17, 32, 0.85);
+        backdrop-filter: blur(8px);
+        padding: 12px 0;
+        margin-bottom: 16px;
+      }
+    }
+
+    /* About paragraph */
+    .about p { margin-bottom: 16px; max-width: 540px; }
+    .about strong { color: var(--text-strong); font-weight: 600; }
+    .about em { color: var(--accent); font-style: normal; }
+
+    /* Stats inline */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-top: 24px;
+      max-width: 540px;
+    }
+    .stat { padding-left: 16px; border-left: 2px solid var(--accent-dim); }
+    .stat__num {
+      font-family: var(--font-mono);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text-strong);
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .stat__num em { color: var(--accent); font-style: normal; }
+    .stat__desc {
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-top: 8px;
+    }
+
+    /* Experience cards */
+    .card {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 24px;
+      padding: 24px;
+      margin: 0 -24px 8px;
+      border-radius: 8px;
+      transition: background 0.2s, box-shadow 0.2s;
+      max-width: 600px;
+    }
+    .card:hover {
+      background: rgba(34, 211, 238, 0.04);
+      box-shadow: inset 0 1px 0 0 rgba(34, 211, 238, 0.1);
+    }
+    .card__period {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      letter-spacing: 0.04em;
+      padding-top: 2px;
+    }
+    .card__title {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-strong);
+      margin-bottom: 8px;
+    }
+    .card__title:hover { color: var(--accent); }
+    .card__desc {
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .card__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(34, 211, 238, 0.1);
+      color: var(--accent);
+      letter-spacing: 0.02em;
+    }
+
+    /* Decision case */
+    .case figure {
+      margin: 24px 0;
+      max-width: 600px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .case figure img { width: 100%; display: block; }
+    .case figcaption {
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--text-dim);
+      background: var(--surface);
+    }
+    .case .result {
+      font-family: var(--font-mono);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-top: 24px;
+    }
+
+    .back {
+      position: fixed;
+      top: 24px;
+      left: 24px;
+      z-index: 10;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(11, 17, 32, 0.7);
+      backdrop-filter: blur(8px);
+    }
+    .back:hover { color: var(--accent); border-color: var(--accent); }
+  </style>
+</head>
+<body>
+  <a class="back" href="../index.html">← back to portfolio</a>
+  <main>
+    <aside class="side">
+      <div class="side__top">
+        <h1>차한영</h1>
+        <h2>End-to-end Data Analytics Engineer</h2>
+        <p>지표를 정의하고, 파이프라인으로 만들고, BI로 전달합니다. AI를 동료로 운영해 의사결정 속도를 끌어올립니다.</p>
+        <nav class="side__nav">
+          <a href="#about">About</a>
+          <a href="#work">Work</a>
+          <a href="#case">Decision</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
+      <div class="side__bottom">
+        <a href="mailto:chy0107@afewgoodsoft.com">Email</a>
+        <a href="https://github.com/chahanyeong">GitHub</a>
+        <a href="../resume.html">Resume</a>
+      </div>
+    </aside>
+    <div class="content">
+
+      <section class="section about" id="about">
+        <div class="section__label">About</div>
+        <p>
+          <strong>당근 Data Analytics Engineer 지원</strong>. 게임 라이브 운영에서
+          <em>지표 정의 → 파이프라인 구축 → BI 전달 → 의사결정</em>까지의 전 흐름을 직접 다뤄왔습니다.
+        </p>
+        <p>
+          AI를 도구가 아닌 동료로 운영합니다. Claude Code · Codex 멀티 모델을 분업시키고,
+          Dagster + Bitbucket 위에 사람의 승인만으로 안전하게 반복되는 운영 인프라를 만듭니다.
+        </p>
+        <div class="stats">
+          <div class="stat">
+            <div class="stat__num"><em>42</em></div>
+            <div class="stat__desc">크론탭 → Dagster 마이그레이션 (개)</div>
+          </div>
+          <div class="stat">
+            <div class="stat__num"><em>120</em></div>
+            <div class="stat__desc">Agent Team 병렬 처리 이슈 (개)</div>
+          </div>
+          <div class="stat">
+            <div class="stat__num"><em>62.5%</em></div>
+            <div class="stat__desc">Q1 AB Test 채택률</div>
+          </div>
+          <div class="stat">
+            <div class="stat__num"><em>+7.9%</em></div>
+            <div class="stat__desc">VVIP 정책 m/m 매출 증가</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section work" id="work">
+        <div class="section__label">Work</div>
+        <article class="card">
+          <div class="card__period">2026 — NOW</div>
+          <div>
+            <div class="card__title">에이전트 팀으로 다수 이슈 병렬 처리</div>
+            <div class="card__desc">
+              26H1 개발 이슈 120개를 Leader 에이전트가 Agent Team을 spawn해 병렬 학습·평가.
+              Claude + Codex 의도적 병용으로 단일 모델 편향 회피.
+            </div>
+            <div class="card__tags">
+              <span class="tag">Agent Team</span>
+              <span class="tag">Claude Code</span>
+              <span class="tag">Codex CLI</span>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card__period">2026 — NOW</div>
+          <div>
+            <div class="card__title">Dagster 기반 이상탐지 서버 운영 자동화</div>
+            <div class="card__desc">
+              크론탭 + 주피터 임시 운영을 Dagster + Bitbucket(CI/CD) 표준 인프라로 전환.
+              크론탭 기반 얼럿 42개 Dagster 마이그레이션 완료.
+            </div>
+            <div class="card__tags">
+              <span class="tag">Dagster</span>
+              <span class="tag">Bitbucket</span>
+              <span class="tag">CI/CD</span>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card__period">2026</div>
+          <div>
+            <div class="card__title">자사 앱 대시보드 운영</div>
+            <div class="card__desc">
+              실험 채택과 신규 슬롯 평가를 위한 두 대시보드를 직접 설계·구축.
+              <a href="../dashboards/duc-ops.html" target="_blank">라이브 보기 ↗</a>
+            </div>
+            <div class="card__tags">
+              <span class="tag">Chart.js</span>
+              <span class="tag">Tailwind</span>
+              <span class="tag">Pretendard</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="section case" id="case">
+        <div class="section__label">Decision Case</div>
+        <h3 style="font-size:22px;font-weight:600;color:var(--text-strong);margin-bottom:8px;">VVIP 가격대 정책 리뉴얼</h3>
+        <p style="font-size:14px;color:var(--text-dim);margin-bottom:16px;">2026-04-09 확정 · m/m 매출 +7.9%</p>
+        <p>
+          KPI 보고에서 고액 상품 매력도가 떨어지는 신호 감지 →
+          결제 코인 대비 배팅 금액 차트로 가격대별 행동 패턴 분석 →
+          <strong>$99 이상 고액 상품의 환산 코인 비율을 약 10% 인상</strong> →
+          적용 후 m/m 매출 증가.
+        </p>
+        <figure>
+          <img src="../assets/img/project1_decision_betting.png" alt="결제 코인 대비 배팅 금액 차트" />
+          <figcaption>$499~$999 구간에서 배팅 금액이 비선형 급증 → 고액 결제자 환산이 박했음.</figcaption>
+        </figure>
+        <div class="result">+7.9% m/m revenue</div>
+      </section>
+
+      <section class="section" id="contact" style="margin-bottom:48px;">
+        <div class="section__label">Contact</div>
+        <h3 style="font-size:28px;font-weight:600;color:var(--text-strong);margin-bottom:16px;">대화를 시작해주세요.</h3>
+        <a href="mailto:chy0107@afewgoodsoft.com" style="font-family:var(--font-mono);font-size:18px;color:var(--accent);border-bottom:1px solid var(--accent);">chy0107@afewgoodsoft.com</a>
+      </section>
+
+      <footer style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);padding-top:32px;border-top:1px solid var(--border);">
+        Design A · Dark Editorial · 차한영 © 2026
+      </footer>
+
+    </div>
+  </main>
+</body>
+</html>

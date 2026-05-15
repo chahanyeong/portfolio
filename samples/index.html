@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>디자인 시안 비교 · 차한영 포트폴리오</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #F4EFE8;
+      color: #1c1c1c;
+      font-family: 'Pretendard', sans-serif;
+      line-height: 1.6;
+      padding: 64px 32px;
+      min-height: 100vh;
+    }
+    .wrap { max-width: 1200px; margin: 0 auto; }
+    h1 {
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    .sub {
+      color: #6B6B6B;
+      margin-bottom: 8px;
+    }
+    .nav {
+      display: flex;
+      gap: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      margin-bottom: 48px;
+    }
+    .nav a {
+      color: #6B6B6B;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .nav a:hover { color: #FF6F0F; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 960px) { .grid { grid-template-columns: 1fr; } }
+
+    .card {
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px rgba(0,0,0,0.08);
+    }
+    .card__preview {
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    /* A: dark editorial */
+    .preview-a {
+      background: #0B1120;
+      color: #cbd5e1;
+    }
+    .preview-a .accent { color: #22d3ee; }
+    /* B: minimal */
+    .preview-b {
+      background: #FAFAFA;
+      color: #1c1c1c;
+      border: 1px solid #E5E5E5;
+    }
+    .preview-b .accent { font-style: italic; }
+    /* C: bold magazine */
+    .preview-c {
+      background: #F4EFE8;
+      color: #1A1612;
+    }
+    .preview-c .accent { color: #E04E1B; font-style: italic; font-family: 'Instrument Serif', serif; }
+
+    .preview-title {
+      font-size: 32px;
+      line-height: 1.1;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+    .preview-a .preview-title { font-weight: 700; letter-spacing: -0.02em; }
+    .preview-b .preview-title { font-weight: 600; letter-spacing: -0.01em; }
+    .preview-c .preview-title {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-weight: 400;
+      font-size: 48px;
+      letter-spacing: -0.025em;
+    }
+    .preview-mini {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+
+    .card__body { padding: 24px; }
+    .card__label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #946A47;
+      margin-bottom: 8px;
+    }
+    .card__title { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+    .card__desc { color: #6B6B6B; font-size: 14px; margin-bottom: 16px; }
+    .card__chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+    .chip {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #F4EFE8;
+      color: #5C4F42;
+    }
+    .open {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      background: #1c1c1c;
+      color: #fff;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+    }
+    .open:hover { background: #FF6F0F; }
+    .row-foot {
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #6B6B6B;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>디자인 시안 비교</h1>
+    <p class="sub">동일한 콘텐츠를 세 가지 다른 디자인 방향으로 만들었습니다. 가장 마음에 드는 톤을 골라주세요.</p>
+    <div class="nav">
+      <a href="../index.html">← 현재 라이브 사이트 (Warm Pretendard)</a>
+    </div>
+
+    <div class="grid">
+
+      <article class="card">
+        <div class="card__preview preview-a">
+          <div>
+            <div class="preview-mini" style="margin-bottom:12px;">차한영</div>
+            <div class="preview-title">End-to-end <span class="accent">Data</span><br/>Analytics Engineer</div>
+            <div class="preview-mini" style="margin-top:16px;color:#22d3ee;">DARK SIDEBAR · INTER</div>
+          </div>
+        </div>
+        <div class="card__body">
+          <div class="card__label">— Design A</div>
+          <div class="card__title">Dark Editorial</div>
+          <p class="card__desc">
+            브리타니 치앙 스타일. 좌측 sticky 사이드바에 정체성·연락처, 우측 스크롤에 작업.
+            개발자 포트폴리오 정통, 신뢰감, 다크 톤.
+          </p>
+          <div class="card__chips">
+            <span class="chip">Inter</span>
+            <span class="chip">Cyan accent</span>
+            <span class="chip">Sticky sidebar</span>
+            <span class="chip">Mono labels</span>
+          </div>
+          <a class="open" href="design-A.html" target="_blank">Design A 열기 ↗</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card__preview preview-b">
+          <div>
+            <div class="preview-mini" style="margin-bottom:12px;font-family:'JetBrains Mono',monospace;">PORTFOLIO · 2026</div>
+            <div class="preview-title">차한영<br/><span class="accent" style="font-weight:400;color:#6B6B6B;font-size:18px;">End-to-end Data Analytics Engineer</span></div>
+            <div class="preview-mini" style="margin-top:16px;color:#1c1c1c;">NARROW COLUMN · SYSTEM SANS</div>
+          </div>
+        </div>
+        <div class="card__body">
+          <div class="card__label">— Design B</div>
+          <div class="card__title">Minimal Typographic</div>
+          <p class="card__desc">
+            paco.me / rauchg 스타일. 좁은 단(680px), 본문 위주, 시스템 산세리프 + 모노스페이스.
+            과한 장식 없이 문서 같은 정확함.
+          </p>
+          <div class="card__chips">
+            <span class="chip">System sans</span>
+            <span class="chip">680px column</span>
+            <span class="chip">No images*</span>
+            <span class="chip">Editorial</span>
+          </div>
+          <a class="open" href="design-B.html" target="_blank">Design B 열기 ↗</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card__preview preview-c">
+          <div>
+            <div class="preview-mini" style="margin-bottom:12px;background:#1A1612;color:#F4EFE8;padding:4px 10px;display:inline-block;">PORTFOLIO · 2026</div>
+            <div class="preview-title"><span class="accent">End-to-end</span><br/>Data Analytics<br/>Engineer.</div>
+            <div class="preview-mini" style="margin-top:16px;color:#1A1612;">INSTRUMENT SERIF · MAGAZINE</div>
+          </div>
+        </div>
+        <div class="card__body">
+          <div class="card__label">— Design C</div>
+          <div class="card__title">Bold Magazine</div>
+          <p class="card__desc">
+            매거진 에디토리얼. 큰 세리프 디스플레이, 강한 액센트, 거대한 숫자.
+            거기에 큰 정보 카드와 임팩트 있는 의사결정 인용.
+          </p>
+          <div class="card__chips">
+            <span class="chip">Instrument Serif</span>
+            <span class="chip">Burnt orange</span>
+            <span class="chip">Large display</span>
+            <span class="chip">Editorial volumes</span>
+          </div>
+          <a class="open" href="design-C.html" target="_blank">Design C 열기 ↗</a>
+        </div>
+      </article>
+
+    </div>
+
+    <p class="row-foot">차한영 · 디자인 시안 라운드 — 2026-05-15</p>
+  </div>
+</body>
+</html>

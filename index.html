@@ -379,10 +379,10 @@ flowchart LR
     E -->|수동 점검| F([배포])
     E -->|문제 발생| D
 
-    style B fill:#fee2e2,stroke:#dc2626
-    style C fill:#fee2e2,stroke:#dc2626
-    style D fill:#fecaca,stroke:#dc2626
-    style E fill:#fed7aa,stroke:#ea580c
+    style B fill:#F5E3DD,stroke:#A14E3B
+    style C fill:#F5E3DD,stroke:#A14E3B
+    style D fill:#EFCEC6,stroke:#A14E3B
+    style E fill:#F7E1C6,stroke:#C4654E
           </div>
           <figcaption>이상탐지 KPI 없음, 검증 단계 없음, 라이브 직접 수정·배포</figcaption>
         </figure>
@@ -398,12 +398,12 @@ flowchart LR
     F --> G([Dagster Live<br/>표준 배포])
     E -->|실패| B
 
-    style B fill:#dcfce7,stroke:#16a34a
-    style C fill:#dcfce7,stroke:#16a34a
-    style D fill:#dbeafe,stroke:#2563eb
-    style E fill:#fef9c3,stroke:#ca8a04
-    style F fill:#dbeafe,stroke:#2563eb
-    style G fill:#dcfce7,stroke:#16a34a
+    style B fill:#FFE1CD,stroke:#FF6F0F
+    style C fill:#FFE1CD,stroke:#FF6F0F
+    style D fill:#F0E4D2,stroke:#946A47
+    style E fill:#FEF0D7,stroke:#C99B33
+    style F fill:#F0E4D2,stroke:#946A47
+    style G fill:#FFE1CD,stroke:#FF6F0F
           </div>
           <figcaption>버전 관리 + CI/CD + Dev 검증 + KPI 정량 평가 + 승인 배포</figcaption>
         </figure>

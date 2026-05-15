@@ -46,7 +46,162 @@
       </div>
     </section>
     <section id="ai-practice" class="section section--ai" aria-label="AI Engineering Practice">
+      <p class="section__eyebrow">DIFFERENTIATOR</p>
       <h2 class="section__title">AI Engineering Practice</h2>
+      <p class="ai__lead">
+        AI를 일회성 도구가 아니라 동료로 운영합니다.
+        아래 4개 카드는 각각 <em>스케일·안정성·도구 결합력·학습 연속성</em>이라는
+        AI 활용 성숙도의 4축을 [방법론 + 실제로 만든 도구]로 함께 보여줍니다.
+      </p>
+
+      <div class="ai__grid">
+
+        <!-- Card 1 -->
+        <article class="ai-card" id="ai-card-1">
+          <div class="ai-card__num">01</div>
+          <h3 class="ai-card__title">에이전트 팀으로 다수 이슈 병렬 처리</h3>
+          <blockquote class="ai-card__quote">
+            복잡도 높은 다량 이슈를 사람 한 명이 직렬로 처리하는 대신,
+            에이전트 팀이 병렬로 학습·평가하도록 분업한다.
+          </blockquote>
+          <div class="ai-card__section">
+            <p class="ai-card__label">방법론</p>
+            <ul>
+              <li>Claude Code의 <strong>agent team</strong> 기능으로 서브에이전트 다수 spawn → 동일 입력에 병렬 작업</li>
+              <li>Claude (<code>opus-4-7</code>) + Codex (<code>gpt-5.5 / 5.4 / 5.4-mini</code>) 의도적 병용 → 단일 모델 편향 회피</li>
+              <li><code>AGENTS.md</code>에 모델 난이도별 분업 정책 ("약한 모델로 충분하면 그 모델로")</li>
+            </ul>
+          </div>
+          <div class="ai-card__section">
+            <p class="ai-card__label">구체 사례 — <code>auto_report/projects/issue_timeline_extractor</code></p>
+            <ul>
+              <li>26년 상반기 개발 이슈 시트(약 <span class="metric" data-target="120" data-suffix="개">120개</span>)를 Leader 에이전트가 Agent Team을 spawn해 병렬 학습·평가</li>
+              <li>단계: <code>preflight → fetch_issues → categorize → discover_channels → fetch_slack → fetch_patches → Agent Team 병렬 → write_csv</code></li>
+              <li>산출물: 13-column augmented CSV + 패턴 디텍터 cross-issue audit notes (<code>audit_notes_26H1_*.md</code> v1~v5)</li>
+            </ul>
+          </div>
+          <div class="ai-card__tags">
+            <span class="tag">Agent Team</span>
+            <span class="tag">Claude Code</span>
+            <span class="tag">Codex CLI</span>
+            <span class="tag">Slack API</span>
+            <span class="tag">Google Sheets</span>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="ai-card" id="ai-card-2">
+          <div class="ai-card__num">02</div>
+          <h3 class="ai-card__title">라이브 이중 환경 + 에이전트로 안정적인 서버 개발</h3>
+          <blockquote class="ai-card__quote">
+            바이브 코딩으로 이상탐지 서버를 만들되, 라이브를 절대 직접 건드리지 않는다.
+            에이전트는 개발 환경에서만 작업하고, 사람은 최종 승인만 한다.
+          </blockquote>
+          <div class="ai-card__section">
+            <p class="ai-card__label">방법론</p>
+            <ul>
+              <li><strong>라이브 이중 환경</strong>: <code>aiops_dev</code> ↔ <code>aiops_gsdetection</code> Bitbucket 저장소 동시 관리</li>
+              <li>워크스페이스 단위 <strong>컨텍스트 인스트럭션 계층화</strong> — <code>CLAUDE.md</code>, <code>AGENTS.md</code>, <code>.codex/CODEX_ALERT_WORKSPACE.md</code>, <code>ENV_VARIABLES_LIST.md</code></li>
+              <li><code>CLAUDE.md</code> 규칙 강제 — 설정 중앙화, 하드코딩 정규식 자동 grep, 백필 안전 룰, 배포 순서(개발 검증 → 승인 → 라이브)</li>
+            </ul>
+          </div>
+          <div class="ai-card__section">
+            <p class="ai-card__label">구체 사례 — 이상탐지 얼럿 서버</p>
+            <ul>
+              <li>Claude Code 에이전트가 자연어 요구사항을 받아 코드 작성·검증 → 관리자는 다른 분석 병행 → 결과 검토 후 라이브 반영</li>
+              <li>운영 인프라 측면(Dagster + Bitbucket)은 <a href="#project-02">PROJECT 02 ↓</a>에서 별도로 풀어둠</li>
+            </ul>
+          </div>
+          <div class="ai-card__tags">
+            <span class="tag">Claude Code</span>
+            <span class="tag">CLAUDE.md</span>
+            <span class="tag">Dev/Live 분리</span>
+            <span class="tag">Bitbucket</span>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="ai-card" id="ai-card-3">
+          <div class="ai-card__num">03</div>
+          <h3 class="ai-card__title">플러그인·스킬을 적재적소에 결합</h3>
+          <blockquote class="ai-card__quote">
+            각 작업에 맞는 플러그인·스킬을 골라 끼우면
+            같은 사람이 처리할 수 있는 일의 폭이 달라진다.
+          </blockquote>
+          <div class="ai-card__section">
+            <p class="ai-card__label">사용 중인 플러그인·스킬</p>
+            <ul>
+              <li><strong>공식 플러그인 <code>superpowers</code></strong> — <code>brainstorming</code> · <code>writing-plans</code> · <code>test-driven-development</code> · <code>systematic-debugging</code> · <code>verification-before-completion</code> · <code>dispatching-parallel-agents</code> · <code>subagent-driven-development</code> · <code>using-git-worktrees</code></li>
+              <li><strong>외부 스킬 <code>goal</code></strong> — 세션 단위로 목표 고정, Stop hook으로 이탈 방지 → 멀리 가는 모델링 작업의 컨텍스트 일관성 유지</li>
+              <li><strong>커스텀 스킬 <code>creator_team</code></strong> — 6 페이즈 워크플로우 (Brainstorm → Plan → TDD → <strong>Phase 3.5 Dagster UI 검증</strong> → Simplify → Code Review → Finish)</li>
+            </ul>
+          </div>
+          <div class="ai-card__section">
+            <p class="ai-card__label">구체 사례 A — <code>GS_projection_renew_slot</code> · <code>goal</code>로 매출 예측 모델 develop</p>
+            <ul>
+              <li>주간 매출 4주 전망 (28일 롤링) 모델링, <code>experiments/versions/v0_A ~ v5</code> 단계적 실험</li>
+              <li><strong>Phase 1 챔피언 <code>v4_AB_blended</code></strong> — base 대비 RMSE·CI·Direction 셋 다 strict 개선</li>
+              <li>DB 산출: <code>duc_projection_weights_per_fw</code>, <code>duc_projection_slot_components</code>, <code>duc_total_projection_28_v2</code></li>
+            </ul>
+          </div>
+          <div class="ai-card__section ai-card__section--with-preview">
+            <p class="ai-card__label">구체 사례 B — <code>Auto_calender</code> · <code>superpowers/brainstorming</code>으로 자동 앱 일정 캘린더</p>
+            <ul>
+              <li><strong>다단 LLM 폴백</strong>: Codex CLI → Claude CLI → Claude API → 휴리스틱</li>
+              <li><code>serve-approvals</code> 로컬 승인 서버, <code>Manual hold</code> 워크플로우, <code>rollback-run</code></li>
+            </ul>
+            <figure class="ai-card__preview">
+              <img src="/assets/img/auto-calendar-preview.png" alt="Auto Calendar Google Calendar 월간 뷰 — 배포·이벤트가 자동 등록된 화면" loading="lazy" />
+              <figcaption>Google Calendar에 자동 등록된 운영 이벤트 (배포·이벤트·세일 등)</figcaption>
+            </figure>
+          </div>
+          <div class="ai-card__tags">
+            <span class="tag">superpowers</span>
+            <span class="tag">goal</span>
+            <span class="tag">creator_team</span>
+            <span class="tag">Codex</span>
+            <span class="tag">Claude CLI</span>
+            <span class="tag">Claude API</span>
+            <span class="tag">Approval Server</span>
+          </div>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="ai-card" id="ai-card-4">
+          <div class="ai-card__num">04</div>
+          <h3 class="ai-card__title">분석 데이터 자산화로 진화하는 에이전트 워크스페이스</h3>
+          <blockquote class="ai-card__quote">
+            분석은 일회성 답변이 아니라 다음 분석을 더 빠르게 만드는 자산이 되어야 한다.
+          </blockquote>
+          <div class="ai-card__section">
+            <p class="ai-card__label">방법론</p>
+            <ul>
+              <li>분석 요청 → <code>brainstorming</code>으로 spec 작성 → <code>writing-plans</code>로 plan → 실행 → 산출물 정리 → <strong>재사용 가치 있는 쿼리·KPI를 에이전트가 knowledge로 승격 제안</strong></li>
+              <li><strong>Auto Memory</strong> 14개 메모리 파일로 "같은 지적을 두 번 받지 않는 AI" 유지 — "백필은 INSERT만", "DDI 쿼리는 whitelist만"</li>
+            </ul>
+          </div>
+          <div class="ai-card__section">
+            <p class="ai-card__label">구체 사례 — <code>redshift_agent</code> · DUC 데이터 분석 전용 에이전트 워크스페이스</p>
+            <ul>
+              <li>구조: <code>domains/&lt;domain&gt;/analyses/YYYY-MM-DD-&lt;slug&gt;/</code> + <code>knowledge/</code> + <code>shared/Ciphertext</code> + <code>agent/</code></li>
+              <li><strong>샘플 분석</strong>: <code>2026-04-06-mobile-ccu-anomaly</code> — 모바일 앱 CCU가 4/6 ~ 4/7 사이 이상치를 보였는지 + 플랫폼/버전 축 분석</li>
+              <li>지표 정의: CCU = 15분 단위 접속 유저 수 (8주 baseline)</li>
+              <li>산출물: 자기완결형 인터랙티브 HTML 리포트 (d3.js 임베드)</li>
+            </ul>
+            <a class="button" href="/samples/mobile-ccu-anomaly.html" target="_blank" rel="noopener">
+              전체 분석 리포트 열기 ↗
+            </a>
+          </div>
+          <div class="ai-card__tags">
+            <span class="tag">Claude Code</span>
+            <span class="tag">Auto Memory</span>
+            <span class="tag">superpowers</span>
+            <span class="tag">Redshift</span>
+            <span class="tag">Knowledge Promotion</span>
+          </div>
+        </article>
+
+      </div>
     </section>
     <section id="project-01" class="section section--project" aria-label="Project 01">
       <p class="section__eyebrow">PROJECT 01</p>

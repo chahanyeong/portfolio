@@ -143,3 +143,120 @@ button { font-family: inherit; cursor: pointer; }
   background: transparent;
   border-color: var(--border);
 }
+
+/* AI Engineering Practice */
+.section--ai { background: var(--bg); }
+.ai__lead {
+  max-width: var(--max-content);
+  margin: 0 auto var(--space-7);
+  color: var(--text-muted);
+  font-size: 1.0625rem;
+}
+.ai__lead em { font-style: normal; color: var(--accent); font-weight: 600; }
+
+.ai__grid {
+  max-width: var(--max-grid);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5);
+}
+@media (max-width: 880px) {
+  .ai__grid { grid-template-columns: 1fr; }
+}
+
+.ai-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-6);
+  position: relative;
+  transition: transform var(--t-fast) var(--ease-out), border-color var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.ai-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: var(--shadow-card-hover);
+}
+.ai-card__num {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+}
+.ai-card__title {
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+}
+.ai-card__quote {
+  font-style: italic;
+  color: var(--text-muted);
+  border-left: 3px solid var(--accent-soft);
+  padding-left: var(--space-3);
+  font-size: 0.9375rem;
+}
+.ai-card__section { font-size: 0.9375rem; }
+.ai-card__label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brown);
+  margin-bottom: var(--space-2);
+}
+.ai-card ul { padding-left: 1.2em; line-height: 1.6; }
+.ai-card li + li { margin-top: 0.25em; }
+.ai-card code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+.ai-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border);
+}
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--code-bg);
+  color: var(--brown);
+  border: 1px solid var(--border);
+}
+
+/* Card 3 preview image */
+.ai-card__section--with-preview .ai-card__preview {
+  margin-top: var(--space-3);
+}
+.ai-card__preview img {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.ai-card__preview figcaption {
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: var(--space-2);
+}
+
+/* Card 4 sample link */
+#ai-card-4 .button {
+  margin-top: var(--space-3);
+  align-self: flex-start;
+}

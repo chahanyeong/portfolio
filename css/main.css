@@ -578,3 +578,16 @@ button { font-family: inherit; cursor: pointer; }
 @media (prefers-reduced-motion: reduce) {
   .fade-up { opacity: 1; transform: none; transition: none; }
 }
+
+/* Accessibility: focus-visible outlines */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.button:focus-visible {
+  outline-offset: 4px;
+}
+
+/* Mermaid diagrams may overflow narrow viewports — allow horizontal scroll within container */
+.ba-diagram { overflow-x: auto; }

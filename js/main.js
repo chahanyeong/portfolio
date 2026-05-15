@@ -1,6 +1,26 @@
 (() => {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // --- Scroll progress bar ---
+  const progress = document.querySelector('.scroll-progress');
+  if (progress) {
+    let ticking = false;
+    const update = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = max > 0 ? Math.min(100, (scrollTop / max) * 100) : 0;
+      progress.style.width = pct + '%';
+      ticking = false;
+    };
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(update);
+        ticking = true;
+      }
+    }, { passive: true });
+    update();
+  }
+
   // --- Scroll fade-up (independent elements; AI cards are handled separately for staggered reveal) ---
   const fadeTargets = document.querySelectorAll('.section, .decision-case, .project__sub, .dashboard-card, .metric-card');
   if (prefersReducedMotion) {

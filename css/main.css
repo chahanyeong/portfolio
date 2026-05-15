@@ -337,6 +337,7 @@ button { font-family: inherit; cursor: pointer; }
   letter-spacing: -0.02em;
   color: var(--accent);
   margin-bottom: var(--space-2);
+  font-variant-numeric: tabular-nums;
 }
 .stat__num .metric { color: var(--accent); font-family: inherit; font-weight: inherit; }
 .stat__unit {
@@ -522,6 +523,14 @@ button { font-family: inherit; cursor: pointer; }
   border-radius: 10px;
   padding: var(--space-4);
 }
+.project__sub--before {
+  border-left: 3px solid #C4654E;
+}
+.project__sub--before .sub__label { color: #A14E3B; }
+.project__sub--after {
+  border-left: 3px solid var(--accent);
+}
+.project__sub--after .sub__label { color: var(--accent); }
 .sub__label {
   font-family: var(--font-mono);
   font-size: 0.6875rem;

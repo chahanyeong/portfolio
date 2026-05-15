@@ -34,8 +34,8 @@
   --space-9: 7.5rem;
 
   /* Layout */
-  --max-content: 1000px;
-  --max-grid: 1120px;
+  --max-content: 1280px;
+  --max-grid: 1440px;
   --radius: 14px;
   --shadow-card: 0 8px 22px rgba(15, 23, 42, 0.04);
   --shadow-card-hover: 0 12px 28px rgba(15, 23, 42, 0.08);

@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DUC Games — 실험 현황</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <style>
+    * { font-family: 'Pretendard', -apple-system, sans-serif; box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; background: #F8F9FB; }
+
+    /* ── Layout ── */
+    .shell { display: flex; height: 100vh; overflow: hidden; }
+
+    /* ── Left Sidebar ── */
+    .sidebar {
+      width: 288px; flex-shrink: 0;
+      background: #fff;
+      border-right: 1px solid #ECEEF2;
+      display: flex; flex-direction: column;
+    }
+    .sidebar-logo {
+      display: flex; align-items: center; gap: 11px;
+      padding: 22px 22px 18px;
+      border-bottom: 1px solid #F0F2F5;
+    }
+    .logo-icon {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: #4F46E5;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-name { font-size: 16px; font-weight: 700; color: #111; }
+    .nav-section-label {
+      font-size: 10px; font-weight: 600; color: #A0A8BC;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 20px 22px 8px;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 16px; margin: 1px 12px;
+      border-radius: 9px;
+      font-size: 14px; color: #6B7280;
+      cursor: pointer; text-decoration: none;
+      transition: background 0.1s, color 0.1s;
+    }
+    .nav-item svg { flex-shrink: 0; }
+    .nav-item:hover { background: #F5F5F7; color: #111; }
+    .nav-item.active { background: #E2E8F0; color: #334155; font-weight: 600; }
+    .nav-item-body { min-width: 0; display: flex; flex-direction: column; gap: 0; }
+    .nav-item-name { line-height: 1.2; }
+    .nav-item-copy { font-size: 10px; color: #A0A8BC; line-height: 1.35; font-weight: 500; }
+    .nav-badge {
+      margin-left: auto;
+      font-size: 10px; font-weight: 600;
+      background: #334155; color: white;
+      border-radius: 20px; padding: 1px 7px;
+    }
+    .sidebar-user {
+      margin-top: auto;
+      padding: 16px 22px;
+      border-top: 1px solid #F0F2F5;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .user-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: #334155;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: white;
+    }
+
+    /* ── Main area ── */
+    .main-area { flex: 1; display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
+
+    .topbar {
+      background: #fff;
+      border-bottom: 1px solid #E5EAF1;
+      padding: 12px 24px;
+      min-height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .page-title-wrap { min-width: 0; }
+    .page-eyebrow {
+      font-size: 10px; font-weight: 700; color: #A0A8BC;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .page-title { font-size: 18px; font-weight: 700; color: #0F172A; letter-spacing: -0.02em; }
+    .page-subtitle { font-size: 12px; color: #64748B; line-height: 1.5; margin-top: 3px; max-width: 720px; }
+    .topbar-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+    .btn-outline {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 12px; color: #334155;
+      border: 1px solid #D8E0EA; border-radius: 8px;
+      padding: 6px 12px; background: white; cursor: pointer;
+    }
+    .btn-primary {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 12px; color: white; font-weight: 500;
+      border: none; border-radius: 8px;
+      padding: 6px 14px; background: #0F172A; cursor: pointer;
+    }
+    .global-toolbar {
+      background: #FCFDFE;
+      border-bottom: 1px solid #E5EAF1;
+      padding: 12px 24px;
+      display: flex; align-items: center; justify-content: flex-start;
+      gap: 14px; flex-wrap: wrap;
+      position: sticky; top: 0; z-index: 20;
+      box-shadow: none;
+    }
+    .toolbar-group {
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      background: transparent;
+      border: 1px solid #E7EBF2;
+      border-radius: 12px;
+      padding: 6px 8px;
+      box-shadow: none;
+    }
+    .toolbar-label {
+      font-size: 10px; font-weight: 700; color: #94A3B8;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      margin-right: 4px;
+      padding: 0 2px;
+    }
+    .toolbar-select, .toolbar-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      min-height: 34px; border-radius: 999px;
+      border: 1px solid #E2E8F0; background: #fff;
+      padding: 0 12px; font-size: 12px; color: #475569; font-weight: 600; cursor: pointer;
+      transition: border-color 0.14s ease, background-color 0.14s ease, color 0.14s ease, box-shadow 0.14s ease;
+    }
+    .toolbar-chip.active, .toolbar-select.active {
+      border-color: #CBD5E1; background: #E2E8F0; color: #334155;
+      box-shadow: none;
+    }
+    .toolbar-chip.soft, .toolbar-select.soft {
+      color: #667085; font-weight: 500; background: #FFFFFF;
+    }
+    .toolbar-chip:hover, .toolbar-select:hover {
+      border-color: #CBD5E1;
+      background: #F8FAFC;
+    }
+    .toolbar-status {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 600; color: #334155;
+      background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 999px;
+      padding: 7px 10px;
+    }
+    .toolbar-dot { width: 7px; height: 7px; border-radius: 50%; background: #10B981; }
+
+    /* ── Content layout: main + right panel ── */
+    .content-scroll { flex: 1; overflow-y: auto; position: relative; }
+    .content-body { display: flex; min-height: 100%; min-width: 0; }
+    .page-stack { flex: 1; min-width: 0; }
+    .col-left { flex: 1; min-width: 0; padding: 22px 24px 22px 24px; display: flex; flex-direction: column; gap: 18px; }
+
+    /* Right panel */
+    .col-right {
+      width: 340px; flex-shrink: 0;
+      padding: 26px 24px;
+      display: flex; flex-direction: column; gap: 16px;
+      border-left: 1px solid #ECEEF2;
+      background: #fff;
+      overflow-y: auto; overflow-x: hidden;
+      position: relative;
+    }
+    .col-right.collapsing {
+      transition: width 0.28s ease, padding 0.28s ease, opacity 0.2s ease;
+    }
+    .col-right.collapsed {
+      width: 0 !important; min-width: 0 !important;
+      padding: 26px 0; opacity: 0; pointer-events: none;
+      border-left-color: transparent;
+    }
+
+    /* Toggle button — edge-attached handle on the right panel */
+    .panel-toggle {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px; height: 48px;
+      background: #FFFFFF;
+      border: 1px solid #E5EAF1;
+      border-right: none;
+      border-radius: 8px 0 0 8px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      z-index: 50;
+      box-shadow: -4px 0 10px rgba(15, 23, 42, 0.04);
+      transition: right 0.28s ease, background 0.14s ease, transform 0.14s ease;
+    }
+    .panel-toggle:hover { background: #F8FAFC; }
+    .panel-toggle svg { color: #9CA3AF; transition: transform 0.28s ease, color 0.14s ease; }
+    .panel-toggle:hover svg { color: #4F46E5; }
+    .panel-toggle.is-closed svg { transform: rotate(180deg); }
+
+    /* ── Cards / KPI ── */
+    .card { background: white; border: 1px solid #E5EAF1; border-radius: 14px; }
+    .kpi-card {
+      background: white; border: 1px solid #E5EAF1; border-radius: 14px;
+      padding: 15px 16px;
+      display: flex; flex-direction: column; align-items: flex-start;
+      height: 100%;
+    }
+    .kpi-label { font-size: 12px; color: #64748B; margin-bottom: 4px; display: flex; align-items: center; justify-content: space-between; }
+    .kpi-num { font-size: 24px; font-weight: 700; color: #0F172A; letter-spacing: -0.5px; font-variant-numeric: tabular-nums; margin-bottom: 8px; }
+    .badge-up { display: inline-flex; align-items: center; gap: 2px; font-size: 11px; font-weight: 600; color: #059669; }
+    .badge-dn { display: inline-flex; align-items: center; gap: 2px; font-size: 11px; font-weight: 600; color: #DC2626; }
+    .badge-label { font-size: 11px; color: #9CA3AF; margin-left: 4px; }
+
+    .sec-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .sec-title { font-size: 15px; font-weight: 700; color: #0F172A; }
+    .sec-link { font-size: 12px; color: #334155; font-weight: 600; cursor: pointer; }
+    .filter-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .filter-pills { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .filter-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      border-radius: 999px; border: 1px solid #E5E7EB;
+      background: #fff; color: #6B7280;
+      padding: 7px 11px; font-size: 11px; font-weight: 600; cursor: pointer;
+    }
+    .filter-pill.active { background: #111827; border-color: #111827; color: #fff; }
+    .filter-pill.emphasis { background: #E2E8F0; border-color: #CBD5E1; color: #334155; }
+
+    /* Table */
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table th { font-size: 11px; font-weight: 500; color: #9CA3AF; text-align: left; padding: 9px 14px; background: #FAFBFC; }
+    .data-table th:not(:first-child) { text-align: right; }
+    .data-table td { font-size: 13px; color: #374151; padding: 11px 14px; border-top: 1px solid #F3F4F6; }
+    .data-table td:not(:first-child) { text-align: right; }
+    .data-table tr:hover td { background: #FAFBFF; }
+    .pill-green { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; color: #059669; background: #ECFDF5; border-radius: 20px; padding: 2px 8px; }
+    .pill-blue  { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; color: #2563EB; background: #EFF6FF; border-radius: 20px; padding: 2px 8px; }
+    .pill-amber { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; color: #B45309; background: #FEF3C7; border-radius: 20px; padding: 2px 8px; }
+    .pill-gray  { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; color: #6B7280; background: #F3F4F6; border-radius: 20px; padding: 2px 8px; }
+
+    /* Right panel details */
+    .exp-status-running { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; color: #2563EB; background: #DBEAFE; border-radius: 20px; padding: 3px 9px; }
+    .exp-status-done    { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; color: #059669; background: #D1FAE5; border-radius: 20px; padding: 3px 9px; }
+    .dot-live { width: 5px; height: 5px; border-radius: 50%; background: #3B82F6; animation: blink 1.5s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+    .insight-box {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 13px 14px;
+      display: flex; gap: 10px; align-items: flex-start;
+      margin-top: 14px;
+      box-shadow: none;
+    }
+    .insight-kicker {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 54px; padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid #E2E8F0;
+      color: #334155;
+      font-size: 10px; font-weight: 800; letter-spacing: 0.02em;
+      flex-shrink: 0;
+    }
+    .insight-copy { font-size: 11px; color: #334155; line-height: 1.65; }
+    .panel-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
+    .panel-title { font-size: 15px; font-weight: 700; color: #111827; }
+    .panel-sub { font-size: 11px; color: #8B95A7; margin-top: 4px; line-height: 1.55; }
+    .panel-summary-grid { display: grid; gap: 10px; }
+    .panel-summary-card {
+      background: #FFFFFF; border: 1px solid #E5EAF1; border-radius: 12px; padding: 12px 13px;
+    }
+    .panel-summary-label { font-size: 10px; color: #8B95A7; margin-bottom: 5px; }
+    .panel-summary-value { font-size: 17px; font-weight: 700; color: #111827; }
+    .panel-summary-foot { font-size: 10px; color: #6B7280; line-height: 1.5; margin-top: 4px; }
+    .panel-list { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+    .panel-list-item {
+      background: #FFFFFF; border: 1px solid #E5EAF1; border-radius: 10px; padding: 11px 12px;
+    }
+    .panel-list-title { font-size: 12px; font-weight: 700; color: #111827; margin-bottom: 4px; }
+    .panel-list-copy { font-size: 11px; color: #6B7280; line-height: 1.55; }
+
+    .back-link { display:inline-flex;align-items:center;gap:4px;font-size:12px;color:#64748B;text-decoration:none; }
+    .back-link:hover { color:#0F172A; }
+
+    /* A/B Testing sub-tabs */
+    .exp-tab-btn { font-size:13px;font-weight:500;color:#9CA3AF;background:none;border:none;border-bottom:2px solid transparent;padding:0 2px 13px;cursor:pointer;transition:color 0.12s,border-color 0.12s;white-space:nowrap; }
+    .exp-tab-btn.active { color:#111;font-weight:700;border-bottom-color:#4F46E5; }
+    .ab-dropdown { position: relative; margin-bottom: 14px; }
+    .ab-dropdown-btn {
+      width: 100%;
+      display: flex; align-items: center; gap: 9px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #FBFCFF 100%);
+      border: 1px solid #D8DEEA;
+      border-radius: 10px;
+      padding: 10px 12px;
+      cursor: pointer;
+      transition: border-color 0.14s ease, box-shadow 0.14s ease, background-color 0.14s ease;
+    }
+    .ab-dropdown-btn:hover { border-color: #C7D2FE; background: #FFFFFF; }
+    .ab-dropdown-btn.is-open {
+      border-color: #C7D2FE;
+      box-shadow: 0 0 0 3px rgba(79,70,229,0.08);
+    }
+    .ab-dropdown-icon { flex-shrink: 0; color: #B4BBCA; }
+    .ab-dropdown-label {
+      flex: 1; min-width: 0;
+      text-align: left;
+      font-size: 12px; font-weight: 600; color: #111827;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .ab-dropdown-chevron {
+      flex-shrink: 0;
+      color: #C4C9D4;
+      transition: transform 0.18s ease, color 0.18s ease;
+    }
+    .ab-dropdown-btn.is-open .ab-dropdown-chevron {
+      transform: rotate(180deg);
+      color: #4F46E5;
+    }
+    .ab-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0; right: 0;
+      background: rgba(255,255,255,0.98);
+      border: 1px solid #DCE3F0;
+      border-radius: 12px;
+      box-shadow: 0 18px 38px rgba(15,23,42,0.14);
+      padding: 6px;
+      display: none;
+      z-index: 30;
+      backdrop-filter: blur(10px);
+    }
+    .ab-dropdown-menu.open { display: block; }
+    .ab-dropdown-item {
+      width: 100%;
+      border: none;
+      background: transparent;
+      border-radius: 9px;
+      padding: 10px 11px;
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      cursor: pointer;
+      text-align: left;
+      transition: background-color 0.12s ease;
+    }
+    .ab-dropdown-item:hover { background: #F6F8FF; }
+    .ab-dropdown-item.active {
+      background: #EEF2FF;
+      color: #4338CA;
+    }
+    .ab-dropdown-item-title { font-size: 12px; font-weight: 600; color: #111827; }
+    .ab-dropdown-item.active .ab-dropdown-item-title { color: #4338CA; }
+    .ab-dropdown-item-meta {
+      font-size: 10px; font-weight: 700;
+      color: #98A2B3;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .ab-row-selectable { cursor: pointer; transition: background-color 0.14s ease; }
+    .ab-row-selectable td { transition: background-color 0.14s ease; }
+    .ab-row-selectable:hover td { background: #FAFBFF; }
+    .ab-row-selectable.active td { background: #F5F7FF; }
+    .ab-row-selectable.active td:first-child { box-shadow: inset 3px 0 0 #4F46E5; }
+    .pair-chip { border-radius:6px;border:none;background:transparent;color:#9CA3AF;cursor:pointer;display:block;text-align:center;transition:background 0.12s,color 0.12s,box-shadow 0.12s;font-family:'Pretendard',-apple-system,sans-serif; }
+    .pair-chip:hover:not(.active) { background:rgba(255,255,255,0.6);color:#374151; }
+    .pair-chip.active { background:white;color:#4F46E5;box-shadow:0 1px 5px rgba(0,0,0,0.10); }
+
+    /* Placeholder page styling */
+    .placeholder-page { flex: 1; min-width: 0; padding: 32px; display: flex; flex-direction: column; gap: 20px; }
+    .placeholder-page > * { min-width: 0; }
+    .placeholder-page h2 { font-size: 20px; font-weight: 700; color: #111; }
+    .dashboard-page { display: none; min-height: 100%; }
+    .dashboard-page.active { display: block; min-height: 100%; }
+
+    /* Slot tracking dashboard */
+    .slot-page { padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+    .slot-grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .slot-grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .slot-grid-main { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(360px, 0.55fr); gap: 14px; align-items: stretch; }
+    .slot-card { background: #fff; border: 1px solid #E5EAF1; border-radius: 14px; padding: 16px; min-width: 0; }
+    .slot-card.tight { padding: 0; overflow: hidden; }
+    .slot-desc-card { min-height: 112px; display: flex; flex-direction: column; justify-content: center; }
+    .slot-card-title { font-size: 14px; font-weight: 700; color: #0F172A; }
+    .slot-card-sub { font-size: 11px; color: #64748B; line-height: 1.55; margin-top: 4px; }
+    .slot-help-link { color: #3B82F6; text-decoration: none; font-weight: 600; }
+    .slot-help-link:hover { text-decoration: underline; }
+    .slot-selector-bar { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .slot-selector-group { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+    .slot-param-card {
+      position: relative; min-width: 164px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #FBFCFF 100%);
+      border: 1px solid #E5EAF1; border-radius: 12px;
+      padding: 11px 12px 12px;
+      box-shadow: 0 8px 22px rgba(15,23,42,0.04);
+    }
+    .slot-param-card-label { font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 8px; line-height: 1; }
+    .slot-param-btn {
+      width: 100%; min-height: 34px;
+      display: inline-flex; align-items: center; justify-content: space-between; gap: 8px;
+      border: 1px solid #DCE3EA; background: #FFFFFF; border-radius: 7px;
+      padding: 0 10px; cursor: pointer; color: #334155;
+      font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums;
+      transition: border-color 0.14s ease, background-color 0.14s ease, box-shadow 0.14s ease;
+    }
+    .slot-param-btn:hover { border-color: #CBD5E1; background: #F8FAFC; }
+    .slot-param-btn.is-open { border-color: #C7D2FE; box-shadow: 0 0 0 3px rgba(79,70,229,0.08); }
+    .slot-param-chevron { flex-shrink: 0; color: #94A3B8; transition: transform 0.18s ease; }
+    .slot-param-btn.is-open .slot-param-chevron { transform: rotate(180deg); color: #4F46E5; }
+    .slot-param-menu {
+      position: absolute; top: calc(100% + 8px); left: 0; right: 0;
+      background: rgba(255,255,255,0.98); border: 1px solid #DCE3F0; border-radius: 12px;
+      box-shadow: 0 18px 38px rgba(15,23,42,0.14); padding: 6px;
+      display: none; z-index: 60; backdrop-filter: blur(10px);
+    }
+    .slot-param-menu.open { display: block; }
+    .slot-param-option {
+      width: 100%; border: none; background: transparent; border-radius: 9px;
+      padding: 9px 10px; text-align: left; cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      font-size: 12px; font-weight: 600; color: #334155; font-variant-numeric: tabular-nums;
+      transition: background-color 0.12s ease, color 0.12s ease;
+    }
+    .slot-param-option:hover { background: #F6F8FF; }
+    .slot-param-option.active { background: #EEF2FF; color: #4338CA; font-weight: 800; }
+    .slot-chart { height: 292px; position: relative; }
+    .slot-chart.small { height: 236px; }
+    .slot-mini-chart { height: 232px; position: relative; }
+    .slot-note-list { margin: 0; padding-left: 18px; color: #475569; font-size: 12px; line-height: 1.75; }
+    .slot-meta-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 11px; color: #64748B; padding-top: 12px; margin-top: 12px; border-top: 1px solid #F1F5F9; }
+    .slot-kpi-foot { font-size: 11px; color: #64748B; line-height: 1.45; margin-top: auto; }
+    .slot-retention-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .slot-retention-table th { font-size: 10px; color: #94A3B8; font-weight: 700; text-align: left; padding: 9px 10px; border-bottom: 1px solid #F1F5F9; }
+    .slot-retention-table th:not(:first-child) { text-align: right; }
+    .slot-retention-table td { font-size: 11px; color: #334155; padding: 9px 10px; border-bottom: 1px solid #F8FAFC; font-variant-numeric: tabular-nums; }
+    .slot-retention-table td:not(:first-child) { text-align: right; }
+    .slot-funnel-cell { position: relative; height: 22px; }
+    .slot-funnel-bar { position: absolute; right: 0; top: 3px; height: 16px; background: #67E8F9; border-radius: 2px; opacity: 0.9; }
+    .slot-funnel-value { position: relative; z-index: 1; font-size: 10px; font-weight: 700; color: #0F172A; }
+    .slot-prev-bar { display: inline-flex; align-items: center; justify-content: center; height: 18px; min-width: 38px; background: #E5E7EB; color: #334155; border-radius: 2px; font-size: 10px; }
+    .slot-row-current td:nth-child(2), .slot-row-previous td:nth-child(3), .slot-row-base td:nth-child(4) { color: #0F172A; font-weight: 700; background: #F8FAFC; }
+    @media (max-width: 1180px) {
+      .slot-grid-main, .slot-grid-2, .slot-grid-3 { grid-template-columns: 1fr; }
+      .slot-page { padding: 18px; }
+    }
+
+    /* Visual density cleanup */
+    .page-eyebrow { display: none; }
+
+    /* ── Toolbar dropdown ── */
+    .tb-dropdown { position: relative; }
+    .tb-dropdown-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      min-height: 34px; border-radius: 999px;
+      border: 1px solid #E2E8F0; background: #E2E8F0;
+      padding: 0 12px; font-size: 12px; color: #334155; font-weight: 600; cursor: pointer;
+      transition: border-color 0.14s, background 0.14s;
+    }
+    .tb-dropdown-btn:hover { border-color: #CBD5E1; background: #D1D9E0; }
+    .tb-dropdown-label { white-space: nowrap; }
+    .tb-dropdown-chevron { flex-shrink: 0; color: #94A3B8; transition: transform 0.18s; }
+    .tb-dropdown-btn.is-open .tb-dropdown-chevron { transform: rotate(180deg); }
+    .tb-dropdown-menu {
+      position: absolute; top: calc(100% + 6px); left: 0;
+      background: #fff; border: 1px solid #DCE3F0; border-radius: 10px;
+      box-shadow: 0 12px 28px rgba(15,23,42,0.12);
+      padding: 5px; min-width: 130px;
+      display: none; z-index: 200;
+    }
+    .tb-dropdown-menu.open { display: block; }
+    .tb-dropdown-item {
+      width: 100%; border: none; background: transparent;
+      border-radius: 7px; padding: 8px 11px;
+      font-size: 12px; font-weight: 500; color: #374151;
+      text-align: left; cursor: pointer;
+      transition: background 0.1s;
+    }
+    .tb-dropdown-item:hover { background: #F6F8FF; }
+    .tb-dropdown-item.active { background: #EEF2FF; color: #4338CA; font-weight: 700; }
+
+    .revenue-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 10px; font-weight: 700; color: #334155;
+      background: #E2E8F0; border-radius: 999px; padding: 5px 9px;
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- ══ LEFT SIDEBAR ══ -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <rect x="1.5" y="1.5" width="5.5" height="5.5" rx="1.3" fill="white" fill-opacity="0.9"/>
+          <rect x="9" y="1.5" width="5.5" height="5.5" rx="1.3" fill="white"/>
+          <rect x="1.5" y="9" width="5.5" height="5.5" rx="1.3" fill="white"/>
+          <rect x="9" y="9" width="5.5" height="5.5" rx="1.3" fill="white" fill-opacity="0.5"/>
+        </svg>
+      </div>
+      <span class="logo-name">DUC Games</span>
+    </div>
+
+    <nav style="flex:1;overflow-y:auto;padding-bottom:8px;">
+      <div class="nav-section-label">Sub</div>
+      <a class="nav-item active" data-page="abtesting" onclick="switchDashboardPage('abtesting')">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M4 2.5v4.5L2 11.5h11l-2-4.5V2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 2.5h7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M7.5 5v5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="1.5 1.5"/></svg>
+        <span class="nav-item-body"><span class="nav-item-name">실험 현황</span><span class="nav-item-copy">진행 중 실험과 채택 판단</span></span>
+        <span class="nav-badge">3</span>
+      </a>
+      <a class="nav-item" data-page="slottracking" onclick="switchDashboardPage('slottracking')">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 11.5h11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M3.5 9.5V5.5M7.5 9.5V2.5M11.5 9.5V4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M2.5 3.5h2.5M6.5 1.8h2.5M10.5 3h2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+        <span class="nav-item-body"><span class="nav-item-name">신규 슬롯 트레킹 대시보드</span><span class="nav-item-copy">오픈 슬롯 성과와 리텐션 추적</span></span>
+      </a>
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="user-avatar">차</div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:#111;">차한영</div>
+        <div style="font-size:11px;color:#9CA3AF;">Live Ops Strategy</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══ MAIN AREA ══ -->
+  <div class="main-area">
+
+    <!-- Top bar -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <a href="index.html" class="back-link">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M7.5 3L4.5 6l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          목록
+        </a>
+        <span style="color:#E0E2E8;">|</span>
+        <div class="page-title-wrap">
+          <div class="page-eyebrow">DUC 운영 레이어</div>
+          <div class="page-title" id="pageTitle">실험 현황</div>
+          <div class="page-subtitle" id="pageSubtitle">실험 결과를 채택 관점에서 모니터링합니다.</div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span class="toolbar-status"><span class="toolbar-dot"></span>동기화 정상</span>
+        <button class="btn-outline">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M10.5 6A4.5 4.5 0 102 9.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M10.5 2.5V6H7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          기준 새로고침
+        </button>
+        <button class="btn-primary">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M2 8.5l4 2.5 4-2.5" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          보고서 내보내기
+        </button>
+      </div>
+    </div>
+
+    <!-- Scrollable content -->
+    <div class="content-scroll">
+
+      <div class="content-body">
+        <div class="page-stack">
+
+          <!-- ═══ PAGE: A/B Testing ═══ -->
+          <div class="dashboard-page active" id="page-abtesting">
+          <div style="display:flex;min-height:100%;width:100%;min-width:0;">
+            <div class="placeholder-page">
+
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;">
+                <div><h2>실험 현황</h2><div style="font-size:13px;color:#9CA3AF;margin-top:2px;">실험 관리 · 결과 분석 · 실시간 모니터링</div></div>
+                <button class="btn-primary" style="margin-top:4px;">+ 새 실험</button>
+              </div>
+
+              <div class="filter-row">
+                <div class="filter-pills">
+                  <button class="filter-pill active">진행 중</button>
+                  <button class="filter-pill">채택</button>
+                  <button class="filter-pill">제외</button>
+                </div>
+                <div class="filter-pills">
+                  <button class="filter-pill emphasis">세그먼트 전체</button>
+                  <button class="filter-pill">매출 영향</button>
+                </div>
+              </div>
+
+              <!-- KPI Cards -->
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+                <div class="kpi-card" style="background:linear-gradient(135deg,#EFF6FF,#fff 55%);border-color:#BFDBFE;">
+                  <div class="kpi-label" style="margin-bottom:6px;">진행중 실험
+                    <span style="display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:600;color:#2563EB;background:#DBEAFE;border-radius:20px;padding:2px 7px;"><span class="dot-live" style="background:#3B82F6;"></span>LIVE</span>
+                  </div>
+                  <div class="kpi-num" style="color:#1D4ED8;">2</div>
+                  <div style="font-size:11px;color:#93C5FD;margin-top:2px;">FTUE · 첫구매 팝업 타이밍</div>
+                </div>
+                <div class="kpi-card" style="background:linear-gradient(135deg,#F8FAFC,#fff 55%);border-color:#CBD5E1;">
+                  <div class="kpi-label" style="margin-bottom:6px;">Q1 완료 실험</div>
+                  <div style="display:flex;align-items:baseline;gap:5px;">
+                    <div class="kpi-num">8</div><div style="font-size:15px;font-weight:500;color:#9CA3AF;">건</div>
+                  </div>
+                  <div style="margin-top:6px;"><span class="badge-up"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 7V2M2 4.5L4.5 2 7 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>채택률 62.5%</span><span class="badge-label"> · 5건 채택</span></div>
+                </div>
+                <div class="kpi-card" style="background:linear-gradient(135deg,#F0FDF4,#fff 55%);border-color:#BBF7D0;">
+                  <div class="kpi-label" style="margin-bottom:6px;">평균 개선 효과</div>
+                  <div class="kpi-num" style="color:#059669;">+18.4%</div>
+                </div>
+              </div>
+
+              <!-- Monitoring card -->
+              <div class="card" style="padding:0;overflow:hidden;">
+                <div style="display:flex;align-items:stretch;">
+
+                  <!-- ── LEFT: Controls panel ── -->
+                  <div style="width:240px;flex-shrink:0;border-right:1px solid #ECEEF2;padding:18px 16px;display:flex;flex-direction:column;gap:0;background:#FAFBFC;">
+
+                    <!-- Title + refresh badge -->
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                      <div style="font-size:13px;font-weight:700;color:#111;">AB Test 모니터링</div>
+                      <div style="display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:600;color:#C4C9D4;background:#ECEEF2;border-radius:5px;padding:4px 8px;">
+                        <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><circle cx="4" cy="4" r="3" stroke="currentColor" stroke-width="1.2"/><path d="M4 2.2v1.9l1.1 1.1" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>1h
+                      </div>
+                    </div>
+
+                    <!-- Section label -->
+                    <div style="font-size:9px;font-weight:700;color:#C4C9D4;letter-spacing:0.09em;text-transform:uppercase;margin-bottom:6px;">실험 선택</div>
+
+                    <!-- Experiment select -->
+                    <div class="ab-dropdown" id="abDropdown">
+                      <button class="ab-dropdown-btn" id="abDropdownBtn" type="button" onclick="toggleAbExpMenu()">
+                        <svg class="ab-dropdown-icon" width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2.5 2v3.5L1 9.5h9L8.5 5.5V2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.5 2h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M5.5 4v4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-dasharray="1 1.2"/></svg>
+                        <span class="ab-dropdown-label" id="abDropdownLabel">FTUE 흐름 개편</span>
+                        <svg class="ab-dropdown-chevron" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                      </button>
+                      <div class="ab-dropdown-menu" id="abDropdownMenu">
+                        <button class="ab-dropdown-item active" type="button" data-ab-exp-item="1" onclick="selectAbExperiment(1)">
+                          <span class="ab-dropdown-item-title">FTUE 흐름 개편</span>
+                          <span class="ab-dropdown-item-meta">LIVE</span>
+                        </button>
+                        <button class="ab-dropdown-item" type="button" data-ab-exp-item="2" onclick="selectAbExperiment(2)">
+                          <span class="ab-dropdown-item-title">첫 구매 팝업 타이밍</span>
+                          <span class="ab-dropdown-item-meta">LIVE</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- is_pair label -->
+                    <div style="font-size:9px;font-weight:700;color:#C4C9D4;letter-spacing:0.09em;text-transform:uppercase;margin-bottom:6px;">is_pair</div>
+
+                    <!-- is_pair chips -->
+                    <div style="display:flex;gap:4px;background:#ECEEF2;border-radius:8px;padding:3px;margin-bottom:14px;">
+                      <button id="isPairBtn0" onclick="switchIsPair(0)" class="pair-chip" style="flex:1;padding:6px 4px;height:auto;" title="비결제자 + non_pair">
+                        <span style="display:block;font-size:13px;font-weight:700;line-height:1.2;">0</span>
+                        <span style="display:block;font-size:9px;line-height:1.3;opacity:0.6;">비결제</span>
+                      </button>
+                      <button id="isPairBtn1" onclick="switchIsPair(1)" class="pair-chip active" style="flex:1;padding:6px 4px;height:auto;" title="결제 pairwise 그룹">
+                        <span style="display:block;font-size:13px;font-weight:700;line-height:1.2;">1</span>
+                        <span style="display:block;font-size:9px;line-height:1.3;opacity:0.7;">pairwise</span>
+                      </button>
+                      <button id="isPairBtn2" onclick="switchIsPair(2)" class="pair-chip" style="flex:1;padding:6px 4px;height:auto;" title="결제 상위 8명">
+                        <span style="display:block;font-size:13px;font-weight:700;line-height:1.2;">2</span>
+                        <span style="display:block;font-size:9px;line-height:1.3;opacity:0.6;">상위 8명</span>
+                      </button>
+                    </div>
+
+                    <!-- Params label -->
+                    <div style="font-size:9px;font-weight:700;color:#C4C9D4;letter-spacing:0.09em;text-transform:uppercase;margin-bottom:8px;">파라미터</div>
+
+                    <!-- Params stacked list -->
+                    <div style="border:1px solid #ECEEF2;border-radius:8px;overflow:hidden;background:white;">
+                      <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:1px solid #F3F4F6;">
+                        <span style="font-size:11px;color:#9CA3AF;">markingids</span>
+                        <span id="param-mid-val" style="font-size:12px;font-weight:600;color:#111;">131</span>
+                      </div>
+                      <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:1px solid #F3F4F6;">
+                        <span style="font-size:11px;color:#9CA3AF;">시작일</span>
+                        <span id="param-start-val" style="font-size:12px;font-weight:600;color:#111;">2026-03-27</span>
+                      </div>
+                      <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:1px solid #F3F4F6;">
+                        <span style="font-size:11px;color:#9CA3AF;">실험 시작일</span>
+                        <span id="param-day-val" style="font-size:12px;font-weight:700;color:#4F46E5;">D+14</span>
+                      </div>
+                      <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;">
+                        <span style="font-size:11px;color:#9CA3AF;">전면적용일</span>
+                        <span id="param-rollout-val" style="font-size:12px;font-weight:600;color:#9CA3AF;">-</span>
+                      </div>
+                    </div>
+
+                    <!-- Legend (bottom) -->
+                    <div style="margin-top:auto;padding-top:14px;display:flex;flex-direction:column;gap:6px;">
+                      <div style="display:flex;align-items:center;gap:7px;font-size:10px;color:#9CA3AF;">
+                        <span style="display:inline-block;width:16px;height:2.5px;background:#4F46E5;border-radius:2px;flex-shrink:0;"></span>Variant B
+                      </div>
+                      <div style="display:flex;align-items:center;gap:7px;font-size:10px;color:#9CA3AF;">
+                        <svg width="16" height="5" style="flex-shrink:0;"><line x1="0" y1="2.5" x2="16" y2="2.5" stroke="#10B981" stroke-width="2" stroke-dasharray="3.5 2.5"/></svg>Control A
+                      </div>
+                      <div style="display:flex;align-items:center;gap:7px;font-size:10px;color:#C4C9D4;">
+                        <span style="display:inline-block;width:16px;height:8px;background:rgba(0,0,0,0.035);border-radius:2px;border:1px solid #E5E7EB;flex-shrink:0;"></span>실험 전 구간 (D-28~D-1)
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- ── RIGHT: Charts ── -->
+                  <div style="flex:1;min-width:0;padding:18px 18px 14px;">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;height:100%;">
+
+                      <div style="background:white;border:1px solid #ECEEF2;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;">
+                        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;">
+                          <div>
+                            <div style="font-size:9px;font-weight:700;color:#C4C9D4;letter-spacing:0.07em;text-transform:uppercase;">Revenue</div>
+                            <div style="font-size:12px;font-weight:600;color:#111;margin-top:2px;">누적 매출</div>
+                          </div>
+                          <div style="text-align:right;">
+                            <div style="font-size:13px;font-weight:700;color:#4F46E5;letter-spacing:-0.02em;">+28.7%</div>
+                            <div style="font-size:9px;color:#C4C9D4;margin-top:1px;">vs Control</div>
+                          </div>
+                        </div>
+                        <div style="flex:1;position:relative;min-height:115px;"><canvas id="abRevChart"></canvas></div>
+                      </div>
+
+                      <div style="background:white;border:1px solid #ECEEF2;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;">
+                        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;">
+                          <div>
+                            <div style="font-size:9px;font-weight:700;color:#C4C9D4;letter-spacing:0.07em;text-transform:uppercase;">활성 사용자</div>
+                            <div style="font-size:12px;font-weight:600;color:#111;margin-top:2px;">일별 AU</div>
+                          </div>
+                          <div style="text-align:right;">
+                            <div style="font-size:13px;font-weight:700;color:#4F46E5;letter-spacing:-0.02em;">+12.4%</div>
+                            <div style="font-size:9px;color:#C4C9D4;margin-top:1px;">vs Control</div>
+                          </div>
+                        </div>
+                        <div style="flex:1;position:relative;min-height:115px;"><canvas id="abAuChart"></canvas></div>
+                      </div>
+
+                      <div style="background:white;border:1px solid #ECEEF2;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;">
+                        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;">
+                          <div>
+                            <div style="font-size:9px;font-weight:700;color:#C4C9D4;letter-spacing:0.07em;text-transform:uppercase;">Purchase Rate</div>
+                            <div style="font-size:12px;font-weight:600;color:#111;margin-top:2px;">구매 전환율</div>
+                          </div>
+                          <div style="text-align:right;">
+                            <div style="font-size:13px;font-weight:700;color:#059669;letter-spacing:-0.02em;">+64.5%</div>
+                            <div style="font-size:9px;color:#C4C9D4;margin-top:1px;">vs Control</div>
+                          </div>
+                        </div>
+                        <div style="flex:1;position:relative;min-height:115px;"><canvas id="abPurChart"></canvas></div>
+                      </div>
+
+                      <div style="background:white;border:1px solid #ECEEF2;border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;">
+                        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;">
+                          <div>
+                            <div style="font-size:9px;font-weight:700;color:#C4C9D4;letter-spacing:0.07em;text-transform:uppercase;">ARPU</div>
+                            <div style="font-size:12px;font-weight:600;color:#111;margin-top:2px;">유저당 매출</div>
+                          </div>
+                          <div style="text-align:right;">
+                            <div style="font-size:13px;font-weight:700;color:#4F46E5;letter-spacing:-0.02em;">+21.3%</div>
+                            <div style="font-size:9px;color:#C4C9D4;margin-top:1px;">vs Control</div>
+                          </div>
+                        </div>
+                        <div style="flex:1;position:relative;min-height:115px;"><canvas id="abArpuChart"></canvas></div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Tabbed experiment list -->
+              <div class="card" style="overflow:hidden;">
+                <div style="padding:18px 22px 0;border-bottom:1px solid #F3F4F6;">
+                  <div style="display:flex;align-items:center;justify-content:space-between;">
+                    <div style="display:flex;gap:24px;">
+                      <button class="exp-tab-btn active" id="expTabRunning" onclick="switchExpTab('running')">
+                        진행중
+                        <span style="display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;font-size:10px;font-weight:700;background:#EEF2FF;color:#4F46E5;border-radius:9px;padding:0 4px;margin-left:5px;">2</span>
+                      </button>
+                      <button class="exp-tab-btn" id="expTabDone" onclick="switchExpTab('done')">
+                        완료
+                        <span style="display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;font-size:10px;font-weight:700;background:#F3F4F6;color:#6B7280;border-radius:9px;padding:0 4px;margin-left:5px;">8</span>
+                      </button>
+                    </div>
+                    <span class="sec-link" style="margin-bottom:14px;display:inline-block;">이력 전체 보기 →</span>
+                  </div>
+                </div>
+
+                <!-- Running -->
+                <div id="expListRunning">
+                  <table class="data-table">
+                    <thead><tr><th>실험명</th><th>타겟</th><th>진행률</th><th>현재 Uplift</th><th>상태</th></tr></thead>
+                    <tbody>
+                      <tr class="ab-row-selectable active" data-ab-exp="1" onclick="selectAbExperiment(1)">
+                        <td><div style="font-weight:600;color:#111;font-size:13px;">FTUE 흐름 개편</div><div style="font-size:10px;color:#9CA3AF;margin-top:2px;">스트림라인 튜토리얼 vs 원본 멀티스텝</div></td>
+                        <td><span class="pill-blue">신규 유저</span></td>
+                        <td>
+                          <div style="font-size:12px;color:#374151;font-variant-numeric:tabular-nums;margin-bottom:5px;">14일차 / 21일차</div>
+                          <div style="width:80px;height:4px;background:#EEF2FF;border-radius:2px;"><div style="width:66%;height:100%;background:#4F46E5;border-radius:2px;"></div></div>
+                        </td>
+                        <td><span class="badge-up" style="font-size:13px;">+28.7%</span></td>
+                        <td><span class="exp-status-running"><span class="dot-live"></span>진행 중</span></td>
+                      </tr>
+                      <tr class="ab-row-selectable" data-ab-exp="2" onclick="selectAbExperiment(2)">
+                        <td><div style="font-weight:600;color:#111;font-size:13px;">첫 구매 팝업 타이밍</div><div style="font-size:10px;color:#9CA3AF;margin-top:2px;">즉시 노출 vs 5분 후 노출</div></td>
+                        <td><span class="pill-amber">비결제 유저</span></td>
+                        <td>
+                          <div style="font-size:12px;color:#374151;font-variant-numeric:tabular-nums;margin-bottom:5px;">5일차 / 14일차</div>
+                          <div style="width:80px;height:4px;background:#EEF2FF;border-radius:2px;"><div style="width:35%;height:100%;background:#4F46E5;border-radius:2px;"></div></div>
+                        </td>
+                        <td><span class="badge-up" style="font-size:13px;">+64.5%</span></td>
+                        <td><span class="exp-status-running"><span class="dot-live"></span>진행 중</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Completed -->
+                <div id="expListDone" style="display:none;">
+                  <table class="data-table">
+                    <thead><tr><th>실험명</th><th>타겟</th><th>기간</th><th>최종 Uplift</th><th>결과</th><th>완료일</th></tr></thead>
+                    <tbody>
+                      <tr><td><div style="font-weight:600;color:#111;font-size:13px;">푸시 문구 A/B</div><div style="font-size:10px;color:#9CA3AF;margin-top:2px;">이탈 유저 재참여 문구 최적화</div></td><td><span class="pill-gray">이탈 유저</span></td><td>30일</td><td><span class="badge-up">+53.7%</span></td><td><span class="exp-status-done"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>채택</span></td><td style="color:#9CA3AF;font-size:12px;">2026.03.20</td></tr>
+                      <tr><td><div style="font-weight:600;color:#111;font-size:13px;">친구 초대 인센티브</div><div style="font-size:10px;color:#9CA3AF;margin-top:2px;">보상 2배 vs 기본 보상</div></td><td><span class="pill-blue">신규 유저</span></td><td>21일</td><td><span class="badge-up">+44.8%</span></td><td><span class="exp-status-done"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>채택</span></td><td style="color:#9CA3AF;font-size:12px;">2026.02.14</td></tr>
+                      <tr><td><div style="font-weight:600;color:#111;font-size:13px;">첫 결제 리워드 A/B</div><div style="font-size:10px;color:#9CA3AF;margin-top:2px;">캐시 리워드 vs 아이템 리워드</div></td><td><span class="pill-amber">비결제 유저</span></td><td>28일</td><td><span class="badge-up">+31.2%</span></td><td><span class="exp-status-done"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>채택</span></td><td style="color:#9CA3AF;font-size:12px;">2026.01.30</td></tr>
+                      <tr><td><div style="font-weight:600;color:#111;font-size:13px;">보상 배수 이벤트</div><div style="font-size:10px;color:#9CA3AF;margin-top:2px;">주말 배수 이벤트 효과 검증</div></td><td><span class="pill-gray">전체 유저</span></td><td>14일</td><td><span class="badge-up">+12.1%</span></td><td><span class="exp-status-done"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>채택</span></td><td style="color:#9CA3AF;font-size:12px;">2026.03.01</td></tr>
+                      <tr><td><div style="font-weight:600;color:#111;font-size:13px;">튜토리얼 스킵 옵션</div><div style="font-size:10px;color:#9CA3AF;margin-top:2px;">스킵 허용 vs 강제 진행</div></td><td><span class="pill-blue">신규 유저</span></td><td>14일</td><td><span class="badge-up">+15.6%</span></td><td><span class="exp-status-done"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>채택</span></td><td style="color:#9CA3AF;font-size:12px;">2026.01.18</td></tr>
+                      <tr><td><div style="font-weight:600;color:#111;font-size:13px;">게임 로딩 스크린</div><div style="font-size:10px;color:#9CA3AF;margin-top:2px;">미니게임 vs 팁 화면</div></td><td><span class="pill-gray">전체 유저</span></td><td>7일</td><td><span class="badge-up">+8.9%</span></td><td><span class="exp-status-done"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>채택</span></td><td style="color:#9CA3AF;font-size:12px;">2025.12.22</td></tr>
+                      <tr><td><div style="font-weight:600;color:#111;font-size:13px;">메인 로비 UI 변경</div><div style="font-size:10px;color:#9CA3AF;margin-top:2px;">신규 레이아웃 vs 기존 레이아웃</div></td><td><span class="pill-gray">전체 유저</span></td><td>21일</td><td><span class="badge-dn">-2.3%</span></td><td><span class="pill-gray" style="font-size:11px;">제외</span></td><td style="color:#9CA3AF;font-size:12px;">2026.02.28</td></tr>
+                      <tr><td><div style="font-weight:600;color:#111;font-size:13px;">배너 광고 위치</div><div style="font-size:10px;color:#9CA3AF;margin-top:2px;">하단 고정 vs 콘텐츠 인라인</div></td><td><span class="pill-amber">결제 유저</span></td><td>14일</td><td><span class="badge-dn">-5.1%</span></td><td><span class="pill-gray" style="font-size:11px;">제외</span></td><td style="color:#9CA3AF;font-size:12px;">2026.01.05</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          </div>
+
+          <!-- ═══ PAGE: New Slot Tracking Dashboard ═══ -->
+          <div class="dashboard-page" id="page-slottracking">
+            <div class="slot-page">
+
+              <div class="slot-card">
+                <div class="slot-selector-bar">
+                  <div>
+                    <h2 style="font-size:20px;font-weight:800;color:#0F172A;margin-bottom:4px;">신규 슬롯 트레킹 대시보드</h2>
+                    <div style="font-size:12px;color:#64748B;">오픈 슬롯의 초기 매출 비중, AU, Spin, 리텐션, 결제 지표를 기준 슬롯과 비교합니다.</div>
+                  </div>
+                  <div class="slot-selector-group">
+                    <div class="slot-param-card" data-slot-param-card="current">
+                      <div class="slot-param-card-label">금주 오픈 슬롯</div>
+                      <button class="slot-param-btn" id="slotParamBtn-current" type="button" onclick="toggleSlotParamMenu('current')">
+                        <span id="slotParamValue-current">542 / 2026-05-12</span>
+                        <svg class="slot-param-chevron" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                      </button>
+                      <div class="slot-param-menu" id="slotParamMenu-current">
+                        <button class="slot-param-option active" type="button" data-slot-param="current" data-slot-param-value="542 / 2026-05-12" onclick="selectSlotParamValue('current','542 / 2026-05-12')">542 / 2026-05-12</button>
+                        <button class="slot-param-option" type="button" data-slot-param="current" data-slot-param-value="541 / 2026-05-09" onclick="selectSlotParamValue('current','541 / 2026-05-09')">541 / 2026-05-09</button>
+                        <button class="slot-param-option" type="button" data-slot-param="current" data-slot-param-value="540 / 2026-05-07" onclick="selectSlotParamValue('current','540 / 2026-05-07')">540 / 2026-05-07</button>
+                      </div>
+                    </div>
+                    <div class="slot-param-card" data-slot-param-card="previous">
+                      <div class="slot-param-card-label">전주 오픈 슬롯</div>
+                      <button class="slot-param-btn" id="slotParamBtn-previous" type="button" onclick="toggleSlotParamMenu('previous')">
+                        <span id="slotParamValue-previous">544 / 2026-05-05</span>
+                        <svg class="slot-param-chevron" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                      </button>
+                      <div class="slot-param-menu" id="slotParamMenu-previous">
+                        <button class="slot-param-option active" type="button" data-slot-param="previous" data-slot-param-value="544 / 2026-05-05" onclick="selectSlotParamValue('previous','544 / 2026-05-05')">544 / 2026-05-05</button>
+                        <button class="slot-param-option" type="button" data-slot-param="previous" data-slot-param-value="543 / 2026-05-02" onclick="selectSlotParamValue('previous','543 / 2026-05-02')">543 / 2026-05-02</button>
+                        <button class="slot-param-option" type="button" data-slot-param="previous" data-slot-param-value="542 / 2026-04-30" onclick="selectSlotParamValue('previous','542 / 2026-04-30')">542 / 2026-04-30</button>
+                      </div>
+                    </div>
+                    <div class="slot-param-card" data-slot-param-card="baseline">
+                      <div class="slot-param-card-label">기준 슬롯 (최근 8개)</div>
+                      <button class="slot-param-btn" id="slotParamBtn-baseline" type="button" onclick="toggleSlotParamMenu('baseline')">
+                        <span id="slotParamValue-baseline">539 / 2026-04-28</span>
+                        <svg class="slot-param-chevron" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                      </button>
+                      <div class="slot-param-menu" id="slotParamMenu-baseline">
+                        <button class="slot-param-option active" type="button" data-slot-param="baseline" data-slot-param-value="539 / 2026-04-28" onclick="selectSlotParamValue('baseline','539 / 2026-04-28')">539 / 2026-04-28</button>
+                        <button class="slot-param-option" type="button" data-slot-param="baseline" data-slot-param-value="538 / 2026-04-24" onclick="selectSlotParamValue('baseline','538 / 2026-04-24')">538 / 2026-04-24</button>
+                        <button class="slot-param-option" type="button" data-slot-param="baseline" data-slot-param-value="537 / 2026-04-21" onclick="selectSlotParamValue('baseline','537 / 2026-04-21')">537 / 2026-04-21</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="slot-card">
+                <div class="slot-card-title">대시보드 실행 기준</div>
+                <ul class="slot-note-list" style="margin-top:10px;">
+                  <li>대시보드 실행 시 약 2~3분 소요되며, 데이터 실시간 반영은 5분 내외입니다.</li>
+                  <li>비교 기준은 금주 오픈 슬롯, 전주 오픈 슬롯, 최근 8개 슬롯 평균 순서로 확인하는 것을 권장합니다.</li>
+                  <li>차트의 real_time 구간은 금주 오픈 슬롯의 마지막 안정 지점 뒤에 붙는 최신 6시간 이동평균 구간입니다.</li>
+                  <li>최근 8주 안에 신규 슬롯을 추가 출시한 주가 포함되면 최근 8개 슬롯 평균의 비교 신뢰도가 낮아질 수 있습니다.</li>
+                </ul>
+                <div class="slot-meta-row">
+                  <span>데이터 기준: 2026-05-13 09:00 KST</span>
+                  <span>↻ 6 hours ago</span>
+                </div>
+              </div>
+
+              <div class="slot-grid-3">
+                <div class="kpi-card">
+                  <div class="kpi-label">선택 슬롯 AU</div>
+                  <div class="kpi-num" id="slotKpiAu">11,397</div>
+                  <div class="slot-kpi-foot" id="slotKpiAuFoot">최근 8개 슬롯 평균 대비 -13.9%</div>
+                </div>
+                <div class="kpi-card">
+                  <div class="kpi-label">선택 슬롯 Spin</div>
+                  <div class="kpi-num" id="slotKpiSpin">2.45M</div>
+                  <div class="slot-kpi-foot" id="slotKpiSpinFoot">최근 8개 슬롯 평균 대비 +29.6%</div>
+                </div>
+                <div class="kpi-card">
+                  <div class="kpi-label">매출 비중 피크 / 현재</div>
+                  <div class="kpi-num" id="slotKpiShare">17.6% / 13.8%</div>
+                  <div class="slot-kpi-foot" id="slotKpiShareFoot">오픈 후 13시간 피크, 현재 6시간 이동평균 기준</div>
+                </div>
+              </div>
+
+              <div class="slot-grid-2">
+                <div class="slot-card slot-desc-card">
+                  <div class="slot-card-title">대시보드 1 : [신규/샘플/최근 8주 슬롯 평균] 기간별 매출 비중 흐름 (6시간 이동평균)</div>
+                  <ul class="slot-note-list" style="margin-top:10px;">
+                    <li>오픈 후 실시간으로 기민한 흐름을 보기 위한 차트입니다.</li>
+                    <li><a class="slot-help-link" href="javascript:void(0)">어드민 통계 페이지 연관매출 링크</a></li>
+                  </ul>
+                </div>
+                <div class="slot-card slot-desc-card">
+                  <div class="slot-card-title">대시보드 2 : [신규/최근 8주 슬롯 평균] 오픈 시각 대비 현재 시점까지 누적 AU 및 Spin 수 비교</div>
+                  <ul class="slot-note-list" style="margin-top:10px;">
+                    <li>신규 슬롯 지표가 최근 8주 슬롯 평균보다 낮을 경우, 동일 시간대 기준으로 이전 8주 슬롯보다 임팩트가 비교적 없다고 판단할 수 있습니다.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="slot-grid-main">
+                <div class="slot-card">
+                  <div class="sec-header">
+                    <div>
+                      <div class="slot-card-title">시간 단위(6시간 이동평균) 신규 슬롯 매출 비중 흐름</div>
+                      <div class="slot-card-sub">금주, 전주, 최근 8개 슬롯 평균과 real_time 추이를 비교합니다.</div>
+                    </div>
+                    <span class="revenue-badge" id="slotCompareBadge">금주 오픈 슬롯 기준</span>
+                  </div>
+                  <div class="slot-chart"><canvas id="slotRevenueShareChart"></canvas></div>
+                  <div class="slot-meta-row"><span>오픈 후 0~340시간</span><span>↻ 6 hours ago</span></div>
+                </div>
+                <div class="slot-grid-2" style="grid-template-columns:1fr;gap:14px;">
+                  <div class="slot-card">
+                    <div class="slot-card-title">AU - 슬롯 지표 비교</div>
+                    <div class="slot-mini-chart"><canvas id="slotAuCompareChart"></canvas></div>
+                  </div>
+                  <div class="slot-card">
+                    <div class="slot-card-title">SPIN - 슬롯 지표 비교</div>
+                    <div class="slot-mini-chart"><canvas id="slotSpinCompareChart"></canvas></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="slot-grid-2">
+                <div class="slot-card slot-desc-card">
+                  <div class="slot-card-title">대시보드 3 : [신규/샘플/최근 8주 슬롯 평균] 기간별 매출 비중 흐름 (일별)</div>
+                  <ul class="slot-note-list" style="margin-top:10px;">
+                    <li><a class="slot-help-link" href="javascript:void(0)">어드민 통계 페이지 연관매출 링크</a></li>
+                  </ul>
+                </div>
+                <div class="slot-card slot-desc-card">
+                  <div class="slot-card-title">대시보드 4 : 오픈 시각으로부터 현재 시점까지 스핀 구간 별 유저 수 (리텐션)</div>
+                  <ul class="slot-note-list" style="margin-top:10px;">
+                    <li>% Previous 항목을 통해 슬롯 플레이 유저가 스핀이 많은 구간으로 얼마나 전이되는지 확인할 수 있습니다.</li>
+                    <li>예시: spin_100의 % Previous 값이 27.07%라면 스핀을 10번 이상 한 유저 중 27.07%가 스핀을 100번 이상 하고 있음을 확인할 수 있습니다.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="slot-grid-2">
+                <div class="slot-card tight">
+                  <div style="padding:16px 16px 10px;">
+                    <div class="slot-card-title">일 단위 신규 슬롯 매출 비중 흐름 - 최근 8주 슬롯 평균 포함</div>
+                  </div>
+                  <table class="data-table">
+                    <thead><tr><th>time_window</th><th>금주 오픈 슬롯</th><th>전주 오픈 슬롯</th><th>최근 8개 슬롯 평균</th></tr></thead>
+                    <tbody id="slotDailyRows"></tbody>
+                  </table>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:14px;">
+                  <div class="slot-card tight">
+                    <div style="padding:16px 16px 6px;">
+                      <div class="slot-card-title">슬롯 리텐션 비교_신규</div>
+                    </div>
+                    <table class="slot-retention-table">
+                      <thead><tr><th>Steps</th><th>avg_users</th><th>% Max</th><th>% Previous</th></tr></thead>
+                      <tbody id="slotRetentionNew"></tbody>
+                    </table>
+                  </div>
+                  <div class="slot-card tight">
+                    <div style="padding:16px 16px 6px;">
+                      <div class="slot-card-title">슬롯 리텐션 비교_최근 8주</div>
+                    </div>
+                    <table class="slot-retention-table">
+                      <thead><tr><th>Steps</th><th>avg_users</th><th>% Max</th><th>% Previous</th></tr></thead>
+                      <tbody id="slotRetentionBase"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="slot-card">
+                <div class="slot-card-title">대시보드 5 : 스핀 스텝별 결제 현황(ARPU · 결제전환율 · 승률(RTP) · 단위승률(Unit_RTP))</div>
+                <ul class="slot-note-list" style="margin-top:10px;">
+                  <li>스핀 구간별 ARPU와 결제 전환율 분포를 함께 확인합니다.</li>
+                  <li>특정 스텝에서 금주 슬롯이 기준 슬롯 평균보다 얼마나 벗어나는지 파악합니다.</li>
+                  <li>이때 결제 성향이 변하는 구간은 승률과 단위 승률도 같이 확인합니다.</li>
+                </ul>
+              </div>
+
+              <div class="slot-grid-2">
+                <div class="slot-card"><div class="slot-card-title">ARPU - Spin Step 단계별 결제 분포 현황</div><div class="slot-chart small"><canvas id="slotArpuChart"></canvas></div></div>
+                <div class="slot-card"><div class="slot-card-title">결제전환율 - Spin Step 단계별 결제 분포 현황</div><div class="slot-chart small"><canvas id="slotConversionChart"></canvas></div></div>
+                <div class="slot-card"><div class="slot-card-title">승률 - Spin Step 단계별 승률 분포 현황</div><div class="slot-chart small"><canvas id="slotWinRateChart"></canvas></div></div>
+                <div class="slot-card"><div class="slot-card-title">단위 승률 - Spin Step 단계별 Unit RTP 분포 현황</div><div class="slot-chart small"><canvas id="slotUnitRtpChart"></canvas></div></div>
+              </div>
+
+            </div>
+          </div>
+
+        </div><!-- /page-stack -->
+      </div><!-- /content-body -->
+
+    </div><!-- /content-scroll -->
+  </div><!-- /main-area -->
+</div><!-- /shell -->
+
+<script>
+  // ══ Panel Toggle ══
+  const PANEL_WIDTH = 340;
+  let panelTransitionToken = 0;
+  let panelSyncFrame = null;
+
+  function updatePanelTogglePosition() {
+    const panel = document.getElementById('rightPanel');
+    const btn = document.getElementById('panelToggle');
+    if (!panel || !btn) return;
+    btn.style.right = panel.classList.contains('collapsed') ? '0px' : `${PANEL_WIDTH}px`;
+  }
+
+  function resizeVisibleCharts() {
+    if (typeof Chart === 'undefined') return;
+    document.querySelectorAll('canvas').forEach(canvas => {
+      let chart = null;
+      if (typeof Chart.getChart === 'function') chart = Chart.getChart(canvas);
+      if (!chart && Chart.instances) chart = Object.values(Chart.instances).find(i => i.canvas === canvas);
+      if (chart && typeof chart.resize === 'function') chart.resize();
+    });
+  }
+
+  function syncPanelLayout() {
+    updatePanelTogglePosition();
+    resizeVisibleCharts();
+  }
+
+  function startPanelSyncLoop() {
+    if (panelSyncFrame) cancelAnimationFrame(panelSyncFrame);
+    const tick = () => {
+      const panel = document.getElementById('rightPanel');
+      syncPanelLayout();
+      if (panel && panel.classList.contains('collapsing')) {
+        panelSyncFrame = requestAnimationFrame(tick);
+      } else {
+        panelSyncFrame = null;
+      }
+    };
+    panelSyncFrame = requestAnimationFrame(tick);
+  }
+
+  function finishPanelTransition(token) {
+    if (token !== panelTransitionToken) return;
+    const panel = document.getElementById('rightPanel');
+    if (!panel) return;
+    panel.classList.remove('collapsing');
+    if (panelSyncFrame) { cancelAnimationFrame(panelSyncFrame); panelSyncFrame = null; }
+    syncPanelLayout();
+    requestAnimationFrame(syncPanelLayout);
+  }
+
+  function togglePanel() {
+    const panel = document.getElementById('rightPanel');
+    const btn = document.getElementById('panelToggle');
+    if (!panel || !btn) return;
+    const isOpen = !panel.classList.contains('collapsed');
+    const token = ++panelTransitionToken;
+    panel.classList.add('collapsing');
+    if (isOpen) {
+      panel.classList.add('collapsed');
+      btn.classList.add('is-closed');
+    } else {
+      panel.style.width = PANEL_WIDTH + 'px';
+      panel.classList.remove('collapsed');
+      btn.classList.remove('is-closed');
+    }
+    syncPanelLayout();
+    startPanelSyncLoop();
+    const finalize = () => finishPanelTransition(token);
+    panel.addEventListener('transitionend', finalize, { once: true });
+    panel.addEventListener('transitioncancel', finalize, { once: true });
+    window.setTimeout(() => finishPanelTransition(token), 360);
+  }
+  window.addEventListener('resize', syncPanelLayout);
+
+  // ══ Page switching ══
+  const dashboardPageTitles = {
+    abtesting: '실험 현황',
+    slottracking: '신규 슬롯 트레킹 대시보드'
+  };
+  const dashboardPageSubtitles = {
+    abtesting: '실험 결과를 채택 관점에서 모니터링합니다.',
+    slottracking: '오픈 슬롯의 초기 매출, AU, Spin, 리텐션, 결제 지표를 기준 슬롯과 비교합니다.'
+  };
+  let slotChartsInited = false;
+
+  function switchDashboardPage(page) {
+    document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+      item.classList.toggle('active', item.dataset.page === page);
+    });
+    document.querySelectorAll('.dashboard-page').forEach(section => {
+      section.classList.toggle('active', section.id === `page-${page}`);
+    });
+    const title = document.getElementById('pageTitle');
+    const subtitle = document.getElementById('pageSubtitle');
+    if (title) title.textContent = dashboardPageTitles[page] || '';
+    if (subtitle) subtitle.textContent = dashboardPageSubtitles[page] || '';
+    if (page === 'slottracking' && !slotChartsInited) {
+      slotChartsInited = true;
+      initSlotTrackingCharts();
+    }
+    requestAnimationFrame(syncPanelLayout);
+  }
+
+  // ══ Slot tracking mock data ══
+  const slotMeta = {
+    current: { label: '금주 오픈 슬롯', value: '542 / 2026-05-12', au: 11397, auDelta: '-13.9%', spin: 2450000, spinDelta: '+29.6%', share: '17.6% / 13.8%', foot: '오픈 후 13시간 피크, 현재 6시간 이동평균 기준' },
+    previous: { label: '전주 오픈 슬롯', value: '544 / 2026-05-05', au: 12284, auDelta: '-7.2%', spin: 2140000, spinDelta: '+13.2%', share: '15.1% / 12.6%', foot: '오픈 후 15시간 피크, 현재 6시간 이동평균 기준' },
+    baseline: { label: '기준 슬롯 평균', value: '최근 8개 슬롯 평균', au: 13244, auDelta: '기준값', spin: 1890000, spinDelta: '기준값', share: '14.2% / 10.9%', foot: '최근 8개 슬롯 평균 기준' }
+  };
+  const slotHourLabels = Array.from({ length: 35 }, (_, i) => i * 10);
+  const slotRevenueShareData = {
+    baseline: [0,12.8,14.1,10.8,8.4,9.1,6.2,5.8,5.5,5.2,4.8,4.4,4.9,3.8,4.6,3.5,4.1,4.7,5.1,4.6,4.2,4.0,3.9,3.7,3.5,3.2,3.8,3.4,3.0,3.1,3.3,3.6,3.2,3.4,3.7],
+    previous: [0,13.6,15.1,11.8,6.1,9.6,5.4,6.3,4.9,5.5,4.8,3.8,4.7,2.9,4.2,3.4,4.9,3.7,5.1,6.4,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
+    current: [0,14.8,17.6,13.1,12.4,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],
+    realTime: [null,null,null,null,12.4,13.2,14.2,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]
+  };
+  const slotDailyRows = [
+    { day:0, current:15.20, previous:12.41, baseline:12.31 },
+    { day:1, current:null, previous:10.87, baseline:13.69 },
+    { day:2, current:null, previous:8.36, baseline:11.36 },
+    { day:3, current:null, previous:6.58, baseline:9.32 },
+    { day:4, current:null, previous:6.03, baseline:8.03 },
+    { day:5, current:null, previous:4.75, baseline:7.12 },
+    { day:6, current:null, previous:5.33, baseline:6.51 },
+    { day:7, current:null, previous:6.00, baseline:6.96 },
+    { day:8, current:null, previous:null, baseline:6.37 },
+    { day:9, current:null, previous:null, baseline:5.87 },
+    { day:10, current:null, previous:null, baseline:5.83 },
+    { day:11, current:null, previous:null, baseline:5.13 },
+    { day:12, current:null, previous:null, baseline:5.07 },
+    { day:13, current:null, previous:null, baseline:5.17 }
+  ];
+  const slotRetentionNewData = [
+    { step:'spin_1', users:11397, max:100.00, prev:100.00 },
+    { step:'spin_10', users:9387, max:82.36, prev:82.36 },
+    { step:'spin_50', users:6515, max:57.16, prev:69.40 },
+    { step:'spin_100', users:4996, max:43.84, prev:76.68 },
+    { step:'spin_200', users:3205, max:28.12, prev:64.15 },
+    { step:'spin_500', users:1230, max:10.79, prev:38.38 },
+    { step:'spin_1000', users:479, max:4.20, prev:38.94 },
+    { step:'spin_2000', users:123, max:1.08, prev:25.68 }
+  ];
+  const slotRetentionBaseData = [
+    { step:'spin_1', users:13244, max:100.00, prev:100.00 },
+    { step:'spin_10', users:10172, max:76.80, prev:76.80 },
+    { step:'spin_50', users:5904, max:44.58, prev:58.04 },
+    { step:'spin_100', users:4069, max:30.72, prev:68.92 },
+    { step:'spin_200', users:2459, max:18.57, prev:60.43 },
+    { step:'spin_500', users:920, max:6.95, prev:37.41 },
+    { step:'spin_1000', users:321, max:2.42, prev:34.89 },
+    { step:'spin_2000', users:70, max:0.53, prev:21.81 }
+  ];
+  const slotSpinStepLabels = [100,300,500,700,900,1100,1300,1500,1700,1900,2100,2300,2500,2700,2900,3100,3300,3500,3700,3900,4100,4300,4500,4700,4900,5100];
+  const slotMetricData = {
+    arpu: {
+      current: [4,12,28,22,40,15,46,38,27,35,1,68,12,48,0,76,36,0,190,0,115,0,98,17,0,15],
+      baseline: [6,18,24,29,43,47,61,96,45,87,68,84,50,126,45,58,28,103,189,13,54,78,22,51,0,102]
+    },
+    conversion: {
+      current: [0.03,0.15,0.19,0.25,0.34,0.22,0.31,0.45,0.15,0.30,0.00,0.22,0.35,0.20,0.42,0.46,0.00,1.00,0.00,1.00,0.00,1.00,0.00,1.00,0.02,0.14],
+      baseline: [0.06,0.18,0.24,0.28,0.33,0.36,0.34,0.40,0.48,0.46,0.44,0.39,0.50,0.56,0.31,0.50,0.37,0.74,0.23,0.18,0.66,0.29,0.50,1.00,0.00,0.52]
+    },
+    win: {
+      current: [104,85,71,116,84,96,88,89,104,92,98,85,104,90,92,84,81,110,67,89,78,92,76,95,98,92],
+      baseline: [79,92,88,101,96,103,98,100,101,95,99,97,102,99,103,100,101,104,108,90,106,99,108,100,102,97]
+    },
+    unitRtp: {
+      current: [82,90,95,104,98,105,101,106,113,98,112,100,97,96,132,79,103,97,118,96,109,91,108,119,112,108],
+      baseline: [75,95,101,103,102,104,103,104,105,104,103,104,105,103,102,101,112,97,115,96,107,103,108,104,103,101]
+    }
+  };
+  const slotChartInstances = {};
+
+  function formatSlotNumber(v) {
+    return Number(v).toLocaleString('en-US');
+  }
+
+  function formatSlotSpin(v) {
+    return v >= 1000000 ? `${(v / 1000000).toFixed(2)}M` : formatSlotNumber(v);
+  }
+
+  function renderSlotKpis() {
+    const data = slotMeta.current;
+    document.getElementById('slotKpiAu').textContent = formatSlotNumber(data.au);
+    document.getElementById('slotKpiAuFoot').textContent = `최근 8개 슬롯 평균 대비 ${data.auDelta}`;
+    document.getElementById('slotKpiSpin').textContent = formatSlotSpin(data.spin);
+    document.getElementById('slotKpiSpinFoot').textContent = `최근 8개 슬롯 평균 대비 ${data.spinDelta}`;
+    document.getElementById('slotKpiShare').textContent = data.share;
+    document.getElementById('slotKpiShareFoot').textContent = data.foot;
+    document.getElementById('slotCompareBadge').textContent = `${data.label} 기준`;
+  }
+
+  function renderSlotDailyTable() {
+    const rows = slotDailyRows.map(row => `
+      <tr class="slot-row-current">
+        <td>${row.day}</td>
+        <td>${row.current == null ? '-' : row.current.toFixed(2) + '%'}</td>
+        <td>${row.previous == null ? '-' : row.previous.toFixed(2) + '%'}</td>
+        <td>${row.baseline.toFixed(2)}%</td>
+      </tr>
+    `).join('');
+    document.getElementById('slotDailyRows').innerHTML = rows;
+  }
+
+  function renderRetentionRows(rows) {
+    return rows.map(row => `
+      <tr>
+        <td>${row.step}</td>
+        <td>
+          <div class="slot-funnel-cell">
+            <span class="slot-funnel-bar" style="width:${Math.max(row.max, 1)}%;"></span>
+            <span class="slot-funnel-value">${formatSlotNumber(row.users)}</span>
+          </div>
+        </td>
+        <td>${row.max.toFixed(2)}%</td>
+        <td><span class="slot-prev-bar" style="width:${Math.max(row.prev, 18)}%;">${row.prev.toFixed(2)}%</span></td>
+      </tr>
+    `).join('');
+  }
+
+  function renderSlotRetentionTables() {
+    document.getElementById('slotRetentionNew').innerHTML = renderRetentionRows(slotRetentionNewData);
+    document.getElementById('slotRetentionBase').innerHTML = renderRetentionRows(slotRetentionBaseData);
+  }
+
+  function setSlotParamMenuOpen(param, isOpen) {
+    const btn = document.getElementById(`slotParamBtn-${param}`);
+    const menu = document.getElementById(`slotParamMenu-${param}`);
+    if (!btn || !menu) return;
+    btn.classList.toggle('is-open', isOpen);
+    menu.classList.toggle('open', isOpen);
+  }
+
+  function closeSlotParamMenus(exceptParam) {
+    ['current', 'previous', 'baseline'].forEach(param => {
+      if (param !== exceptParam) setSlotParamMenuOpen(param, false);
+    });
+  }
+
+  function toggleSlotParamMenu(param) {
+    const menu = document.getElementById(`slotParamMenu-${param}`);
+    const isOpen = !!menu?.classList.contains('open');
+    closeSlotParamMenus(param);
+    setSlotParamMenuOpen(param, !isOpen);
+  }
+
+  function selectSlotParamValue(param, value) {
+    const valueEl = document.getElementById(`slotParamValue-${param}`);
+    if (valueEl) valueEl.textContent = value;
+    document.querySelectorAll(`[data-slot-param="${param}"]`).forEach(option => {
+      option.classList.toggle('active', option.dataset.slotParamValue === value);
+    });
+    setSlotParamMenuOpen(param, false);
+  }
+
+  function makeSlotChartOptions(yFmt, legend = true) {
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: legend, position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, color: '#475569', font: { size: 11 } } },
+        tooltip: {
+          mode: 'index',
+          intersect: false,
+          backgroundColor: '#fff',
+          borderColor: '#E5EAF1',
+          borderWidth: 1,
+          titleColor: '#64748B',
+          bodyColor: '#0F172A',
+          callbacks: { label: c => c.raw == null ? `${c.dataset.label}: -` : `${c.dataset.label}: ${yFmt(c.raw)}` }
+        }
+      },
+      scales: {
+        x: { grid: { color: '#F1F5F9' }, border: { display: false }, ticks: { color: '#64748B', font: { size: 10 }, maxRotation: 0 } },
+        y: { grid: { color: '#F1F5F9' }, border: { display: false }, ticks: { color: '#64748B', font: { size: 10 }, callback: v => yFmt(v) } }
+      }
+    };
+  }
+
+  function initSlotTrackingCharts() {
+    renderSlotKpis();
+    renderSlotDailyTable();
+    renderSlotRetentionTables();
+
+    slotChartInstances.revenue = new Chart(document.getElementById('slotRevenueShareChart'), {
+      type: 'line',
+      data: {
+        labels: slotHourLabels,
+        datasets: [
+          { key:'baseline', label:'최근 8개 슬롯 평균', data:slotRevenueShareData.baseline, borderColor:'#525252', backgroundColor:'rgba(82,82,82,0.18)', borderWidth:1.8, pointRadius:0, tension:0.28, fill:true },
+          { key:'previous', label:'전주 오픈 슬롯', data:slotRevenueShareData.previous, borderColor:'#EF4444', borderWidth:1.8, pointRadius:0, tension:0.28 },
+          { key:'current', label:'금주 오픈 슬롯', data:slotRevenueShareData.current, borderColor:'#4F46E5', borderWidth:2.8, pointRadius:0, tension:0.28 },
+          { key:'realtime', label:'real_time', data:slotRevenueShareData.realTime, borderColor:'#22C55E', borderWidth:1.8, pointRadius:0, tension:0.28 }
+        ]
+      },
+      options: makeSlotChartOptions(v => `${Number(v).toFixed(1)}%`)
+    });
+
+    slotChartInstances.au = new Chart(document.getElementById('slotAuCompareChart'), {
+      type: 'bar',
+      data: { labels:['금주 오픈 슬롯','최근 8개 슬롯'], datasets:[{ label:'AU', data:[11397,13244], backgroundColor:['#4F46E5','#475569'], borderRadius:0 }] },
+      options: makeSlotChartOptions(v => `${(v / 1000).toFixed(1)}k`, false)
+    });
+
+    slotChartInstances.spin = new Chart(document.getElementById('slotSpinCompareChart'), {
+      type: 'bar',
+      data: { labels:['금주 오픈 슬롯','최근 8개 슬롯'], datasets:[{ label:'SPIN', data:[2450000,1890000], backgroundColor:['#4F46E5','#475569'], borderRadius:0 }] },
+      options: makeSlotChartOptions(v => `${(v / 1000000).toFixed(1)}M`, false)
+    });
+
+    const lineMetric = (id, label, metric, yFmt) => new Chart(document.getElementById(id), {
+      type: 'line',
+      data: {
+        labels: slotSpinStepLabels,
+        datasets: [
+          { label:'① 금주슬롯', data:slotMetricData[metric].current, borderColor:'#4F46E5', borderWidth:2, pointRadius:0, tension:0.18 },
+          { label:'② 기준슬롯 평균', data:slotMetricData[metric].baseline, borderColor:'#EF4444', borderWidth:1.8, pointRadius:0, tension:0.18 }
+        ]
+      },
+      options: makeSlotChartOptions(yFmt)
+    });
+    slotChartInstances.arpu = lineMetric('slotArpuChart', 'ARPU', 'arpu', v => `${Math.round(v)}`);
+    slotChartInstances.conversion = lineMetric('slotConversionChart', '결제전환율', 'conversion', v => `${Number(v).toFixed(2)}`);
+    slotChartInstances.win = lineMetric('slotWinRateChart', '승률', 'win', v => `${Math.round(v)}`);
+    slotChartInstances.unitRtp = lineMetric('slotUnitRtpChart', 'Unit RTP', 'unitRtp', v => `${Math.round(v)}`);
+    requestAnimationFrame(resizeVisibleCharts);
+  }
+
+  // ══ Right Panel Data ══
+  const abPanelSummaryMap = {
+    1: {
+      title: 'FTUE 흐름 개편',
+      sub: '튜토리얼 구조를 줄여 첫 슬롯 진입과 초기 잔존을 개선하는 실험 요약입니다.',
+      badge: '실험',
+      metrics: [
+        { label: '매출 상승효과', value: '+28.7%', foot: '대조군 대비 누적 매출 기준' },
+        { label: '핵심 신호', value: 'D1 로비 복귀', foot: '초기 재방문과 슬롯 진입 개선' }
+      ],
+      highlight: '오늘 기준: 튜토리얼을 줄인 실험안이 초기 진입과 매출 모두 앞서지만, 14일차 이후 잔존 저하 없이 유지되는지가 핵심입니다.',
+      actions: [
+        { title: '채택 시점', copy: '현재 속도면 14일차 이후 확대 여부를 판단할 수 있지만, 7일차 이후 잔존 기울기를 같이 봐야 합니다.' },
+        { title: '결제 깊이', copy: '상승효과가 첫 결제 진입뿐 아니라 스타터팩 이후 깊이까지 이어지는지 추가 확인이 필요합니다.' }
+      ]
+    },
+    2: {
+      title: '첫 결제 팝업 타이밍',
+      sub: '첫 구매 팝업의 노출 시점을 늦춰 결제 반응과 피로도를 동시에 보는 실험 요약입니다.',
+      badge: '실험',
+      metrics: [
+        { label: '구매 상승효과', value: '+64.5%', foot: '비결제 유저 구매 전환 기준' },
+        { label: '점검 항목', value: '노출 피로도', foot: '즉시 노출 대비 잔존 영향 확인 필요' }
+      ],
+      highlight: '오늘 기준: 지연 노출 실험안이 구매 전환은 강하지만, 저가 결제층 쏠림인지와 재방문 저하 여부를 같이 봐야 합니다.',
+      actions: [
+        { title: '질 점검', copy: '상승효과가 초저가 결제층에만 집중되는지, 결제자 질과 후속 결제를 같이 확인해야 합니다.' },
+        { title: '잔존 가드레일', copy: '팝업 노출 지연이 초기 이탈을 악화시키지 않는지 7일차 구간까지 확인이 필요합니다.' }
+      ]
+    }
+  };
+
+  function renderRightPanel(expId) {
+    const data = abPanelSummaryMap[expId];
+    if (!data) return;
+    if (!document.getElementById('panelSummaryTitle')) return;
+    document.getElementById('panelSummaryTitle').textContent = data.title;
+    document.getElementById('panelSummarySub').textContent = data.sub;
+    document.getElementById('panelSummaryBadge').textContent = data.badge;
+    document.getElementById('panelSummaryMetrics').innerHTML = data.metrics.map(item => `
+      <div class="panel-summary-card">
+        <div class="panel-summary-label">${item.label}</div>
+        <div class="panel-summary-value">${item.value}</div>
+        <div class="panel-summary-foot">${item.foot}</div>
+      </div>
+    `).join('');
+    document.getElementById('panelSummaryHighlight').innerHTML = `
+      <span class="insight-kicker">오늘 기준</span>
+      <p class="insight-copy">${data.highlight.replace(/^오늘 기준:\s*/, '')}</p>
+    `;
+    document.getElementById('panelSummaryList').innerHTML = data.actions.map(item => `
+      <div class="panel-list-item">
+        <div class="panel-list-title">${item.title}</div>
+        <div class="panel-list-copy">${item.copy}</div>
+      </div>
+    `).join('');
+  }
+
+  // ══ AB: D-day x축 레이블 ══
+  const dDayLabels = [];
+  for (let d = -28; d <= 21; d++) {
+    dDayLabels.push(d < 0 ? `D${d}` : d === 0 ? 'D0' : `D+${d}`);
+  }
+
+  // ══ D0 수직선 + 실험 전 구간 음영 플러그인 ══
+  const abSplitPlugin = {
+    id: 'abSplit',
+    beforeDraw(chart) {
+      const {ctx, chartArea, scales} = chart;
+      if (!chartArea || !scales.x) return;
+      const d0Px = scales.x.getPixelForValue('D0');
+      ctx.save();
+      ctx.fillStyle = 'rgba(0,0,0,0.032)';
+      ctx.fillRect(chartArea.left, chartArea.top, d0Px - chartArea.left, chartArea.bottom - chartArea.top);
+      ctx.strokeStyle = 'rgba(99,102,241,0.45)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([4, 3]);
+      ctx.beginPath();
+      ctx.moveTo(d0Px, chartArea.top);
+      ctx.lineTo(d0Px, chartArea.bottom);
+      ctx.stroke();
+      ctx.restore();
+    }
+  };
+
+  // ══ 실험별 기본 파라미터 ══
+  const abExpMeta = {
+    1: { mid:'131', start:'2026-03-27', day:'D+14', rollout:'-', activeDays:14 },
+    2: { mid:'205', start:'2026-04-05', day:'D+5',  rollout:'-', activeDays:5  }
+  };
+
+  const isPairScale = {
+    0: { bScale:0.5,  tScale:1.18, cScale:1.0  },
+    1: { bScale:1.0,  tScale:1.0,  cScale:1.0  },
+    2: { bScale:2.7,  tScale:0.72, cScale:0.72 }
+  };
+
+  const abExpBase = {
+    1: { rev: {bl:1500,pn:38,cs:72, ts:148,xn:26}, au: {bl:90000,pn:1100,cs:820,ts:1340,xn:650}, pur: {bl:0.85,pn:0.023,cs:0.003,ts:0.007,xn:0.015}, arpu:{bl:218,pn:5.2,cs:1.5,ts:3.8,xn:4.2} },
+    2: { rev: {bl:1400,pn:35,cs:54, ts:95, xn:20}, au: {bl:90000,pn:980, cs:200,ts:195, xn:540}, pur: {bl:2.10,pn:0.068,cs:0.012,ts:0.27, xn:0.052}, arpu:{bl:220,pn:6.0,cs:1.1,ts:13,  xn:4.8} }
+  };
+
+  function buildAbData(expId, isPair) {
+    const sc = isPairScale[isPair];
+    const exp = abExpBase[expId];
+    const meta = abExpMeta[expId];
+    const D0 = 28, TOTAL = 50;
+    const result = {};
+    ['rev','au','pur','arpu'].forEach(m => {
+      const p = exp[m];
+      const bl = p.bl * sc.bScale;
+      const cont = [], test = [];
+      for (let i = 0; i < TOTAL; i++) {
+        const d = i - D0;
+        if (d < 0) {
+          const v = bl + Math.sin(i * 0.78 + m.length * 0.5) * p.pn * sc.bScale;
+          cont.push(+v.toFixed(3)); test.push(+v.toFixed(3));
+        } else if (d <= meta.activeDays) {
+          cont.push(+(bl + p.cs * sc.cScale * d + Math.sin(d*1.4+1)*p.xn*sc.bScale).toFixed(3));
+          test.push(+(bl + p.ts * sc.tScale * d + Math.cos(d*1.2+0.7)*p.xn*sc.bScale*0.8).toFixed(3));
+        } else {
+          cont.push(null); test.push(null);
+        }
+      }
+      result[m] = {cont, test};
+    });
+    return result;
+  }
+
+  let currentAbExp = 1, currentIsPair = 1;
+  const abChartInstances = {};
+
+  function setAbDropdownOpen(isOpen) {
+    const btn = document.getElementById('abDropdownBtn');
+    const menu = document.getElementById('abDropdownMenu');
+    if (!btn || !menu) return;
+    btn.classList.toggle('is-open', isOpen);
+    menu.classList.toggle('open', isOpen);
+  }
+
+  function toggleAbExpMenu() {
+    const menu = document.getElementById('abDropdownMenu');
+    setAbDropdownOpen(!menu?.classList.contains('open'));
+  }
+
+  function syncAbExperimentSelection() {
+    const label = document.getElementById('abDropdownLabel');
+    const selectedTitle = document.querySelector(`[data-ab-exp-item="${currentAbExp}"] .ab-dropdown-item-title`)?.textContent;
+    if (label && selectedTitle) label.textContent = selectedTitle;
+    document.querySelectorAll('[data-ab-exp-item]').forEach(item => {
+      item.classList.toggle('active', Number(item.dataset.abExpItem) === currentAbExp);
+    });
+    document.querySelectorAll('[data-ab-exp]').forEach(row => {
+      row.classList.toggle('active', Number(row.dataset.abExp) === currentAbExp);
+    });
+    setAbDropdownOpen(false);
+    renderRightPanel(currentAbExp);
+  }
+
+  function _updateAbCharts() {
+    const d = buildAbData(currentAbExp, currentIsPair);
+    [['rev',d.rev],['au',d.au],['pur',d.pur],['arpu',d.arpu]].forEach(([key, src]) => {
+      const ch = abChartInstances[key]; if (!ch) return;
+      ch.data.datasets[0].data = src.test;
+      ch.data.datasets[1].data = src.cont;
+      ch.update('active');
+    });
+  }
+
+  function selectAbExperiment(expId) {
+    currentAbExp = parseInt(expId);
+    const p = abExpMeta[currentAbExp];
+    document.getElementById('param-mid-val').textContent   = p.mid;
+    document.getElementById('param-start-val').textContent = p.start;
+    document.getElementById('param-day-val').textContent   = p.day;
+    document.getElementById('param-rollout-val').textContent = p.rollout;
+    syncAbExperimentSelection();
+    _updateAbCharts();
+  }
+
+  document.addEventListener('click', e => {
+    const dropdown = document.getElementById('abDropdown');
+    if (!dropdown) return;
+    if (!dropdown.contains(e.target)) setAbDropdownOpen(false);
+  });
+
+  function switchIsPair(n) {
+    currentIsPair = n;
+    [0,1,2].forEach(i => document.getElementById('isPairBtn'+i).classList.toggle('active', i===n));
+    _updateAbCharts();
+  }
+
+  function switchExpTab(tab) {
+    document.getElementById('expTabRunning').classList.toggle('active', tab==='running');
+    document.getElementById('expTabDone').classList.toggle('active', tab==='done');
+    document.getElementById('expListRunning').style.display = tab==='running' ? '' : 'none';
+    document.getElementById('expListDone').style.display    = tab==='done'    ? '' : 'none';
+  }
+
+  // ══ AB Test Charts 초기화 ══
+  function initAbCharts() {
+    const d0 = buildAbData(1, 1);
+
+    const xTicks = {
+      color:'#C4C9D4', font:{size:9}, maxRotation:0,
+      callback: (val, idx) => idx % 7 === 0 ? dDayLabels[idx] : ''
+    };
+
+    const abOpts = (yFmt) => ({
+      responsive: true, maintainAspectRatio: false,
+      layout: { padding: { top: 4 } },
+      plugins: {
+        legend: { display:false },
+        tooltip: {
+          mode:'index', intersect:false,
+          backgroundColor:'#fff', borderColor:'#ECEEF2', borderWidth:1,
+          titleColor:'#9CA3AF', bodyColor:'#111', padding:8,
+          titleFont:{size:10}, bodyFont:{size:12,weight:'600'},
+          callbacks: { label: c => c.raw != null ? ` ${c.dataset.label}: ${yFmt(c.raw)}` : ` ${c.dataset.label}: —` }
+        }
+      },
+      scales: {
+        x: { grid:{display:false}, border:{display:false}, ticks: xTicks },
+        y: { grid:{color:'#F3F4F6',drawTicks:false}, border:{display:false},
+             ticks:{color:'#C4C9D4',font:{size:9},padding:6,callback:v=>v!=null?yFmt(v):''} }
+      }
+    });
+
+    function mkChart(id, src, yFmt) {
+      const ctx = document.getElementById(id).getContext('2d');
+      return new Chart(ctx, {
+        type:'line',
+        data:{ labels: dDayLabels, datasets:[
+          { label:'Variant B', data:[...src.test], borderColor:'#4F46E5', borderWidth:2,   pointRadius:0, pointHoverRadius:4, fill:1, backgroundColor:'rgba(79,70,229,0.10)', tension:0.38, spanGaps:false },
+          { label:'Control A', data:[...src.cont], borderColor:'#10B981', borderWidth:1.6, pointRadius:0, pointHoverRadius:4, fill:false, tension:0.38, borderDash:[5,3], spanGaps:false }
+        ]},
+        options: abOpts(yFmt),
+        plugins: [abSplitPlugin]
+      });
+    }
+
+    abChartInstances.rev  = mkChart('abRevChart',  d0.rev,  v => `$${(v/1000).toFixed(1)}B`);
+    abChartInstances.au   = mkChart('abAuChart',   d0.au,   v => `${Math.round(v/1000)}K`);
+    abChartInstances.pur  = mkChart('abPurChart',  d0.pur,  v => `${(+v).toFixed(2)}%`);
+    abChartInstances.arpu = mkChart('abArpuChart', d0.arpu, v => `$${Math.round(v)}`);
+    syncAbExperimentSelection();
+  }
+
+  // ══ Filter pill toggle ══
+  document.querySelectorAll('.filter-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      const container = pill.closest('.filter-pills');
+      if (!container) return;
+      if (pill.classList.contains('emphasis')) {
+        pill.classList.toggle('active');
+        return;
+      }
+      container.querySelectorAll('.filter-pill:not(.emphasis)').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+    });
+  });
+
+  // ══ Toolbar select toggle ══
+  document.querySelectorAll('.toolbar-select').forEach(sel => {
+    sel.addEventListener('click', () => {
+      sel.classList.toggle('active');
+      sel.classList.toggle('soft');
+    });
+  });
+
+  // ══ Toolbar dropdown ══
+  function toggleTbDropdown(name) {
+    const btn = document.getElementById(name + 'DropdownBtn');
+    const menu = document.getElementById(name + 'DropdownMenu');
+    if (!btn || !menu) return;
+    const isOpen = menu.classList.contains('open');
+    document.querySelectorAll('.tb-dropdown-menu.open').forEach(m => m.classList.remove('open'));
+    document.querySelectorAll('.tb-dropdown-btn.is-open').forEach(b => b.classList.remove('is-open'));
+    if (!isOpen) {
+      menu.classList.add('open');
+      btn.classList.add('is-open');
+    }
+  }
+  function selectTbOption(name, label, el) {
+    document.getElementById(name + 'DropdownLabel').textContent = label;
+    const menu = document.getElementById(name + 'DropdownMenu');
+    if (menu) {
+      menu.querySelectorAll('.tb-dropdown-item').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+      menu.classList.remove('open');
+    }
+    const btn = document.getElementById(name + 'DropdownBtn');
+    if (btn) btn.classList.remove('is-open');
+  }
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.tb-dropdown') && !e.target.closest('.ab-dropdown') && !e.target.closest('.slot-param-card')) {
+      document.querySelectorAll('.tb-dropdown-menu.open').forEach(m => m.classList.remove('open'));
+      document.querySelectorAll('.tb-dropdown-btn.is-open').forEach(b => b.classList.remove('is-open'));
+      closeSlotParamMenus();
+    }
+  });
+
+  // ══ Init ══
+  initAbCharts();
+  renderRightPanel(1);
+  syncPanelLayout();
+  requestAnimationFrame(syncPanelLayout);
+</script>
+</body>
+</html>

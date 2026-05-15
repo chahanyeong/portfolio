@@ -1,0 +1,773 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>차한영 Hanyeong Cha</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="6f855f6f-9936-4fd5-a6c2-a667da46aec0" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">📃</span></div><h1 class="page-title" dir="auto">차한영 <strong>Hanyeong Cha</strong></h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><hr id="1c136918-f9c5-4b7f-9d82-84fd63416da9"/></div><div style="display:contents" dir="auto"><div id="088e00f1-f2b4-4785-b493-adc915fdfb14" class="column-list"><div style="display:contents" dir="auto"><div id="8435c8cb-fe39-47ba-af3e-8d7b2d2269bb" style="width:37.5%" class="column"><div style="display:contents" dir="ltr"><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="355b361b-97e2-80fc-91db-cb82c4f0cf4f"><div style="font-size:1.5em"><span class="icon">🧑</span></div><div style="width:100%"><div style="display:contents" dir="auto"><h2 id="7b065621-69b7-4835-a0f8-d2be3b3dff8a" class="block-color-gray_background">기본정보</h2></div><div style="display:contents" dir="auto"><hr id="7ff974dc-7f78-4b5d-a459-52324cd11ac8"/></div><div style="display:contents" dir="ltr"><figure id="a4beedbe-5b70-4cbf-b7dd-9a2edb0fe67f" class="image"><a href="19d5e94b-9831-47ba-bdb9-bed55d56ec09.png"><img style="width:432px" src="19d5e94b-9831-47ba-bdb9-bed55d56ec09.png"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="fd26d27a-aae4-48c1-b66f-e3b806237141" class="link-to-page"><a href="https://www.notion.so/2000-01-07-fd26d27aaae448c1b66fe3b806237141?pvs=21"><span class="icon">🙆‍♂️</span>2000.01.07</a></figure></div><div style="display:contents" dir="ltr"><figure id="3b43b052-a099-4b48-8cb7-5c3ed8182698" class="link-to-page"><a href="https://www.notion.so/82-1075416426-3b43b052a0994b488cb75c3ed8182698?pvs=21"><span class="icon">📞</span>+82 1075416426</a></figure></div><div style="display:contents" dir="ltr"><figure id="33941336-b5cb-4694-8638-be8b50e5f2ba" class="link-to-page"><a href="https://www.notion.so/187-26-33941336b5cb46948638be8b50e5f2ba?pvs=21"><span class="icon">📍</span>서울 관악구 남부순환로187길 26</a></figure></div><div style="display:contents" dir="ltr"><figure id="bf85b9ea-aff8-4943-a059-11117d4f43df" class="link-to-page"><a href="https://www.notion.so/chahanyeong-naver-com-bf85b9eaaff84943a05911117d4f43df?pvs=21"><span class="icon">✉️</span>chahanyeong@naver.com</a></figure></div><div style="display:contents" dir="ltr"><figure id="bbf65e15-b54c-49e4-8f95-d25322d146c1" class="link-to-page"><a href="https://www.notion.so/2020-02-2021-08-bbf65e15b54c49e48f95d25322d146c1?pvs=21"><span class="icon">🪖</span>군필 / 2020.02 ~ 2021.08</a></figure></div><div style="display:contents" dir="auto"><p id="35bb361b-97e2-8019-8b4a-e7fac74ef7fb" class="">
+</p></div></div></figure></div><div style="display:contents" dir="auto"><p id="35bb361b-97e2-802b-b07c-f31f46159c77" class="">
+</p></div><div style="display:contents" dir="auto"><p id="355b361b-97e2-80b5-9fd3-e24771d99ac5" class="">
+</p></div><div style="display:contents" dir="ltr"><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="355b361b-97e2-8007-bade-cbe3dbdfa398"><div style="font-size:1.5em"><span class="icon">🎒</span></div><div style="width:100%"><div style="display:contents" dir="auto"><p id="355b361b-97e2-80df-96da-ec9e0de739e4" class="">학력</p></div><div style="display:contents" dir="auto"><hr id="355b361b-97e2-8015-81f9-dcc6f0bdd793"/></div><div style="display:contents" dir="auto"><h3 id="355b361b-97e2-8010-b4d3-c409ea9d2de3" class="">숭실대학교            </h3></div><div style="display:contents" dir="auto"><p id="355b361b-97e2-80fc-bf58-d9421f46994a" class=""><em><mark class="highlight-default">2018.03 - 2024.02 (졸업)</mark></em></p></div><div style="display:contents" dir="auto"><ul id="355b361b-97e2-804f-a89f-d678703cea78" class="bulleted-list"><li style="list-style-type:disc">수학과 전공</li></ul></div><div style="display:contents" dir="auto"><ul id="355b361b-97e2-8010-b079-ca785a70b55e" class="bulleted-list"><li style="list-style-type:disc">정보통계보험수리학과 복수 전공</li></ul></div><div style="display:contents" dir="auto"><p id="35bb361b-97e2-80bb-9895-f0f6cca0fe7b" class="">
+</p></div><div style="display:contents" dir="auto"><h3 id="355b361b-97e2-8092-a0b9-f376554cec5b" class="">강화고등학교    </h3></div><div style="display:contents" dir="auto"><p id="355b361b-97e2-807d-a7b7-f6aefd6d9ad3" class=""><em><mark class="highlight-default">2015.03 - 2018.02 (졸업)</mark></em></p></div><div style="display:contents" dir="auto"><p id="35bb361b-97e2-80f9-81b1-d591115f8f0a" class="">
+</p></div></div></figure></div><div style="display:contents" dir="auto"><p id="355b361b-97e2-8059-93ca-e0c6d67394fd" class="">
+</p></div><div style="display:contents" dir="ltr"><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="355b361b-97e2-80da-bf6a-db4a276d9ed3"><div style="font-size:1.5em"><span class="icon">🪪</span></div><div style="width:100%"><div style="display:contents" dir="auto"><h2 id="78f8e6b7-3c1b-4d5d-8c55-847e99e7086c" class="block-color-gray_background">자격증</h2></div><div style="display:contents" dir="auto"><hr id="fd4c9c02-06a8-4019-9cef-0ec090f40729"/></div><div style="display:contents" dir="auto"><p id="f4c993bf-0788-4c5f-bf0c-2575e7749a01" class=""><strong>SQL개발자(SQLD)</strong> <em>2023.12.</em></p></div><div style="display:contents" dir="auto"><p id="255e62c0-bd98-40fc-ab86-08b53d236564" class=""><strong>데이터분석준전문가(ADsP)</strong> <em>2022.03.</em></p></div><div style="display:contents" dir="auto"><p id="3321bcb6-ccb1-4597-b072-8000a781cf82" class=""><strong>컴퓨터활용능력 1급</strong> <em>2021.11.</em></p></div><div style="display:contents" dir="auto"><p id="19075eb3-3012-43c8-a3af-cd99f5d5174e" class=""><strong>GTQi(일러스트) 1급</strong> <em>2022.11.</em></p></div><div style="display:contents" dir="auto"><p id="1bab361b-97e2-800b-8931-da1585a8c8fc" class=""><strong>GTQ(포토샵) 1급</strong> <em>2022.09.</em></p></div><div style="display:contents" dir="auto"><p id="35bb361b-97e2-8078-96b0-fbf53d61eafc" class="">
+</p></div></div></figure></div><div style="display:contents" dir="auto"><p id="245b361b-97e2-8058-947f-e5e50559e52f" class="">
+</p></div><div style="display:contents" dir="auto"><p id="35bb361b-97e2-8071-a652-e69a968a872f" class="">
+</p></div><div style="display:contents" dir="auto"><p id="35bb361b-97e2-80a2-bf09-e85fa7fe7bc5" class="">
+</p></div><div style="display:contents" dir="auto"><p id="355b361b-97e2-809b-af4f-ce69a089c022" class="">
+</p></div></div></div><div style="display:contents" dir="auto"><div id="70fa751f-1534-4b9c-9605-021a2f322685" style="width:62.5%" class="column"><div style="display:contents" dir="auto"><h2 id="651c0bd8-cfdf-4f77-bc3e-af7ddadff039" class="block-color-gray_background">경력사항</h2></div><div style="display:contents" dir="auto"><hr id="1fb15e62-a41a-43fd-b2e8-271c740fc36c"/></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>더블유게임즈 | 사업관리본부 Game Stability 팀</strong></summary><div class="indented"><div style="display:contents" dir="auto"><p id="1e4b361b-97e2-804b-a4c1-ea1b676186c3" class=""><em><mark class="highlight-default">2024.11. - 재직중 (1년 6개월)</mark></em></p></div><div style="display:contents" dir="auto"><p id="33cb361b-97e2-8032-a4d9-c958f9d7aed0" class=""><strong>주간 게임 모니터링 분석 보고서 작성 - 대표 앱 운영 방향 의사결정 5개 진행</strong></p></div><div style="display:contents" dir="auto"><ul id="345b361b-97e2-80cb-8017-f7f79eba72a2" class="bulleted-list"><li style="list-style-type:disc">주단위 게임 모니터링 지표 정의 및 해석<div style="display:contents" dir="auto"><ul id="345b361b-97e2-80b6-a23e-d3ce03babf0d" class="bulleted-list"><li style="list-style-type:circle">유저 지표 정의 및 이전 4주 대비 변화율 스코어링으로 전체적인 지표 흐름 파악</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="345b361b-97e2-80eb-adfc-e426b5060ebc" class="bulleted-list"><li style="list-style-type:disc">주간 이벤트 트레킹 및 매출 KPI 달성도 파악<div style="display:contents" dir="auto"><ul id="345b361b-97e2-803b-8ebc-c9e28bc3d7f4" class="bulleted-list"><li style="list-style-type:circle">주요 강세 이벤트 현황 분석, 평가 및 제언 </li></ul></div><div style="display:contents" dir="auto"><ul id="345b361b-97e2-8016-af04-c02ee4420e5f" class="bulleted-list"><li style="list-style-type:circle">앱 매출 예측<strong>(주차별 매출 증감 정확도 2025년 상반기 76%, 2025년 하반기 86%)</strong></li></ul></div></li></ul></div><div style="display:contents" dir="auto"><p id="345b361b-97e2-8090-8e10-d957b811ac6b" class="">
+</p></div><div style="display:contents" dir="auto"><p id="345b361b-97e2-8047-8da7-cea072760b96" class=""><strong>앱 헬스케어 시스템 구축 및 관리</strong></p></div><div style="display:contents" dir="auto"><ul id="355b361b-97e2-8093-996d-e12a88ef965e" class="bulleted-list"><li style="list-style-type:disc"><strong>크래시 리포트 이슈 건수 동일년도 상반기 기준 하반기 60.53% 감소</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="345b361b-97e2-804e-a0ee-d9eb61d603bf" class="bulleted-list"><li style="list-style-type:disc">기존 Crontab 스케줄링을 Dagster + Bitbucket을 사용한 DevOps 기반 인프라로 재구축</li></ul></div><div style="display:contents" dir="auto"><ul id="345b361b-97e2-809a-b5eb-d6fd70796c38" class="bulleted-list"><li style="list-style-type:disc">얼럿 발생 시 지표별 신속 대응 및 타 부서 연계</li></ul></div><div style="display:contents" dir="auto"><ul id="345b361b-97e2-800a-ba48-d67520fba892" class="bulleted-list"><li style="list-style-type:disc">게임 내 이상탐지 얼럿 추가 제작 및 고도화</li></ul></div><div style="display:contents" dir="auto"><p id="345b361b-97e2-8081-ab3a-cbab84245182" class="">
+</p></div><div style="display:contents" dir="auto"><p id="345b361b-97e2-8052-b1e7-fd5a60275bfa" class=""><strong>AB Test 대상자 추출 및 사후 관리</strong></p></div><div style="display:contents" dir="auto"><ul id="355b361b-97e2-8050-965b-e909d865c535" class="bulleted-list"><li style="list-style-type:disc">매칭 로직 고도화를 통해 <strong>매칭 시간 -91.6%, 실험 전 실험군·대조군 R0 차이 -90.4% 개선</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="345b361b-97e2-8041-ae37-d41cc03126a1" class="bulleted-list"><li style="list-style-type:disc">기획팀의 AB Test 추출 요청 시 검토 후 기획에 맞는 실험군/대조군 전달</li></ul></div><div style="display:contents" dir="auto"><ul id="345b361b-97e2-8089-877b-cef0d06fe1c6" class="bulleted-list"><li style="list-style-type:disc">대상자 추출 프로세스 일원화를 통한 협업 부서 리소스 절감</li></ul></div><div style="display:contents" dir="auto"><p id="355b361b-97e2-80ca-9e66-e14bff437ef1" class="">
+</p></div><div style="display:contents" dir="auto"><p id="355b361b-97e2-80e5-a1d4-e4275e3b1c51" class=""><strong>앱 데이터 정합성 관리</strong></p></div><div style="display:contents" dir="auto"><ul id="355b361b-97e2-80e9-aaf9-e0277e2a81e7" class="bulleted-list"><li style="list-style-type:disc">서버 코인 및 유저 트랜잭션 코인 트레킹<div style="display:contents" dir="auto"><ul id="355b361b-97e2-800b-a176-df5adeb221ea" class="bulleted-list"><li style="list-style-type:circle"><strong>유저 코인 정합성 오차율 76.8% 개선(기존 오차율 88.90% → 12.10%)</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="355b361b-97e2-80db-937a-c1902b1f4375" class="bulleted-list"><li style="list-style-type:circle">고유 ID가 중복 부여된 유저 1,155명 식별 및 휴먼 useridx 제거를 통해 오차율 59.18% 개선</li></ul></div><div style="display:contents" dir="auto"><ul id="355b361b-97e2-80d7-aaa6-fe530453bc4c" class="bulleted-list"><li style="list-style-type:circle">유저 코인이 반영되지 않는 예외 케이스 점검 및 로직 개선으로 17.62% 추가 개선</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="355b361b-97e2-80fd-9661-f5de21c9cbbe" class="bulleted-list"><li style="list-style-type:disc">안드로이드 결제 이력 정합성 개선<div style="display:contents" dir="auto"><ul id="355b361b-97e2-802a-b537-df1a52253a7c" class="bulleted-list"><li style="list-style-type:circle"><strong>주간 유저 코인 미지급 건수 462개 → 5개(99%), 미지급 금액 $16,000 → $300(98%)로 감소</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="355b361b-97e2-80eb-a16f-d4e5df1150c0" class="bulleted-list"><li style="list-style-type:circle">유저의 AOS 결제 이후 구매 상품에 대응대는 재화가 들어오지 않는 문제를 이슈화</li></ul></div><div style="display:contents" dir="auto"><ul id="355b361b-97e2-801a-b1a3-dcc007acab90" class="bulleted-list"><li style="list-style-type:circle">Google Play Console 페이지 실시간 크롤링을 통해 DB에 영수증 데이터 축적</li></ul></div><div style="display:contents" dir="auto"><ul id="355b361b-97e2-8040-9cc7-cafb55322bed" class="bulleted-list"><li style="list-style-type:circle">축적 영수증과 결제 테이블 간 대조를 통해 불일치 영수증 건수 정량화</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><p id="345b361b-97e2-8076-9bd5-d5e2b07ef272" class="">
+</p></div><div style="display:contents" dir="auto"><p id="345b361b-97e2-80eb-be57-fad1480c953e" class=""><strong>전사가 공유 가능한 성과 측정 지표 설계 및 대시보드 제작</strong></p></div><div style="display:contents" dir="auto"><ul id="345b361b-97e2-80cd-95f4-eb50b80bff46" class="bulleted-list"><li style="list-style-type:disc">AB Test 통합 대시보드 제작<div style="display:contents" dir="auto"><ul id="345b361b-97e2-8004-b033-e3e374dc7666" class="bulleted-list"><li style="list-style-type:circle">AB Test의 4가지 지표(누적매출, AU, PUR, ARPU) 설계</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="345b361b-97e2-80f0-8608-c2b54043abf2" class="bulleted-list"><li style="list-style-type:disc">신규 슬롯 트레킹 대시보드<div style="display:contents" dir="auto"><ul id="345b361b-97e2-802e-80fa-ff60dfec87fa" class="bulleted-list"><li style="list-style-type:circle">출시 이후 슬롯 매출, AU, 플레이 퍼널 등을 정의</li></ul></div><div style="display:contents" dir="auto"><ul id="345b361b-97e2-808e-8c76-dfbe7e149e93" class="bulleted-list"><li style="list-style-type:circle">슬롯 매출 약세 시 추가 출시 의사결정에 해당 지표 반영</li></ul></div></li></ul></div></div></details></div><div style="display:contents" dir="auto"><p id="35bb361b-97e2-80c8-91f3-dee682556ed5" class="">
+</p></div><div style="display:contents" dir="auto"><p id="35bb361b-97e2-807e-9bac-c6dcabcada6a" class="">
+</p></div><div style="display:contents" dir="auto"><p id="35bb361b-97e2-8062-b439-ff737736a2c9" class="">
+</p></div><div style="display:contents" dir="auto"><p id="35bb361b-97e2-80f2-82e4-c721ac0efc5c" class="">
+</p></div><div style="display:contents" dir="auto"><p id="35bb361b-97e2-8033-ae50-d51df0fc4a7c" class="">
+</p></div><div style="display:contents" dir="auto"><p id="35bb361b-97e2-8015-9c02-e07d07d2e08e" class="">
+</p></div><div style="display:contents" dir="auto"><p id="1e4b361b-97e2-80ec-badd-f1549fec3f10" class="">
+</p></div></div></div></div></div><div style="display:contents" dir="auto"><h2 id="1e4b361b-97e2-806d-8671-d6566739c5d9" class="block-color-gray_background">프로젝트</h2></div><div style="display:contents" dir="auto"><hr id="1e4b361b-97e2-80d7-a770-d68069099f35"/></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>앱 헬스케어 시스템 구축 (클라이언트 크래시 리포트 이슈 상반기 38건 → 하반기 15건으로 감소) | 더블유게임즈</strong></summary><div class="indented"><div style="display:contents" dir="auto"><p id="345b361b-97e2-80fb-889e-d32af4066e4e" class=""><em><mark class="highlight-default">2025.08. - 2025.12</mark></em></p></div><div style="display:contents" dir="auto"><ul id="345b361b-97e2-80c9-9bb6-e9da6e8234c4" class="bulleted-list"><li style="list-style-type:disc">Dagster + Bitbucket으로 기존 주피터 얼럿 서버를 보안하는 DevOps 기반 인프라 개발<div style="display:contents" dir="auto"><ul id="345b361b-97e2-8013-852b-f1b72d47396c" class="bulleted-list"><li style="list-style-type:circle">Bitbucket Runner로 비개발자도 사용 가능한 CI/CD 자동 배포 환경 구축</li></ul></div><div style="display:contents" dir="auto"><ul id="345b361b-97e2-8051-802a-db5a6f712489" class="bulleted-list"><li style="list-style-type:circle">크론탭 수동 점검을 Dagster UI 모니터링으로 대체하여 스케줄링 안정성 및 운영 효율 향상</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="345b361b-97e2-8048-af03-c1394b3f390f" class="bulleted-list"><li style="list-style-type:disc">기존 얼럿 시스템의 불확실성을 정량화하여 측정가능한 체계로 재구성<div style="display:contents" dir="auto"><ul id="345b361b-97e2-8017-a08d-ef089d7724e7" class="bulleted-list"><li style="list-style-type:circle">자사 앱 운영 얼럿 44개 리뷰, 얼럿 평가에 사용할 2025년 개발 이슈 History 75개 리스트 업</li></ul></div><div style="display:contents" dir="auto"><ul id="345b361b-97e2-8031-9b5f-ea40c3c8ab0c" class="bulleted-list"><li style="list-style-type:circle">평가 가능한 15개 얼럿을 이슈 Recall, 정밀도, 반응성, 오탐률 4가지 지표로 정량적 평가 및 개선점 도출</li></ul></div><div style="display:contents" dir="auto"><ul id="345b361b-97e2-80b8-a21e-caee1fdff5c0" class="bulleted-list"><li style="list-style-type:circle">KPI 기반으로 반기 단위 평가·개선 사이클을 운영하는 얼럿 품질 관리 체계 수립</li></ul></div></li></ul></div></div></details></div><div style="display:contents" dir="auto"><p id="345b361b-97e2-8096-8b3a-c9975e0a3240" class="">
+</p></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><strong>재화 인플레이션 밸런싱 분석 (고액 상품 판매 건수 4.5%, PU 5.1% 증가) | 더블유게임즈</strong></summary><div class="indented"><div style="display:contents" dir="auto"><p id="345b361b-97e2-80f3-802b-c06815053a92" class=""><em><mark class="highlight-default">2025.03. - 2025.04</mark></em></p></div><div style="display:contents" dir="auto"><ul id="345b361b-97e2-800b-820c-d15a09abe523" class="bulleted-list"><li style="list-style-type:disc">구매 후 24시간 내 베팅 수준 히스토그램을 통해 슬롯 플레이 유저의 베팅 수준과 구매 상품 가격이 비례한다는 인사이트 도출</li></ul></div><div style="display:contents" dir="auto"><ul id="345b361b-97e2-80af-b274-fa8a2a5fc0c5" class="bulleted-list"><li style="list-style-type:disc">회귀모형을 사용하여 인플레이션 이후 유저의 코인 소비 수준을 시각화</li></ul></div><div style="display:contents" dir="auto"><ul id="345b361b-97e2-8035-8002-c44ca348777f" class="bulleted-list"><li style="list-style-type:disc">해당 분석을 통해 인플레이션 배율이 낮았던 기존 고액 상품의 코인 지급률 약 20% 추가 증가로 재 조정</li></ul></div><div style="display:contents" dir="auto"><ul id="345b361b-97e2-805d-8fe1-ec4ec3d449f8" class="bulleted-list"><li style="list-style-type:disc">인플레이션 이후 10주 전후로 99$ 이상 고액 상품 기준 상품 판매 건수 4.5%, PU 5.1%로 증가시킴</li></ul></div></div></details></div><div style="display:contents" dir="auto"><p id="345b361b-97e2-806b-a238-d27c67add59e" class="">
+</p></div><div style="display:contents" dir="auto"><h2 id="33cb361b-97e2-80d0-84b2-d1f42bfc0e44" class="block-color-gray_background">수상내역 및 활동</h2></div><div style="display:contents" dir="auto"><hr id="33cb361b-97e2-8049-81b1-f4b46e9ba16f"/></div><div style="display:contents" dir="auto"><h3 id="33cb361b-97e2-80ca-879b-fbb455df34e6" class=""><strong>코드 유사성 판단 시즌 2 AI 경진대회 (DACON)</strong></h3></div><div style="display:contents" dir="auto"><p id="33cb361b-97e2-801d-b1d0-d82a2579d47a" class=""><strong>수상인증서(리더보드 5등) / </strong><em>2024.04.</em></p></div><div style="display:contents" dir="auto"><h3 id="33cb361b-97e2-805f-b7eb-d984f5cc2420" class=""><strong>국방 AI 경진대회 일반인 부문 (국방부, 과학기술정보통신부)</strong></h3></div><div style="display:contents" dir="auto"><p id="33cb361b-97e2-80c2-9e95-f929de650c3c" class=""><strong>후원기업상(6등) / </strong><em>2023.12.</em></p></div><div style="display:contents" dir="auto"><h3 id="33cb361b-97e2-8003-b543-fcbc0a4fc626" class=""><strong>2023 숭실대학 기초과학융합연구소 하계인텁십 학부 연구 인턴 (숭실대학 기초과학융합연구소)</strong></h3></div><div style="display:contents" dir="auto"><p id="33cb361b-97e2-803e-9708-f995d709a239" class=""><strong>우수상 / </strong><em>2023.09</em></p></div><div style="display:contents" dir="auto"><p id="35bb361b-97e2-80e5-8956-dd95cd583b63" class="">
+</p></div><div style="display:contents" dir="auto"><p id="35bb361b-97e2-800c-8cdf-c018e178d5d1" class=""><strong>멀티모달AI lab 비디오 생성팀 사원(단기계약직) </strong>(엔씨소프트, <em>2024.09. ~ 2024.10.)</em></p></div><div style="display:contents" dir="auto"><p id="35bb361b-97e2-80d9-8b65-c919749bdd86" class=""><strong>통계청 통계정보 플랫폼과 인턴 </strong>(통계청, <em>2024.05. ~ 2024.08.)</em></p></div><div style="display:contents" dir="auto"><p id="33cb361b-97e2-800c-ae52-c6b971f774f2" class=""><strong>통계 교육 재능기부단 수료</strong> (통계교육원, <em>2023.04. ~ 2023.12.)</em></p></div><div style="display:contents" dir="auto"><p id="33cb361b-97e2-80a3-be12-e35d5a2a06c9" class=""><strong>Tableau 신병 훈련소 21기 수료 </strong>(Tableau, <em>2023.04. ~ 2023.12.)</em></p></div><div style="display:contents" dir="auto"><p id="33cb361b-97e2-8056-a322-d75ca8afb238" class="">
+</p></div><div style="display:contents" dir="auto"><p id="33cb361b-97e2-805c-a193-cac20561c22a" class="">
+</p></div><div style="display:contents" dir="auto"><p id="33cb361b-97e2-8082-b511-eb693adc7e6e" class="">
+</p></div><div style="display:contents" dir="auto"><p id="33cb361b-97e2-802f-b93a-f23f8257c7ab" class="">
+</p></div><div style="display:contents" dir="auto"><p id="33cb361b-97e2-80e0-9ac3-dde120fbe5f9" class="">
+</p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

@@ -381,8 +381,68 @@ flowchart LR
       </div>
     </section>
     <section id="project-03" class="section section--project" aria-label="Project 03">
-      <p class="section__eyebrow">PROJECT 03</p>
-      <h2 class="section__title">자사 앱 대시보드 운영</h2>
+      <div class="section__inner">
+        <p class="section__eyebrow">PROJECT 03</p>
+        <h2 class="section__title">자사 앱 대시보드 운영</h2>
+        <p class="project__lead">
+          실험 현황(AB Test) + 신규 슬롯 트레킹을 한 UI에서 처리하는 운영 대시보드.
+          Pretendard + Chart.js + Tailwind CDN으로 직접 구축한 자체 BI.
+        </p>
+
+        <div class="project__subs project__subs--two">
+          <div class="project__sub">
+            <p class="sub__label">실험 현황</p>
+            <ul>
+              <li>FTUE 흐름 개편, 첫 구매 팝업 타이밍 등 AB Test 모니터링</li>
+              <li><code>is_pair</code> 세그먼테이션: 비결제 / pairwise / 결제 상위 8명</li>
+              <li>KPI: 누적매출, AU, 구매 전환율, ARPU</li>
+            </ul>
+          </div>
+          <div class="project__sub">
+            <p class="sub__label">신규 슬롯 트레킹</p>
+            <ul>
+              <li>오픈 슬롯 성과·리텐션 추적</li>
+              <li>매출 비중 흐름 (6시간 이동평균)</li>
+              <li>리텐션 비교 (신규 vs 최근 8주)</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="project__h3">라이브 미리보기</h3>
+        <p class="project__note">
+          카드를 클릭하면 실제 대시보드가 새 탭에서 풀스크린으로 열립니다. (좌측 사이드바·우측 패널·필터·차트 모두 동작)
+        </p>
+
+        <a class="dashboard-card" href="/dashboards/duc-ops.html" target="_blank" rel="noopener" aria-label="자사 앱 운영 대시보드 — 새 탭에서 열기">
+          <div class="dashboard-card__frame">
+            <iframe
+              src="/dashboards/duc-ops.html"
+              loading="lazy"
+              title="자사 앱 대시보드 미리보기"
+              tabindex="-1"
+            ></iframe>
+          </div>
+          <div class="dashboard-card__cta">
+            <span>전체 화면으로 열기</span>
+            <span aria-hidden="true">↗</span>
+          </div>
+        </a>
+
+        <div class="project__metrics">
+          <div class="metric-card">
+            <p class="sub__label">진행 중 실험</p>
+            <p class="metric metric--xl" data-target="2" data-suffix="">2</p>
+          </div>
+          <div class="metric-card">
+            <p class="sub__label">Q1 완료 실험 채택률</p>
+            <p class="metric metric--xl" data-target="62.5" data-suffix="%">62.5%</p>
+          </div>
+          <div class="metric-card">
+            <p class="sub__label">평균 개선 효과</p>
+            <p class="metric metric--xl" data-target="18.4" data-prefix="+" data-suffix="%">+18.4%</p>
+          </div>
+        </div>
+      </div>
     </section>
     <section id="contact" class="section section--contact" aria-label="Contact"></section>
   </main>

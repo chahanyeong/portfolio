@@ -291,8 +291,94 @@
       </div>
     </section>
     <section id="project-02" class="section section--project" aria-label="Project 02">
-      <p class="section__eyebrow">PROJECT 02</p>
-      <h2 class="section__title">DevOps 기반 스케줄 서버 운영 인프라 구축 및 이상탐지 시스템 KPI 정의</h2>
+      <div class="section__inner">
+        <p class="section__eyebrow">PROJECT 02</p>
+        <h2 class="section__title">DevOps 기반 스케줄 서버 운영 인프라 구축 및 이상탐지 시스템 KPI 정의</h2>
+        <p class="project__lead">
+          WHOW/DDC/DUC/SA/Bingo 등 게임 서비스의 핵심 지표를 24시간 자동 모니터링하는 Dagster 파이프라인.
+          크론탭 + 주피터 기반 임시 운영을 <strong>Dagster + Bitbucket(CI/CD)</strong> 기반 표준 운영 인프라로 전환.
+        </p>
+
+        <div class="project__subs project__subs--two">
+          <div class="project__sub">
+            <p class="sub__label">기존 운영의 한계</p>
+            <ul>
+              <li>이상탐지 KPI 부재 (정성적 판단)</li>
+              <li>주피터 노트북 직접 사용 → 버전 관리 불가</li>
+              <li>크론탭 UI·로그 부재 → 점검 비용 큼</li>
+              <li>라이브 서버 직접 수정·배포</li>
+            </ul>
+          </div>
+          <div class="project__sub">
+            <p class="sub__label">현재 운영 인프라</p>
+            <ul>
+              <li><strong>이상탐지 시스템 KPI 정의</strong> (recall · 오탐률 · 반응성)</li>
+              <li>Bitbucket 코드 버전 관리·롤백 체계 표준화</li>
+              <li>Bitbucket Runner CI/CD 자동 배포</li>
+              <li>Dagster UI로 실행 로그·작업 흐름 시각화</li>
+              <li><strong>크론탭 기반 얼럿 <span class="metric" data-target="42" data-suffix="개">42개</span> → Dagster 마이그레이션 완료</strong></li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="project__h3">Before / After — 운영 인프라 전환</h3>
+
+        <div class="ba-toggle" role="tablist" aria-label="Before/After 다이어그램 전환">
+          <button class="ba-toggle__btn is-active" data-state="before" role="tab" aria-selected="true">기존 운영</button>
+          <button class="ba-toggle__btn" data-state="after" role="tab" aria-selected="false">현재 운영</button>
+        </div>
+
+        <figure class="ba-diagram ba-diagram--before is-active" data-state="before">
+          <div class="mermaid">
+flowchart LR
+    A([요구사항 접수]) --> B[쿼리 작성<br/>주피터 노트북]
+    B --> C[크론탭 등록]
+    C --> D[라이브 서버 직접 수정]
+    D --> E{검증?}
+    E -->|수동 점검| F([배포])
+    E -->|문제 발생| D
+
+    style B fill:#fee2e2,stroke:#dc2626
+    style C fill:#fee2e2,stroke:#dc2626
+    style D fill:#fecaca,stroke:#dc2626
+    style E fill:#fed7aa,stroke:#ea580c
+          </div>
+          <figcaption>이상탐지 KPI 없음, 검증 단계 없음, 라이브 직접 수정·배포</figcaption>
+        </figure>
+
+        <figure class="ba-diagram ba-diagram--after" data-state="after">
+          <div class="mermaid">
+flowchart LR
+    A([요구사항 접수]) --> B[Bitbucket 커밋<br/>코드 버전 관리]
+    B --> C[Bitbucket Runner<br/>CI/CD 자동 빌드]
+    C --> D[Dagster Dev<br/>UI 검증 + 로그]
+    D --> E{이상탐지 KPI<br/>recall · 오탐률 · 반응성}
+    E -->|통과| F[관리자 승인]
+    F --> G([Dagster Live<br/>표준 배포])
+    E -->|실패| B
+
+    style B fill:#dcfce7,stroke:#16a34a
+    style C fill:#dcfce7,stroke:#16a34a
+    style D fill:#dbeafe,stroke:#2563eb
+    style E fill:#fef9c3,stroke:#ca8a04
+    style F fill:#dbeafe,stroke:#2563eb
+    style G fill:#dcfce7,stroke:#16a34a
+          </div>
+          <figcaption>버전 관리 + CI/CD + Dev 검증 + KPI 정량 평가 + 승인 배포</figcaption>
+        </figure>
+
+        <h3 class="project__h3">Dagster 운영 화면</h3>
+        <div class="project__gallery">
+          <figure>
+            <img src="/assets/img/alert-server-dagster-jobs.png" alt="Dagster Jobs UI — DUC_HC_001_CCU_Warning job 그래프" loading="lazy" />
+            <figcaption>Dagster Jobs UI — health_check 파이프라인 op 그래프</figcaption>
+          </figure>
+          <figure>
+            <img src="/assets/img/alert-server-timeline.png" alt="Dagster Timeline — health_check / analysis jobs 24시간 실행 흐름" loading="lazy" />
+            <figcaption>Dagster Timeline — 24시간 health_check / analysis jobs 실행 흐름</figcaption>
+          </figure>
+        </div>
+      </div>
     </section>
     <section id="project-03" class="section section--project" aria-label="Project 03">
       <p class="section__eyebrow">PROJECT 03</p>
@@ -304,6 +390,7 @@
     <small>© 2026 차한영 · End-to-end Data Analytics Engineer</small>
   </footer>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js" defer></script>
+  <script src="/js/mermaid-init.js" defer></script>
   <script src="/js/main.js" defer></script>
 </body>
 </html>

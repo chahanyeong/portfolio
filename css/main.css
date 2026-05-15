@@ -377,3 +377,88 @@ button { font-family: inherit; cursor: pointer; }
   color: var(--accent);
 }
 .metric--lg { font-size: 1.25em; }
+
+/* PROJECT 02 — two-col subs */
+.project__subs--two { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 720px) {
+  .project__subs--two { grid-template-columns: 1fr; }
+}
+
+/* Before/After toggle */
+.ba-toggle {
+  max-width: var(--max-content);
+  margin: 0 auto var(--space-4);
+  display: inline-flex;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px;
+  gap: 4px;
+}
+.ba-toggle__btn {
+  border: none;
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  padding: 8px 18px;
+  border-radius: 999px;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  transition: background var(--t-fast) var(--ease-out), color var(--t-fast) var(--ease-out);
+}
+.ba-toggle__btn.is-active {
+  background: var(--accent);
+  color: #fff;
+}
+.ba-diagram {
+  max-width: var(--max-content);
+  margin: 0 auto var(--space-6);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-5);
+  display: none;
+  opacity: 0;
+  transition: opacity var(--t-med) var(--ease-out);
+}
+.ba-diagram.is-active {
+  display: block;
+  opacity: 1;
+}
+.ba-diagram .mermaid {
+  display: flex;
+  justify-content: center;
+  min-height: 200px;
+}
+.ba-diagram figcaption {
+  text-align: center;
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+  margin-top: var(--space-3);
+}
+
+/* Project gallery (2-up image grid) */
+.project__gallery {
+  max-width: var(--max-content);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+.project__gallery figure {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-3);
+}
+.project__gallery img {
+  width: 100%;
+  border-radius: 8px;
+}
+.project__gallery figcaption {
+  margin-top: var(--space-2);
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+  text-align: center;
+}

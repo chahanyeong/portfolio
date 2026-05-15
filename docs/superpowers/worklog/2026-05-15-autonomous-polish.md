@@ -119,3 +119,20 @@
 
 자율 폴리시 세션 종료.
 
+## 후속 commits (worklog 작성 이후)
+
+| Hash | Change |
+|---|---|
+| `25f2ec2` | 호 hero CTA 외부 링크 화살표 일관성 + AI 카드 hover 단순화 |
+| `03cb061` | footer CSS cleanup (centered minimal) |
+| `8acabd4` | resume.html에 '← Portfolio' pill |
+| `de067e9` | project image gallery 2-col on desktop |
+| `cf407a6` | section eyebrow에 editorial em-dash prefix |
+
+## 총 37 commits
+
+자율 작업 끝. 사용자 복귀 후 라이브 사이트 점검·피드백 대기.
+
+라이브: https://chahanyeong.github.io/portfolio/
+
+

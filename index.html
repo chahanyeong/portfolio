@@ -14,6 +14,9 @@
   <meta property="og:url" content="https://chahanyeong.github.io/portfolio/" />
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23FF6F0F'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700' font-size='18'%3Ec%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400;9..144,500;9..144,600;9..144,700&display=swap" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono.css" />
   <link rel="stylesheet" href="css/tokens.css" />
@@ -71,17 +74,17 @@
           <div class="ai-card__section">
             <p class="ai-card__label">방법론</p>
             <ul>
-              <li>Claude Code의 <strong>agent team</strong> 기능으로 서브에이전트 다수 spawn → 동일 입력에 병렬 작업</li>
-              <li>Claude (<code>opus-4-7</code>) + Codex (<code>gpt-5.5 / 5.4 / 5.4-mini</code>) 의도적 병용 → 단일 모델 편향 회피</li>
-              <li><code>AGENTS.md</code>에 모델 난이도별 분업 정책 ("약한 모델로 충분하면 그 모델로")</li>
+              <li>Claude Code의 <strong>agent team</strong>으로 서브에이전트 병렬 spawn</li>
+              <li>Claude (<code>opus-4-7</code>) + Codex (<code>gpt-5.5/5.4/mini</code>) 병용 → 단일 모델 편향 회피</li>
+              <li><code>AGENTS.md</code> 모델 난이도별 분업 — "약한 모델로 충분하면 그 모델로"</li>
             </ul>
           </div>
           <div class="ai-card__section">
-            <p class="ai-card__label">구체 사례 — <code>auto_report/projects/issue_timeline_extractor</code></p>
+            <p class="ai-card__label">사례 — <code>auto_report/issue_timeline_extractor</code></p>
             <ul>
-              <li>26년 상반기 개발 이슈 시트(약 <span class="metric" data-target="120" data-suffix="개">120개</span>)를 Leader 에이전트가 Agent Team을 spawn해 병렬 학습·평가</li>
-              <li>단계: <code>preflight → fetch_issues → categorize → discover_channels → fetch_slack → fetch_patches → Agent Team 병렬 → write_csv</code></li>
-              <li>산출물: 13-column augmented CSV + 패턴 디텍터 cross-issue audit notes (<code>audit_notes_26H1_*.md</code> v1~v5)</li>
+              <li>26H1 개발 이슈 <span class="metric" data-target="120" data-suffix="개">120개</span>를 Leader가 Agent Team을 spawn해 병렬 학습·평가</li>
+              <li><code>preflight → fetch → categorize → slack → patches → Agent Team → write_csv</code></li>
+              <li>산출: 13-column CSV + cross-issue audit notes</li>
             </ul>
           </div>
           <div class="ai-card__tags">
@@ -104,16 +107,16 @@
           <div class="ai-card__section">
             <p class="ai-card__label">방법론</p>
             <ul>
-              <li><strong>라이브 이중 환경</strong>: <code>aiops_dev</code> ↔ <code>aiops_gsdetection</code> Bitbucket 저장소 동시 관리</li>
-              <li>워크스페이스 단위 <strong>컨텍스트 인스트럭션 계층화</strong> — <code>CLAUDE.md</code>, <code>AGENTS.md</code>, <code>.codex/CODEX_ALERT_WORKSPACE.md</code>, <code>ENV_VARIABLES_LIST.md</code></li>
-              <li><code>CLAUDE.md</code> 규칙 강제 — 설정 중앙화, 하드코딩 정규식 자동 grep, 백필 안전 룰, 배포 순서(개발 검증 → 승인 → 라이브)</li>
+              <li><strong>이중 환경</strong>: <code>aiops_dev</code> ↔ <code>aiops_gsdetection</code> Bitbucket 동시 관리</li>
+              <li>워크스페이스별 <strong>인스트럭션 계층화</strong> — <code>CLAUDE.md</code> · <code>AGENTS.md</code> · <code>CODEX_*.md</code> · <code>ENV_VARIABLES_LIST.md</code></li>
+              <li><code>CLAUDE.md</code> 규칙 강제 — 설정 중앙화, 하드코딩 grep, 백필 안전 룰, 개발 검증 → 승인 → 라이브 순서</li>
             </ul>
           </div>
           <div class="ai-card__section">
-            <p class="ai-card__label">구체 사례 — 이상탐지 얼럿 서버</p>
+            <p class="ai-card__label">사례 — 이상탐지 얼럿 서버</p>
             <ul>
-              <li>Claude Code 에이전트가 자연어 요구사항을 받아 코드 작성·검증 → 관리자는 다른 분석 병행 → 결과 검토 후 라이브 반영</li>
-              <li>운영 인프라 측면(Dagster + Bitbucket)은 <a href="#project-02">PROJECT 02 ↓</a>에서 별도로 풀어둠</li>
+              <li>에이전트가 자연어 요구사항 받아 코드 작성·검증 → 관리자는 병행 작업 → 라이브 반영</li>
+              <li>운영 인프라(Dagster + Bitbucket)는 <a href="#project-02">PROJECT 02 ↓</a></li>
             </ul>
           </div>
           <div class="ai-card__tags">
@@ -135,24 +138,24 @@
           <div class="ai-card__section">
             <p class="ai-card__label">사용 중인 플러그인·스킬</p>
             <ul>
-              <li><strong>공식 플러그인 <code>superpowers</code></strong> — <code>brainstorming</code> · <code>writing-plans</code> · <code>test-driven-development</code> · <code>systematic-debugging</code> · <code>verification-before-completion</code> · <code>dispatching-parallel-agents</code> · <code>subagent-driven-development</code> · <code>using-git-worktrees</code></li>
-              <li><strong>외부 스킬 <code>goal</code></strong> — 세션 단위로 목표 고정, Stop hook으로 이탈 방지 → 멀리 가는 모델링 작업의 컨텍스트 일관성 유지</li>
-              <li><strong>커스텀 스킬 <code>creator_team</code></strong> — 6 페이즈 워크플로우 (Brainstorm → Plan → TDD → <strong>Phase 3.5 Dagster UI 검증</strong> → Simplify → Code Review → Finish)</li>
+              <li><strong><code>superpowers</code></strong> — <code>brainstorming</code> · <code>writing-plans</code> · <code>TDD</code> · <code>systematic-debugging</code> · <code>verification</code> · <code>parallel-agents</code> · <code>git-worktrees</code></li>
+              <li><strong><code>goal</code></strong> (외부) — 세션 목표 고정 + Stop hook으로 이탈 방지</li>
+              <li><strong><code>creator_team</code></strong> (커스텀 6페이즈) — Brainstorm → Plan → TDD → <strong>3.5 Dagster UI 검증</strong> → Simplify → Review → Finish</li>
             </ul>
           </div>
           <div class="ai-card__section">
-            <p class="ai-card__label">구체 사례 A — <code>GS_projection_renew_slot</code> · <code>goal</code>로 매출 예측 모델 develop</p>
+            <p class="ai-card__label">사례 A — <code>GS_projection_renew_slot</code> · <code>goal</code>로 매출 예측 모델</p>
             <ul>
-              <li>주간 매출 4주 전망 (28일 롤링) 모델링, <code>experiments/versions/v0_A ~ v5</code> 단계적 실험</li>
+              <li>주간 매출 4주 전망 (28일 롤링), <code>v0_A ~ v5</code> 단계적 실험</li>
               <li><strong>Phase 1 챔피언 <code>v4_AB_blended</code></strong> — base 대비 RMSE·CI·Direction 셋 다 strict 개선</li>
-              <li>DB 산출: <code>duc_projection_weights_per_fw</code>, <code>duc_projection_slot_components</code>, <code>duc_total_projection_28_v2</code></li>
+              <li>DB 산출 테이블 3종 (가중치 / 슬롯 성분 / 최종 예측)</li>
             </ul>
           </div>
           <div class="ai-card__section ai-card__section--with-preview">
-            <p class="ai-card__label">구체 사례 B — <code>Auto_calender</code> · <code>superpowers/brainstorming</code>으로 자동 앱 일정 캘린더</p>
+            <p class="ai-card__label">사례 B — <code>Auto_calender</code> · <code>superpowers/brainstorming</code>으로 자동 일정 캘린더</p>
             <ul>
               <li><strong>다단 LLM 폴백</strong>: Codex CLI → Claude CLI → Claude API → 휴리스틱</li>
-              <li><code>serve-approvals</code> 로컬 승인 서버, <code>Manual hold</code> 워크플로우, <code>rollback-run</code></li>
+              <li>로컬 승인 서버, <code>Manual hold</code>, <code>rollback-run</code> 안전장치</li>
             </ul>
             <figure class="ai-card__preview">
               <img src="assets/img/auto-calendar-preview.png" alt="Auto Calendar Google Calendar 월간 뷰 — 배포·이벤트가 자동 등록된 화면" loading="lazy" />
@@ -180,20 +183,23 @@
           <div class="ai-card__section">
             <p class="ai-card__label">방법론</p>
             <ul>
-              <li>분석 요청 → <code>brainstorming</code>으로 spec 작성 → <code>writing-plans</code>로 plan → 실행 → 산출물 정리 → <strong>재사용 가치 있는 쿼리·KPI를 에이전트가 knowledge로 승격 제안</strong></li>
-              <li><strong>Auto Memory</strong> 14개 메모리 파일로 "같은 지적을 두 번 받지 않는 AI" 유지 — "백필은 INSERT만", "DDI 쿼리는 whitelist만"</li>
+              <li>분석 요청 → spec → plan → 실행 → <strong>재사용 쿼리·KPI를 knowledge로 승격</strong></li>
+              <li><strong>Auto Memory</strong> 14개 파일로 "같은 지적을 두 번 받지 않는 AI" — "백필은 INSERT만", "DDI는 whitelist만"</li>
             </ul>
           </div>
-          <div class="ai-card__section">
-            <p class="ai-card__label">구체 사례 — <code>redshift_agent</code> · DUC 데이터 분석 전용 에이전트 워크스페이스</p>
+          <div class="ai-card__section ai-card__section--with-preview">
+            <p class="ai-card__label">사례 — <code>redshift_agent</code> · DUC 분석 에이전트 워크스페이스</p>
             <ul>
-              <li>구조: <code>domains/&lt;domain&gt;/analyses/YYYY-MM-DD-&lt;slug&gt;/</code> + <code>knowledge/</code> + <code>shared/Ciphertext</code> + <code>agent/</code></li>
-              <li><strong>샘플 분석</strong>: <code>2026-04-06-mobile-ccu-anomaly</code> — 모바일 앱 CCU가 4/6 ~ 4/7 사이 이상치를 보였는지 + 플랫폼/버전 축 분석</li>
-              <li>지표 정의: CCU = 15분 단위 접속 유저 수 (8주 baseline)</li>
-              <li>산출물: 자기완결형 인터랙티브 HTML 리포트 (d3.js 임베드)</li>
+              <li>구조: <code>analyses/YYYY-MM-DD-&lt;slug&gt;/</code> + <code>knowledge/</code> + <code>shared/Ciphertext</code></li>
+              <li><strong>샘플 분석</strong>: <code>2026-04-06-mobile-ccu-anomaly</code> — 4/6~4/7 CCU 이상치 + 플랫폼/버전 축 분석</li>
+              <li>산출: 자기완결형 인터랙티브 HTML 리포트 (d3.js)</li>
             </ul>
+            <figure class="ai-card__preview">
+              <img src="assets/img/sample-mobile-ccu.png" alt="Mobile CCU 이슈 집중 분석 4/5 ~ 4/8 — 1차·2차 이슈 구간과 baseline 대비 차이" loading="lazy" />
+              <figcaption>예측 baseline 대비 실제 CCU의 1차 이슈(−4,473) · 2차 이슈(−10,727) 구간 시각화</figcaption>
+            </figure>
             <a class="button" href="samples/mobile-ccu-anomaly.html" target="_blank" rel="noopener">
-              전체 분석 리포트 열기 ↗
+              인터랙티브 리포트 열기 ↗
             </a>
           </div>
           <div class="ai-card__tags">
@@ -231,10 +237,9 @@
           </div>
         </div>
 
-        <h3 class="project__h3">의사결정 사례 — 데이터로 가격 정책을 바꿔 매출을 끌어올림</h3>
+        <h3 class="project__h3">의사결정 사례</h3>
         <p class="project__note">
-          이 PROJECT의 핵심은 "지표를 본다"가 아니라
-          <strong>"지표에서 발견한 신호를 실제 액션으로 옮긴다"</strong>.
+          핵심은 "지표를 본다"가 아니라 <strong>"신호를 액션으로 옮긴다"</strong>.
         </p>
 
         <article class="decision-case">
@@ -246,17 +251,16 @@
           <ol class="decision-case__steps">
             <li>
               <p class="step__label">1 · 문제 인지</p>
-              <p>인플레이션 영향으로 고액 결제 상품의 상대적 매력도(요율 후함)가 떨어지고 있음을 KPI 보고에서 감지.</p>
+              <p>인플레이션으로 고액 상품의 상대적 매력도가 떨어지는 신호를 KPI 보고에서 감지.</p>
             </li>
             <li>
               <p class="step__label">2 · 데이터 분석</p>
-              <p>"결제 코인 대비 배팅 금액(최빈)" 차트로 결제 가격대별 유저 행동 패턴 분석.</p>
+              <p>결제 코인 대비 배팅 금액(최빈) 차트로 가격대별 행동 패턴 분석.</p>
               <figure class="decision-case__figure">
-                <img src="assets/img/project1_decision_betting.png" alt="결제 코인 대비 배팅 금액 차트 — $499 ~ $999 구간에서 비선형 급증" loading="lazy" />
+                <img src="assets/img/project1_decision_betting.png" alt="결제 코인 대비 배팅 금액 차트 — $499 ~ $999 구간 비선형 급증" loading="lazy" />
                 <figcaption>
-                  <strong>발견</strong>: $9 ~ $299는 평탄,
-                  $499 ~ $999에서 비선형 급증 →
-                  <em>고액 결제자가 결제 코인 대비 과도하게 큰 배팅 → 현재 offering이 박함</em>
+                  $9~$299는 평탄, $499~$999에서 비선형 급증 →
+                  <em>고액 결제자의 offering이 박함</em>
                 </figcaption>
               </figure>
             </li>
@@ -264,20 +268,20 @@
               <p class="step__label">3 · 시뮬레이션</p>
               <p>가격대별 <code>BaseCoin / 판매가격 % 요율</code> 변경안 작성.</p>
               <figure class="decision-case__figure">
-                <img src="assets/img/project1_decision_pricing.png" alt="가격대별 BaseCoin / 판매가격 % 요율 변경안 — $99~$999 구간 절대 코인량 증가" loading="lazy" />
+                <img src="assets/img/project1_decision_pricing.png" alt="가격대별 BaseCoin / 판매가격 % 요율 변경안" loading="lazy" />
                 <figcaption>
-                  <strong>변경 정책</strong>: $1 ~ $59는 그대로, $99 ~ $999는 $1당 지급 코인을 2.25 ~ 1.3배 증가.
-                  prestige 비율($1 대비 %)은 일부 축소 — 절대 코인량은 늘리되 등급 간 격차는 유지.
+                  $1~$59는 유지, $99~$999는 $1당 지급 코인 2.25~1.3배 증가.
+                  prestige 비율은 축소 — 절대량은 늘리되 등급 격차 유지.
                 </figcaption>
               </figure>
             </li>
             <li>
               <p class="step__label">4 · 사전 검증</p>
-              <p>상위상품 요율 증가가 게임 내 인플레이션(코인 가치 하락)을 야기하지 않는지 시뮬레이션.</p>
+              <p>상위상품 요율 변경이 게임 내 인플레이션을 야기하는지 시뮬레이션.</p>
             </li>
             <li>
               <p class="step__label">5 · 액션 → 결과</p>
-              <p>2026-04-09 변경안 적용. 인플레이션 이후 m/m 매출 <span class="metric metric--lg" data-target="7.9" data-suffix="%" data-prefix="+">+7.9%</span> 증가, 고액상품 건수 구매 비율 유지.</p>
+              <p>변경안 적용 후 m/m 매출 <span class="metric metric--lg" data-target="7.9" data-suffix="%" data-prefix="+">+7.9%</span> 증가, 고액상품 구매 비율 유지.</p>
             </li>
           </ol>
         </article>
@@ -288,8 +292,7 @@
             <h4>Facebook 팬페이지 정지 대응</h4>
           </header>
           <p>
-            KPI 보고에서 AU 하락 감지 → 외부 채널(Facebook 팬페이지) 정지 원인 식별 →
-            대체 페이지 정보를 유저에게 PUSH로 안내하는 UE 채널 대응 → 유저 복귀 확인.
+            KPI 보고에서 AU 하락 감지 → Facebook 팬페이지 정지 식별 → 대체 페이지 PUSH 안내 → 유저 복귀.
           </p>
         </article>
       </div>
@@ -299,8 +302,8 @@
         <p class="section__eyebrow">PROJECT 02</p>
         <h2 class="section__title">DevOps 기반 스케줄 서버 운영 인프라 구축 및 이상탐지 시스템 KPI 정의</h2>
         <p class="project__lead">
-          WHOW/DDC/DUC/SA/Bingo 등 게임 서비스의 핵심 지표를 24시간 자동 모니터링하는 Dagster 파이프라인.
-          크론탭 + 주피터 기반 임시 운영을 <strong>Dagster + Bitbucket(CI/CD)</strong> 기반 표준 운영 인프라로 전환.
+          게임 서비스(WHOW/DDC/DUC/SA/Bingo) 핵심 지표를 24시간 모니터링하는 Dagster 파이프라인.
+          크론탭 + 주피터 임시 운영을 <strong>Dagster + Bitbucket(CI/CD)</strong> 기반 표준 인프라로 전환.
         </p>
 
         <div class="project__subs project__subs--two">
@@ -389,8 +392,8 @@ flowchart LR
         <p class="section__eyebrow">PROJECT 03</p>
         <h2 class="section__title">자사 앱 대시보드 운영</h2>
         <p class="project__lead">
-          실험 현황(AB Test) + 신규 슬롯 트레킹을 한 UI에서 처리하는 운영 대시보드.
-          Pretendard + Chart.js + Tailwind CDN으로 직접 구축한 자체 BI.
+          실험 현황(AB Test) + 신규 슬롯 트레킹 통합 운영 대시보드.
+          Pretendard + Chart.js + Tailwind로 직접 구축한 자체 BI.
         </p>
 
         <div class="project__subs project__subs--two">
@@ -414,7 +417,7 @@ flowchart LR
 
         <h3 class="project__h3">라이브 미리보기</h3>
         <p class="project__note">
-          카드를 클릭하면 실제 대시보드가 새 탭에서 풀스크린으로 열립니다. (좌측 사이드바·우측 패널·필터·차트 모두 동작)
+          카드 클릭 → 새 탭에서 풀스크린. 사이드바·필터·차트 모두 동작.
         </p>
 
         <a class="dashboard-card" href="dashboards/duc-ops.html" target="_blank" rel="noopener" aria-label="자사 앱 운영 대시보드 — 새 탭에서 열기">

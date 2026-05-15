@@ -109,25 +109,50 @@ button { font-family: inherit; cursor: pointer; }
   padding-top: clamp(6rem, 12vw, 9rem);
   padding-bottom: clamp(4rem, 10vw, 7rem);
   background: linear-gradient(180deg, var(--bg) 0%, #fff 100%);
+  position: relative;
+  overflow: hidden;
+}
+.section--hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(148, 106, 71, 0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: 0 0;
+  mask-image: radial-gradient(ellipse 70% 60% at 85% 30%, #000 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 85% 30%, #000 0%, transparent 70%);
+  pointer-events: none;
+  opacity: 0.85;
 }
 .hero__inner {
   max-width: var(--max-content);
   margin: 0 auto;
   text-align: left;
+  position: relative;
+  z-index: 1;
 }
 .hero__title {
+  font-family: var(--font-display);
   font-size: var(--fs-hero);
-  font-weight: 700;
-  letter-spacing: var(--tracking-tight);
-  line-height: 1.05;
+  font-weight: 500;
+  font-variation-settings: 'opsz' 144, 'SOFT' 50, 'WONK' 0;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
   margin-top: var(--space-5);
   margin-bottom: var(--space-3);
   color: var(--text);
+}
+.hero__title em {
+  font-style: italic;
+  font-variation-settings: 'opsz' 144, 'SOFT' 100, 'WONK' 1;
+  color: var(--accent);
 }
 .hero__byline {
   font-size: 1.125rem;
   color: var(--text-muted);
   margin-bottom: var(--space-6);
+  font-family: var(--font-mono);
+  font-weight: 500;
 }
 .hero__cta {
   display: flex;
@@ -144,6 +169,51 @@ button { font-family: inherit; cursor: pointer; }
 .hero__stack .chip {
   background: transparent;
   border-color: var(--border);
+}
+
+/* Section meta — discreet 01/05 counter beside section titles */
+.section__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  max-width: var(--max-content);
+  margin: 0 auto var(--space-3);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  color: var(--brown);
+  text-transform: uppercase;
+}
+.section__meta::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border) 0%, transparent 100%);
+}
+.section__count {
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Section dividers between major sections (desktop only) */
+.section + .section { position: relative; }
+.section + .section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(120px, 30vw);
+  height: 1px;
+  background: var(--border);
+}
+
+/* Display serif for English-only headings */
+.contact__title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-variation-settings: 'opsz' 144;
+  letter-spacing: -0.025em;
 }
 
 /* AI Engineering Practice */

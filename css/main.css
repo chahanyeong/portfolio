@@ -255,6 +255,62 @@ button { font-family: inherit; cursor: pointer; }
   letter-spacing: -0.025em;
 }
 
+/* Impact Stats bar */
+.section--stats {
+  padding: var(--space-7) var(--space-6);
+  background: #FFFDF9;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.stats__inner {
+  max-width: var(--max-grid);
+  margin: 0 auto;
+}
+.stats__label {
+  text-align: left;
+  margin-bottom: var(--space-5);
+}
+.stats__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+  align-items: end;
+}
+@media (max-width: 880px) {
+  .stats__grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-6) var(--space-4); }
+}
+@media (max-width: 480px) {
+  .stats__grid { grid-template-columns: 1fr; }
+}
+.stat {
+  position: relative;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border);
+}
+.stat__num {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-variation-settings: 'opsz' 144;
+  font-size: clamp(2.25rem, 5.5vw, 3.75rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--accent);
+  margin-bottom: var(--space-2);
+}
+.stat__num .metric { color: var(--accent); font-family: inherit; font-weight: inherit; }
+.stat__unit {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.stat__desc {
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+  margin-top: var(--space-1);
+  font-family: var(--font-mono);
+  letter-spacing: 0.01em;
+}
+
 /* AI Engineering Practice */
 .section--ai { background: var(--bg); }
 .ai__lead {

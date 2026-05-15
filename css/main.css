@@ -219,8 +219,25 @@ button { font-family: inherit; cursor: pointer; }
   letter-spacing: -0.035em;
   line-height: 0.98;
   margin-top: var(--space-5);
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-4);
   color: var(--text);
+  position: relative;
+}
+.hero__title::after {
+  content: '';
+  display: block;
+  height: 3px;
+  width: 0;
+  background: var(--accent);
+  margin-top: var(--space-4);
+  animation: heroStroke 1.4s var(--ease-out) 0.4s forwards;
+}
+@keyframes heroStroke {
+  from { width: 0; }
+  to { width: 64px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__title::after { animation: none; width: 64px; }
 }
 .hero__title em {
   font-style: italic;
@@ -732,6 +749,16 @@ button { font-family: inherit; cursor: pointer; }
   overflow: hidden;
   background: #F8F9FB;
 }
+.dashboard-card__frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(15, 23, 42, 0.05) 100%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--t-fast) var(--ease-out);
+}
+.dashboard-card:hover .dashboard-card__frame::after { opacity: 1; }
 .dashboard-card__frame iframe {
   position: absolute;
   top: 0;
@@ -781,16 +808,37 @@ button { font-family: inherit; cursor: pointer; }
 .section--contact {
   background: linear-gradient(180deg, var(--bg) 0%, #fff 100%);
   text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.section--contact::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(148, 106, 71, 0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(ellipse 65% 55% at 20% 80%, #000 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 65% 55% at 20% 80%, #000 0%, transparent 70%);
+  opacity: 0.55;
+  pointer-events: none;
 }
 .contact__inner {
   max-width: var(--max-content);
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.contact__intro {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin-bottom: var(--space-3);
 }
 .contact__title {
-  font-size: var(--fs-section);
-  font-weight: 700;
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  font-weight: 500;
   letter-spacing: var(--tracking-tight);
   margin-bottom: var(--space-5);
+  line-height: 1.1;
 }
 .contact__email {
   display: inline-block;

@@ -1,0 +1,66 @@
+(() => {
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // --- Scroll fade-up ---
+  const fadeTargets = document.querySelectorAll('.section, .ai-card, .decision-case, .project__sub, .dashboard-card, .metric-card');
+  if (prefersReducedMotion) {
+    fadeTargets.forEach((el) => el.classList.add('is-visible'));
+  } else {
+    const fadeObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            fadeObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: '0px 0px -10% 0px', threshold: 0.05 }
+    );
+    fadeTargets.forEach((el) => {
+      el.classList.add('fade-up');
+      fadeObserver.observe(el);
+    });
+  }
+
+  // --- Number countup ---
+  const metricEls = document.querySelectorAll('.metric[data-target]');
+  const animateNumber = (el) => {
+    const target = parseFloat(el.dataset.target);
+    const suffix = el.dataset.suffix || '';
+    const prefix = el.dataset.prefix || '';
+    const duration = 1200;
+    const start = performance.now();
+    const decimals = (el.dataset.target.split('.')[1] || '').length;
+    const step = (now) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const value = target * eased;
+      el.textContent = `${prefix}${value.toFixed(decimals)}${suffix}`;
+      if (t < 1) requestAnimationFrame(step);
+      else el.textContent = `${prefix}${target}${suffix}`;
+    };
+    requestAnimationFrame(step);
+  };
+  if (prefersReducedMotion) {
+    metricEls.forEach((el) => {
+      el.textContent = `${el.dataset.prefix || ''}${el.dataset.target}${el.dataset.suffix || ''}`;
+    });
+  } else {
+    const numObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            animateNumber(entry.target);
+            numObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.6 }
+    );
+    metricEls.forEach((el) => {
+      el.textContent = `${el.dataset.prefix || ''}0${el.dataset.suffix || ''}`;
+      numObserver.observe(el);
+    });
+  }
+})();

@@ -53,6 +53,7 @@ button { font-family: inherit; cursor: pointer; }
   margin-left: auto;
   margin-right: auto;
 }
+.section__eyebrow::before { content: '— '; color: var(--accent); }
 .section__inner {
   max-width: var(--max-content);
   margin: 0 auto;

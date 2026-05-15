@@ -182,22 +182,18 @@ button { font-family: inherit; cursor: pointer; }
   pointer-events: none;
   opacity: 0.95;
 }
-.section--hero::after {
-  content: '〔 차 〕';
+.hero__monogram {
   position: absolute;
-  top: 4rem;
-  right: 4rem;
-  font-family: var(--font-mono);
-  font-size: 2rem;
-  font-weight: 700;
+  top: clamp(3rem, 8vw, 6rem);
+  right: clamp(2rem, 6vw, 5rem);
+  width: clamp(80px, 12vw, 140px);
   color: var(--accent);
-  letter-spacing: 0.05em;
-  opacity: 0.55;
-  pointer-events: none;
   z-index: 1;
+  pointer-events: none;
 }
+.hero__monogram svg { width: 100%; height: auto; display: block; }
 @media (max-width: 720px) {
-  .section--hero::after { display: none; }
+  .hero__monogram { display: none; }
 }
 .hero__inner {
   max-width: var(--max-content);

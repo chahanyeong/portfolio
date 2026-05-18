@@ -1665,6 +1665,8 @@
   // ══ Init ══
   initAbCharts();
   renderRightPanel(1);
+  // Support iframe deep-link (e.g. #page-slottracking) for portfolio embeds
+  if (window.location.hash === '#page-slottracking') switchDashboardPage('slottracking');
   syncPanelLayout();
   requestAnimationFrame(syncPanelLayout);
 </script>

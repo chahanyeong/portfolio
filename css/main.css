@@ -375,14 +375,14 @@ section { padding: 100px 22px; }
   background-clip: text;
   color: transparent;
 }
-.chapter__title--lg { margin-top: 88px; }
+.chapter__title--lg { margin-top: 96px; }
 
 .chapter__body {
-  max-width: var(--max-content);
+  max-width: 1040px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 56px;
   align-items: center;
 }
 @media (max-width: 820px) {
@@ -394,10 +394,11 @@ section { padding: 100px 22px; }
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  font-size: 16px;
-  line-height: 1.6;
+  gap: 18px;
+  font-size: 17px;
+  line-height: 1.65;
   color: var(--ink-soft);
+  word-break: keep-all;
 }
 .chapter__bullets li {
   position: relative;
@@ -420,6 +421,7 @@ section { padding: 100px 22px; }
   overflow: hidden;
   background: var(--surface);
   border: 1px solid var(--rule-soft);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
 }
 .chapter__figure img {
   display: block;
@@ -456,17 +458,30 @@ section { padding: 100px 22px; }
   background: var(--accent);
   color: #fff;
 }
+/* Stack both diagrams in the same grid cell so mermaid can measure
+   each parent's width during init even when one is visually hidden. */
+.ba-stage {
+  display: grid;
+  grid-template-areas: 'stack';
+  margin: 0;
+}
 .ba-diagram {
+  grid-area: stack;
   background: var(--surface);
   border: 1px solid var(--rule-soft);
   border-radius: 16px;
   padding: 32px 24px;
-  display: none;
+  margin: 0;
   opacity: 0;
-  transition: opacity var(--t-med) var(--ease-out);
+  visibility: hidden;
+  transition: opacity var(--t-med) var(--ease-out), visibility 0s var(--t-med);
   overflow-x: auto;
 }
-.ba-diagram.is-active { display: block; opacity: 1; }
+.ba-diagram.is-active {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity var(--t-med) var(--ease-out), visibility 0s 0s;
+}
 .ba-diagram .mermaid {
   display: flex;
   justify-content: center;

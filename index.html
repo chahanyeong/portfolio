@@ -104,7 +104,7 @@
         <p class="project__metric">이슈 영향 시간 <strong>40% 단축</strong></p>
 
         <!-- Chapter 1 -->
-        <h3 class="chapter__title">Dagster + Bitbucket으로 기존 서버를 <em>보완하는</em> DevOps 인프라 개발</h3>
+        <h3 class="chapter__title">Dagster + Bitbucket으로 기존 서버를 보완하는<br/><em>DevOps 인프라</em> 개발</h3>
 
         <div class="project__subs project__subs--two">
           <div class="project__sub project__sub--before">
@@ -135,35 +135,53 @@
           <figure class="ba-diagram ba-diagram--before is-active" data-state="before">
             <div class="mermaid">
 flowchart LR
-    A([요구사항]) --> B[쿼리 작성<br/>주피터 노트북]
-    B --> C[크론탭 등록]
-    C --> D[라이브 서버<br/>직접 수정]
-    D --> E([배포])
+    A([요구사항 접수]) --> B[쿼리 작성]
+    B --> C[파이프라인 코드 작성]
+    C --> D[포맷 룰 수동 점검<br/>config · DB헬퍼 · 하드코딩 등]
+    D --> E[디버깅 · 검증]
+    E -->|오류 발생| C
+    E --> F([수정 버전 배포<br/>라이브 직접 반영])
 
-    style B fill:#FEE2E2,stroke:#DC2626
-    style C fill:#FEE2E2,stroke:#DC2626
-    style D fill:#FECACA,stroke:#DC2626
+    style D fill:#ffd6d6,stroke:#ff4444
+    style E fill:#ffd6d6,stroke:#ff4444
+    style F fill:#ffe0b2,stroke:#ff6600
             </div>
-            <figcaption>버전 관리 없음, 검증 단계 없음, 라이브 직접 수정·배포</figcaption>
+            <figcaption>포맷 점검 · 디버깅 수동, 검증 없이 라이브 직접 반영</figcaption>
           </figure>
 
           <figure class="ba-diagram ba-diagram--after" data-state="after">
             <div class="mermaid">
 flowchart LR
-    A([요구사항]) --> B[Bitbucket<br/>코드 관리]
-    B --> C[CI/CD<br/>자동 빌드]
-    C --> D[Dagster Dev<br/>검증]
-    D -->|통과| E[관리자 승인]
-    E --> F([Dagster Live<br/>배포])
-    D -->|실패| B
+    subgraph MGR [관리자]
+        direction TB
+        TASK([요구사항 전달])
+        APPR([검토 및 승인])
+        PAR[/다른 분석 업무 병행/]
+    end
 
-    style B fill:#DBEAFE,stroke:#2563EB
-    style C fill:#DBEAFE,stroke:#2563EB
-    style D fill:#DCFCE7,stroke:#16A34A
-    style E fill:#DCFCE7,stroke:#16A34A
-    style F fill:#DBEAFE,stroke:#2563EB
+    subgraph AGBOX [AI 에이전트]
+        direction TB
+        AG[Claude Code]
+        RB[CLAUDE.md 포맷]
+        AG -.-> RB
+    end
+
+    DV[(dagster_dev<br/>개발 환경)]
+    LV[(dagster<br/>라이브 환경)]
+
+    TASK -->|① 요구사항 전달| AG
+    AG -->|② 코드 작성 및 검증| DV
+    DV -->|③ 결과 확인| APPR
+    APPR -->|④ 승인| LV
+
+    style MGR fill:#f9fafb,stroke:#6b7280
+    style AGBOX fill:#e8f5e9,stroke:#4CAF50
+    style RB fill:#e8f4fd,stroke:#2196F3
+    style DV fill:#eff6ff,stroke:#3b82f6
+    style LV fill:#dcfce7,stroke:#16a34a
+    style PAR fill:#fff9c4,stroke:#ffc107
             </div>
-            <figcaption>버전 관리 + CI/CD + Dev 검증 + 승인 배포</figcaption>
+            <figcaption>AI 에이전트가 Dev에서 작업 → 관리자 검토 → Live 반영. 그 동안 관리자는 다른 분석 병행.</figcaption>
           </figure>
         </div>
 

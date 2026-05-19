@@ -547,7 +547,7 @@ section { padding: 100px 22px; }
 .dashboard-card__frame {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   background: var(--bg-soft);
 }
@@ -565,10 +565,10 @@ section { padding: 100px 22px; }
   position: absolute;
   top: 0;
   left: 0;
-  width: 222%;
-  height: 222%;
+  width: 200%;
+  height: 200%;
   border: none;
-  transform: scale(0.45);
+  transform: scale(0.5);
   transform-origin: top left;
   pointer-events: none;
 }

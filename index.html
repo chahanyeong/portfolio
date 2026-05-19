@@ -75,10 +75,11 @@
         <h3 class="chapter__title">주단위 게임 모니터링 <em>지표 정의 및 해석</em></h3>
         <div class="chapter__body">
           <ul class="chapter__bullets">
+            <li>이전 28일 결제력을 기반으로 유저 세그먼트 구성</li>
             <li>유저 지표 정의 및 이전 4주 대비 변화율 스코어링으로 전체적인 지표 흐름 파악</li>
           </ul>
           <figure class="chapter__figure">
-            <img src="assets/img/project1_1.png" alt="주단위 게임 모니터링 지표 — 유저 지표와 변화율 스코어링" loading="lazy" />
+            <img src="assets/img/project1_1.png" alt="주단위 게임 모니터링 지표 — 유저 세그먼트 + 변화율 스코어링" loading="lazy" />
           </figure>
         </div>
 
@@ -86,7 +87,8 @@
         <h3 class="chapter__title chapter__title--lg">주간 이벤트 트레킹 + <em>매출 KPI 달성도</em> 파악</h3>
         <div class="chapter__body">
           <ul class="chapter__bullets">
-            <li>주요 강세 이벤트 현황 분석, 평가 및 제언</li>
+            <li>계절성 · 이벤트 가중치를 고려한 매출 예측 모델 피팅</li>
+            <li>실제 매출이 오차범위 밖으로 이탈 시 → A/B 영향 · 이슈 발생 여부 · 코어 지표 이상을 순차 점검하는 프로세스 구축</li>
             <li>앱 매출 예측 — 주차별 매출 증감 정확도 <strong>2025 상반기 76% · 하반기 86%</strong></li>
           </ul>
           <figure class="chapter__figure">
@@ -221,8 +223,6 @@ flowchart LR
           </div>
         </div>
 
-        <p class="project__lead" style="margin-top:32px;font-size:16px;">카드 클릭 → 새 탭에서 풀스크린.</p>
-
         <div class="dashboard-grid">
           <a class="dashboard-card" href="dashboards/duc-ops.html#page-abtesting" target="_blank" rel="noopener" aria-label="AB Test 운영 대시보드 — 새 탭에서 열기">
             <div class="dashboard-card__frame">
@@ -261,7 +261,7 @@ flowchart LR
       <div class="section__inner">
         <div class="section__eyebrow">AI Engineering Practice</div>
         <h2 class="section__title">AI 에이전트로 <em>일하는 방식</em></h2>
-        <p class="section__sub">스케일 · 안정성 · 도구 결합 · 학습.</p>
+        <p class="section__sub">스케일 · 검증 · 도구 결합 · 학습.</p>
 
         <div class="feature-grid">
           <!-- Card 1 -->
@@ -276,11 +276,12 @@ flowchart LR
 
           <!-- Card 2 -->
           <article class="feature">
-            <div class="feature__num">02 · SAFETY</div>
-            <h3>Dev / Live 이중 환경 +<br/>사용자 승인 구조</h3>
+            <div class="feature__num">02 · CROSS-CHECK</div>
+            <h3>GPT · Claude<br/>교차 검토 체계</h3>
             <ul class="feature__list">
-              <li>에이전트가 Dev 환경에서 자동 작업 후 테스트</li>
-              <li>Live 반영 전, 사용자에게 보고서를 제출하고 검토받는 구조</li>
+              <li>GPT · Claude를 병행 활용한 교차 검토 체계 적용</li>
+              <li>단일 모델 의존으로 인한 사고 편향을 줄이기 위해 GPT · Claude 모델 혼용</li>
+              <li>두 모델 결과가 일치하면 신뢰, 불일치 시 사람이 검토 → 리뷰 비용 최소화</li>
             </ul>
           </article>
 

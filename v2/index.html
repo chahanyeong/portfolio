@@ -50,6 +50,55 @@
       transform-origin: top left;
       pointer-events: none;
     }
+
+    /* Before/After toggle inside modal (P2) */
+    .ba-toggle {
+      display: inline-flex;
+      gap: 4px;
+      padding: 4px;
+      border-radius: 9999px;
+      background: #f1f5f9;
+      margin-bottom: 16px;
+    }
+    .ba-toggle__btn {
+      padding: 6px 18px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #475569;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      transition: all 200ms ease;
+    }
+    .ba-toggle__btn:hover { color: #0f172a; }
+    .ba-toggle__btn.is-active {
+      background: #0f172a;
+      color: #fff;
+    }
+    /* Stack two diagrams in same grid cell so mermaid can measure each */
+    .ba-stage {
+      display: grid;
+      grid-template-areas: 'stack';
+    }
+    .ba-diagram {
+      grid-area: stack;
+      margin: 0;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 300ms ease, visibility 0s 300ms;
+    }
+    .ba-diagram.is-active {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 300ms ease, visibility 0s 0s;
+    }
+    .ba-diagram figcaption {
+      margin-top: 12px;
+      text-align: center;
+      font-size: 12px;
+      color: #64748b;
+    }
   </style>
 </head>
 <body>
@@ -463,8 +512,30 @@
         </div>
 
         <div class="mt-6 rounded-lg border border-slate-200 bg-white p-5">
-          <p class="text-xs font-mono tracking-widest text-slate-500">FIG. 현재 운영 흐름 (AI 에이전트 + 관리자 승인)</p>
-          <div class="mermaid mt-3">
+          <p class="text-xs font-mono tracking-widest text-slate-500 mb-3">FIG. 운영 흐름 비교</p>
+          <div class="ba-toggle" role="tablist" aria-label="Before/After 다이어그램 전환">
+            <button type="button" class="ba-toggle__btn is-active" data-state="before" role="tab" aria-selected="true">기존 운영</button>
+            <button type="button" class="ba-toggle__btn" data-state="after" role="tab" aria-selected="false">현재 운영</button>
+          </div>
+          <div class="ba-stage">
+            <figure class="ba-diagram is-active" data-state="before">
+              <div class="mermaid">
+flowchart LR
+    A([요구사항 접수]) --> B[쿼리 작성]
+    B --> C[파이프라인 코드 작성]
+    C --> D[포맷 룰 수동 점검<br/>config · DB헬퍼 · 하드코딩 등]
+    D --> E[디버깅 · 검증]
+    E -->|오류 발생| C
+    E --> F([수정 버전 배포<br/>라이브 직접 반영])
+
+    style D fill:#ffd6d6,stroke:#ff4444
+    style E fill:#ffd6d6,stroke:#ff4444
+    style F fill:#ffe0b2,stroke:#ff6600
+              </div>
+              <figcaption>포맷 점검 · 디버깅 수동, 검증 없이 라이브 직접 반영</figcaption>
+            </figure>
+            <figure class="ba-diagram" data-state="after">
+              <div class="mermaid">
 flowchart LR
     subgraph MGR [관리자]
         direction TB
@@ -490,6 +561,9 @@ flowchart LR
     style DV fill:#eff6ff,stroke:#3b82f6
     style LV fill:#dcfce7,stroke:#16a34a
     style PAR fill:#fff9c4,stroke:#ffc107
+              </div>
+              <figcaption>AI 에이전트가 Dev에서 작업 → 관리자 검토 → Live 반영. 그 동안 관리자는 다른 분석 병행.</figcaption>
+            </figure>
           </div>
         </div>
       </section>
@@ -638,6 +712,22 @@ flowchart LR
     }
 
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // Before/After toggle inside modal (event delegation so it works on injected content)
+    document.getElementById('modal-content').addEventListener('click', (e) => {
+      const btn = e.target.closest('.ba-toggle__btn');
+      if (!btn) return;
+      const state = btn.dataset.state;
+      const root = btn.closest('#modal-content');
+      root.querySelectorAll('.ba-toggle__btn').forEach(b => {
+        const active = b.dataset.state === state;
+        b.classList.toggle('is-active', active);
+        b.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+      root.querySelectorAll('.ba-diagram').forEach(d => {
+        d.classList.toggle('is-active', d.dataset.state === state);
+      });
+    });
   </script>
 </body>
 </html>

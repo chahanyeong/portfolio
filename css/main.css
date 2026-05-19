@@ -528,6 +528,10 @@ section { padding: 100px 22px; }
 }
 @media (max-width: 900px) {
   .dashboard-grid { grid-template-columns: 1fr; gap: 20px; }
+  .dashboard-card__frame { height: 380px; }
+}
+@media (max-width: 600px) {
+  .dashboard-card__frame { height: 280px; }
 }
 .dashboard-grid .dashboard-card { max-width: none; }
 .dashboard-card {
@@ -547,7 +551,7 @@ section { padding: 100px 22px; }
 .dashboard-card__frame {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  height: 520px;
   overflow: hidden;
   background: var(--bg-soft);
 }

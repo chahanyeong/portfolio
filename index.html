@@ -33,6 +33,7 @@
         <a href="#project-01">Project 01</a>
         <a href="#project-02">Project 02</a>
         <a href="#project-03">Project 03</a>
+        <a href="#project-04">Project 04</a>
         <a href="#practice">Practice</a>
         <a href="#contact">Contact</a>
       </div>
@@ -57,6 +58,11 @@
           <div class="hero__stat__desc">이슈 영향 시간 단축</div>
         </a>
         <a class="hero__stat" href="#project-03">
+          <div class="hero__stat__title">앱 데이터 정합성 관리</div>
+          <div class="hero__stat__num"><span class="em metric" data-target="76.8" data-suffix="%">76.8%</span></div>
+          <div class="hero__stat__desc">재화 정합성 개선 · 미지급 -98%</div>
+        </a>
+        <a class="hero__stat" href="#project-04">
           <div class="hero__stat__title">자사 앱 대시보드 운영</div>
           <div class="hero__stat__num"><span class="em">39</span><small>건&nbsp;+&nbsp;</small><span class="em">3</span><small>건</small></div>
           <div class="hero__stat__desc">AB Test · 신규 슬롯 출시 의사결정</div>
@@ -230,10 +236,50 @@ flowchart LR
       </div>
     </section>
 
-    <!-- ===== PROJECT 03 ===== -->
+    <!-- ===== PROJECT 03 (NEW — 앱 데이터 정합성 관리) ===== -->
     <section id="project-03" class="section--alt">
       <div class="section__inner">
         <div class="section__eyebrow">PROJECT 03</div>
+        <h2 class="section__title">앱 데이터 <em>정합성 관리</em></h2>
+        <p class="project__metric">재화 정합성 <strong>76.8% 개선</strong> · 유저 코인 미지급 <strong>건수 99% · 금액 98%</strong> 감소</p>
+
+        <div class="integrity-grid">
+          <article class="integrity-card">
+            <figure class="integrity-card__img">
+              <img src="assets/img/project3_1.png" alt="서버 코인 및 유저 트랜잭션 코인 트레킹 — 정합성 오차율 개선" loading="lazy" />
+            </figure>
+            <div class="integrity-card__body">
+              <h3 class="integrity-card__title">서버 코인 및 유저 트랜잭션 코인 트레킹</h3>
+              <ul class="integrity-card__bullets">
+                <li>유저 코인 정합성 오차율 <strong>76.8% 개선</strong> (기존 88.90% → 12.10%)</li>
+                <li>고유 ID 중복 부여 유저 <strong>1,155명</strong> 식별 + 휴먼 useridx 제거로 오차율 <strong>59.18% 개선</strong></li>
+                <li>유저 코인 미반영 예외 케이스 점검 + 로직 개선으로 <strong>17.62% 추가 개선</strong></li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="integrity-card">
+            <figure class="integrity-card__img">
+              <img src="assets/img/project3_2.png" alt="안드로이드 결제 이력 정합성 — 영수증 크롤링 + 결제 테이블 대조" loading="lazy" />
+            </figure>
+            <div class="integrity-card__body">
+              <h3 class="integrity-card__title">안드로이드 결제 이력 정합성 개선</h3>
+              <ul class="integrity-card__bullets">
+                <li>주간 유저 코인 미지급 <strong>462개 → 5개 (99%)</strong>, 미지급 금액 <strong>$16,000 → $300 (98%)</strong> 감소</li>
+                <li>AOS 결제 후 구매 상품에 대응되는 재화가 들어오지 않는 문제를 이슈화</li>
+                <li>Google Play Console 페이지 실시간 크롤링으로 DB에 영수증 데이터 축적</li>
+                <li>축적 영수증 ↔ 결제 테이블 대조로 불일치 영수증 건수 정량화</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PROJECT 04 (renamed from old P3 — 자사 앱 대시보드 운영) ===== -->
+    <section id="project-04">
+      <div class="section__inner">
+        <div class="section__eyebrow">PROJECT 04</div>
         <h2 class="section__title">자사 앱 <em>대시보드 운영</em></h2>
         <p class="project__metric">앱 내 <strong>39개</strong> AB Test · <strong>3개</strong> 신규 슬롯 출시 의사결정에 기여</p>
 

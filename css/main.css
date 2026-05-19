@@ -561,23 +561,15 @@ section { padding: 100px 22px; }
 
 /* ===== Dashboard preview (PROJECT 03) ===== */
 .dashboard-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 32px;
   max-width: var(--max-grid);
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
 }
-@media (max-width: 900px) {
-  .dashboard-card__frame { height: 420px; }
-}
-@media (max-width: 600px) {
-  .dashboard-card__frame { height: 300px; }
-}
-.dashboard-grid .dashboard-card { max-width: none; }
 .dashboard-card {
   display: block;
-  max-width: var(--max-content);
-  margin: 0 auto;
+  width: 100%;
   background: var(--surface);
   border: 1px solid var(--rule-soft);
   border-radius: 22px;
@@ -594,6 +586,12 @@ section { padding: 100px 22px; }
   height: 620px;
   overflow: hidden;
   background: var(--bg-soft);
+}
+@media (max-width: 900px) {
+  .dashboard-card__frame { height: 460px; }
+}
+@media (max-width: 600px) {
+  .dashboard-card__frame { height: 320px; }
 }
 .dashboard-card__frame::after {
   content: '';

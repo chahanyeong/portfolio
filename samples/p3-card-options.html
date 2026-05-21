@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>P3 정합성 카드 — 5가지 디자인 옵션 비교</title>
+  <meta name="robots" content="noindex" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html, body {
+      font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background: #f8fafc;
+    }
+    .opt-label {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+    }
+    .body-ink { color: #222222; }
+  </style>
+</head>
+<body>
+  <div class="max-w-(--breakpoint-xl) mx-auto px-5 py-12">
+    <header class="mb-10">
+      <p class="opt-label text-xs font-bold tracking-[0.2em] text-rose-600">P3 STAT CARD · DESIGN OPTIONS</p>
+      <h1 class="mt-2 text-3xl md:text-4xl font-bold tracking-tight text-slate-900">앱 데이터 정합성 카드 5가지 디자인 비교</h1>
+      <p class="mt-3 text-base text-[#222] max-w-3xl">
+        Hero stat 4-card 컨텍스트 안에서 P3 카드만 5가지 패턴으로 변경.
+        양옆의 P1(86%) · P2(94.47%) · P4(39건+3건) 카드와 시각적 균형까지 비교 가능.
+      </p>
+      <p class="mt-4">
+        <a href="../" class="text-sm text-sky-700 hover:underline">← canonical 보기</a>
+        <span class="mx-2 text-slate-300">|</span>
+        <a href="../v2/" class="text-sm text-sky-700 hover:underline">v2 sandbox 보기</a>
+      </p>
+    </header>
+
+    <!-- ===== OPTION A · 대표 수치 + chip ===== -->
+    <section class="mb-12">
+      <div class="flex items-baseline gap-3 mb-3">
+        <span class="opt-label text-xs font-bold tracking-[0.2em] text-violet-700 bg-violet-50 px-2.5 py-1 rounded-full">OPTION A</span>
+        <h2 class="text-lg font-semibold text-slate-900">대표 수치 + 부수치 chip</h2>
+      </div>
+      <p class="text-sm text-[#222] mb-4 max-w-3xl">메인은 -76.8%를 다른 카드들과 동일한 큰 사이즈로 표시. 미지급 -98%는 작은 chip으로 보조 노출. <strong>가장 다른 카드와 일관성 ↑</strong></p>
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">매출 KPI · 지표 모니터링 자동화</p>
+          <p class="mt-3 text-5xl font-bold tracking-tight text-sky-700">86<span class="text-2xl text-sky-400 ml-0.5">%</span></p>
+          <p class="mt-2 text-base text-[#222]">2025년 하반기 매출 증감 예측</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">앱 헬스케어 시스템 구축</p>
+          <p class="mt-3 text-5xl font-bold tracking-tight text-emerald-700">94.47<span class="text-2xl text-emerald-400 ml-0.5">%</span></p>
+          <p class="mt-2 text-base text-[#222]">이슈 영향 시간 단축</p>
+        </div>
+        <div class="rounded-xl border-2 border-violet-300 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">앱 데이터 정합성 관리</p>
+          <p class="mt-3 text-5xl font-bold tracking-tight text-violet-700">-76.8<span class="text-2xl text-violet-400 ml-0.5">%</span></p>
+          <p class="mt-2 text-base text-[#222]">재화 정합성 오차율</p>
+          <div class="mt-3 inline-flex items-center gap-1.5 rounded-full bg-violet-50 px-2.5 py-1 text-xs">
+            <span class="opt-label font-bold text-violet-700">-98%</span>
+            <span class="text-slate-600">상품 미지급</span>
+          </div>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">자사 앱 대시보드 운영</p>
+          <p class="mt-3 text-5xl font-bold tracking-tight text-amber-700">39<span class="text-xl text-amber-400">건+</span>3<span class="text-xl text-amber-400">건</span></p>
+          <p class="mt-2 text-base text-[#222]">AB Test · 신규 슬롯 출시 의사결정</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== OPTION B · Trajectory (before → after) ===== -->
+    <section class="mb-12">
+      <div class="flex items-baseline gap-3 mb-3">
+        <span class="opt-label text-xs font-bold tracking-[0.2em] text-violet-700 bg-violet-50 px-2.5 py-1 rounded-full">OPTION B</span>
+        <h2 class="text-lg font-semibold text-slate-900">Trajectory (before → after)</h2>
+      </div>
+      <p class="text-sm text-[#222] mb-4 max-w-3xl">P1 카드(76% → 86%)와 동일한 trajectory 패턴 차용. 88.9% → 12.1%로 개선 추세 명시. 미지급 -98%는 서브타이틀에 괄호로. <strong>스토리텔링 ↑</strong></p>
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">매출 KPI · 지표 모니터링 자동화</p>
+          <p class="mt-3 text-5xl font-bold tracking-tight text-sky-700">86<span class="text-2xl text-sky-400 ml-0.5">%</span></p>
+          <p class="mt-2 text-base text-[#222]">2025년 하반기 매출 증감 예측</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">앱 헬스케어 시스템 구축</p>
+          <p class="mt-3 text-5xl font-bold tracking-tight text-emerald-700">94.47<span class="text-2xl text-emerald-400 ml-0.5">%</span></p>
+          <p class="mt-2 text-base text-[#222]">이슈 영향 시간 단축</p>
+        </div>
+        <div class="rounded-xl border-2 border-violet-300 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">앱 데이터 정합성 관리</p>
+          <p class="mt-3 text-4xl font-bold tracking-tight">
+            <span class="text-slate-400">88.9</span>
+            <span class="text-violet-400 mx-1 text-2xl">→</span>
+            <span class="text-violet-700">12.1<span class="text-xl text-violet-400">%</span></span>
+          </p>
+          <p class="mt-3 text-base text-[#222]">재화 정합성 오차율<br/><span class="text-sm text-slate-500">(상품 미지급 건수 -98%)</span></p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">자사 앱 대시보드 운영</p>
+          <p class="mt-3 text-5xl font-bold tracking-tight text-amber-700">39<span class="text-xl text-amber-400">건+</span>3<span class="text-xl text-amber-400">건</span></p>
+          <p class="mt-2 text-base text-[#222]">AB Test · 신규 슬롯 출시 의사결정</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== OPTION C · 수평 인라인 듀얼 ===== -->
+    <section class="mb-12">
+      <div class="flex items-baseline gap-3 mb-3">
+        <span class="opt-label text-xs font-bold tracking-[0.2em] text-violet-700 bg-violet-50 px-2.5 py-1 rounded-full">OPTION C</span>
+        <h2 class="text-lg font-semibold text-slate-900">수평 인라인 듀얼</h2>
+      </div>
+      <p class="text-sm text-[#222] mb-4 max-w-3xl">두 수치를 한 줄에 가운뎃점 구분자로. P4(39건+3건)와 시각 패턴 유사. <strong>두 수치 동등 노출 + 컴팩트</strong></p>
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">매출 KPI · 지표 모니터링 자동화</p>
+          <p class="mt-3 text-5xl font-bold tracking-tight text-sky-700">86<span class="text-2xl text-sky-400 ml-0.5">%</span></p>
+          <p class="mt-2 text-base text-[#222]">2025년 하반기 매출 증감 예측</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">앱 헬스케어 시스템 구축</p>
+          <p class="mt-3 text-5xl font-bold tracking-tight text-emerald-700">94.47<span class="text-2xl text-emerald-400 ml-0.5">%</span></p>
+          <p class="mt-2 text-base text-[#222]">이슈 영향 시간 단축</p>
+        </div>
+        <div class="rounded-xl border-2 border-violet-300 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">앱 데이터 정합성 관리</p>
+          <p class="mt-3 text-4xl font-bold tracking-tight text-violet-700">
+            -76.8<span class="text-xl text-violet-400">%</span>
+            <span class="text-slate-300 font-normal mx-1">·</span>
+            -98<span class="text-xl text-violet-400">%</span>
+          </p>
+          <p class="mt-2 text-base text-[#222]">재화 정합성 · 미지급 건수</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">자사 앱 대시보드 운영</p>
+          <p class="mt-3 text-5xl font-bold tracking-tight text-amber-700">39<span class="text-xl text-amber-400">건+</span>3<span class="text-xl text-amber-400">건</span></p>
+          <p class="mt-2 text-base text-[#222]">AB Test · 신규 슬롯 출시 의사결정</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== OPTION D · 수직 스택 어프로치 ===== -->
+    <section class="mb-12">
+      <div class="flex items-baseline gap-3 mb-3">
+        <span class="opt-label text-xs font-bold tracking-[0.2em] text-violet-700 bg-violet-50 px-2.5 py-1 rounded-full">OPTION D</span>
+        <h2 class="text-lg font-semibold text-slate-900">수직 스택 (수치 + 라벨 한 줄)</h2>
+      </div>
+      <p class="text-sm text-[#222] mb-4 max-w-3xl">두 수치를 동등하게 수직으로 쌓되, 각 수치 옆에 라벨을 한 줄로 (현재 2-col wrap 이슈 해소). <strong>두 지표 동등 + 라벨 명확</strong></p>
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">매출 KPI · 지표 모니터링 자동화</p>
+          <p class="mt-3 text-5xl font-bold tracking-tight text-sky-700">86<span class="text-2xl text-sky-400 ml-0.5">%</span></p>
+          <p class="mt-2 text-base text-[#222]">2025년 하반기 매출 증감 예측</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">앱 헬스케어 시스템 구축</p>
+          <p class="mt-3 text-5xl font-bold tracking-tight text-emerald-700">94.47<span class="text-2xl text-emerald-400 ml-0.5">%</span></p>
+          <p class="mt-2 text-base text-[#222]">이슈 영향 시간 단축</p>
+        </div>
+        <div class="rounded-xl border-2 border-violet-300 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">앱 데이터 정합성 관리</p>
+          <div class="mt-3 space-y-2">
+            <div class="flex items-baseline gap-2.5">
+              <p class="text-3xl font-bold tracking-tight text-violet-700 shrink-0">-76.8<span class="text-base text-violet-400">%</span></p>
+              <p class="text-xs text-[#222] leading-tight">재화 정합성 오차율</p>
+            </div>
+            <div class="flex items-baseline gap-2.5">
+              <p class="text-3xl font-bold tracking-tight text-violet-700 shrink-0">-98<span class="text-base text-violet-400">%</span></p>
+              <p class="text-xs text-[#222] leading-tight">상품 미지급 건수</p>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">자사 앱 대시보드 운영</p>
+          <p class="mt-3 text-5xl font-bold tracking-tight text-amber-700">39<span class="text-xl text-amber-400">건+</span>3<span class="text-xl text-amber-400">건</span></p>
+          <p class="mt-2 text-base text-[#222]">AB Test · 신규 슬롯 출시 의사결정</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== OPTION E · Mini bar viz ===== -->
+    <section class="mb-12">
+      <div class="flex items-baseline gap-3 mb-3">
+        <span class="opt-label text-xs font-bold tracking-[0.2em] text-violet-700 bg-violet-50 px-2.5 py-1 rounded-full">OPTION E</span>
+        <h2 class="text-lg font-semibold text-slate-900">미니 막대 시각화</h2>
+      </div>
+      <p class="text-sm text-[#222] mb-4 max-w-3xl">두 수치의 감소율을 작은 progress bar로 시각화. 데이터 직군 시그널 ↑. 단점은 카드들 간 시각 패턴 깨짐(다른 카드들은 숫자 위주).</p>
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">매출 KPI · 지표 모니터링 자동화</p>
+          <p class="mt-3 text-5xl font-bold tracking-tight text-sky-700">86<span class="text-2xl text-sky-400 ml-0.5">%</span></p>
+          <p class="mt-2 text-base text-[#222]">2025년 하반기 매출 증감 예측</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">앱 헬스케어 시스템 구축</p>
+          <p class="mt-3 text-5xl font-bold tracking-tight text-emerald-700">94.47<span class="text-2xl text-emerald-400 ml-0.5">%</span></p>
+          <p class="mt-2 text-base text-[#222]">이슈 영향 시간 단축</p>
+        </div>
+        <div class="rounded-xl border-2 border-violet-300 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">앱 데이터 정합성 관리</p>
+          <div class="mt-3 space-y-3">
+            <div>
+              <div class="flex justify-between items-baseline">
+                <p class="text-xs text-[#222]">재화 정합성 오차율</p>
+                <p class="text-xl font-bold text-violet-700">-76.8%</p>
+              </div>
+              <div class="mt-1 h-1.5 rounded-full bg-violet-100 overflow-hidden">
+                <div class="h-full bg-violet-500 rounded-full" style="width:76.8%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between items-baseline">
+                <p class="text-xs text-[#222]">상품 미지급 건수</p>
+                <p class="text-xl font-bold text-violet-700">-98%</p>
+              </div>
+              <div class="mt-1 h-1.5 rounded-full bg-violet-100 overflow-hidden">
+                <div class="h-full bg-violet-500 rounded-full" style="width:98%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">자사 앱 대시보드 운영</p>
+          <p class="mt-3 text-5xl font-bold tracking-tight text-amber-700">39<span class="text-xl text-amber-400">건+</span>3<span class="text-xl text-amber-400">건</span></p>
+          <p class="mt-2 text-base text-[#222]">AB Test · 신규 슬롯 출시 의사결정</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 현재 (참고) ===== -->
+    <section class="mb-12 opacity-70">
+      <div class="flex items-baseline gap-3 mb-3">
+        <span class="opt-label text-xs font-bold tracking-[0.2em] text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">CURRENT</span>
+        <h2 class="text-lg font-semibold text-slate-900">현재 (참고용 — 어색하다고 한 디자인)</h2>
+      </div>
+      <p class="text-sm text-[#222] mb-4 max-w-3xl">2-col 그리드로 두 수치를 동등하게 표시. 라벨이 wrap되어 어색.</p>
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">매출 KPI · 지표 모니터링 자동화</p>
+          <p class="mt-3 text-5xl font-bold tracking-tight text-sky-700">86<span class="text-2xl text-sky-400 ml-0.5">%</span></p>
+          <p class="mt-2 text-base text-[#222]">2025년 하반기 매출 증감 예측</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">앱 헬스케어 시스템 구축</p>
+          <p class="mt-3 text-5xl font-bold tracking-tight text-emerald-700">94.47<span class="text-2xl text-emerald-400 ml-0.5">%</span></p>
+          <p class="mt-2 text-base text-[#222]">이슈 영향 시간 단축</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">앱 데이터 정합성 관리</p>
+          <div class="mt-3 grid grid-cols-2 gap-3">
+            <div>
+              <p class="text-3xl font-bold tracking-tight text-violet-700">-76.8<span class="text-lg text-violet-400">%</span></p>
+              <p class="mt-1 text-xs text-[#222] leading-tight">재화 정합성<br/>오차율</p>
+            </div>
+            <div>
+              <p class="text-3xl font-bold tracking-tight text-violet-700">-98<span class="text-lg text-violet-400">%</span></p>
+              <p class="mt-1 text-xs text-[#222] leading-tight">상품 미지급<br/>건수</p>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">자사 앱 대시보드 운영</p>
+          <p class="mt-3 text-5xl font-bold tracking-tight text-amber-700">39<span class="text-xl text-amber-400">건+</span>3<span class="text-xl text-amber-400">건</span></p>
+          <p class="mt-2 text-base text-[#222]">AB Test · 신규 슬롯 출시 의사결정</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="mt-16 pt-8 border-t border-slate-200">
+      <p class="text-center text-sm text-slate-500">A · B · C · D · E 중 선호하는 옵션을 알려줘 — 본 페이지에 반영할게.</p>
+    </footer>
+  </div>
+</body>
+</html>

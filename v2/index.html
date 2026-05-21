@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>차한영 — Data Analytics Engineer (v2 polish)</title>
-  <meta name="description" content="v2 polish preview — modal header revamp, chapter numbering, micro-animations." />
+  <title>차한영 — Data Analytics Engineer (v2)</title>
+  <meta name="description" content="v2 preview — AWS Summit Seoul 후기 + 경험과 생각 sandbox." />
   <meta name="robots" content="noindex" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230f172a'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700' font-size='18'%3Ec%3C/text%3E%3C/svg%3E" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
@@ -188,6 +188,8 @@
     .proj-card--violet:hover { border-color: #ddd6fe; }
     .proj-card--amber::before { background: #d97706; }
     .proj-card--amber:hover { border-color: #fde68a; }
+    .proj-card--rose::before { background: #e11d48; }
+    .proj-card--rose:hover { border-color: #fecdd3; }
 
     /* === Body text override (designer feedback: #222) === */
     .body-ink { color: #222222; }
@@ -195,8 +197,8 @@
 </head>
 <body>
   <div class="v2-banner">
-    <span class="v2-banner__label">POLISH PREVIEW · M1~M5 + P1~P3 APPLIED</span>
-    <a href="../" class="v2-banner__link">← baseline (current main) 보기</a>
+    <span class="v2-banner__label">V2 SANDBOX · 경험과 생각 + AWS SUMMIT</span>
+    <a href="../" class="v2-banner__link">← canonical 보기</a>
   </div>
 
   <div class="max-w-(--breakpoint-xl) mx-auto px-5">
@@ -210,7 +212,7 @@
         <ul class="flex flex-wrap gap-x-3 gap-y-1">
           <li><a href="#about" class="flex px-0 py-2 text-sm text-gray-600 hover:text-gray-900 lg:px-3">소개</a></li>
           <li><a href="#projects" class="flex px-0 py-2 text-sm text-gray-600 hover:text-gray-900 lg:px-3">프로젝트</a></li>
-          <li><a href="#skills" class="flex px-0 py-2 text-sm text-gray-600 hover:text-gray-900 lg:px-3">역량</a></li>
+          <li><a href="#skills" class="flex px-0 py-2 text-sm text-gray-600 hover:text-gray-900 lg:px-3">핵심 역량</a></li>
           <li><a href="#practice" class="flex px-0 py-2 text-sm text-gray-600 hover:text-gray-900 lg:px-3">AI</a></li>
           <li><a href="#thoughts" class="flex px-0 py-2 text-sm text-gray-600 hover:text-gray-900 lg:px-3">생각</a></li>
           <li><a href="../resume.html" target="_blank" class="flex px-0 py-2 text-sm text-gray-600 hover:text-gray-900 lg:px-3">이력서 ↗</a></li>
@@ -270,8 +272,16 @@
         </div>
         <div class="rounded-xl border border-slate-200 bg-white p-6">
           <p class="text-xs font-medium text-slate-500">앱 데이터 정합성 관리</p>
-          <p class="mt-3 text-5xl font-bold tracking-tight text-violet-700">76.8<span class="text-2xl text-violet-400 ml-0.5">%</span></p>
-          <p class="mt-2 text-base text-[#222]">재화 정합성 개선 · 미지급 -98%</p>
+          <div class="mt-3 grid grid-cols-2 gap-3">
+            <div>
+              <p class="text-3xl font-bold tracking-tight text-violet-700">-76.8<span class="text-lg text-violet-400">%</span></p>
+              <p class="mt-1 text-xs text-[#222] leading-tight">재화 정합성<br/>오차율</p>
+            </div>
+            <div>
+              <p class="text-3xl font-bold tracking-tight text-violet-700">-98<span class="text-lg text-violet-400">%</span></p>
+              <p class="mt-1 text-xs text-[#222] leading-tight">상품 미지급<br/>건수</p>
+            </div>
+          </div>
         </div>
         <div class="rounded-xl border border-slate-200 bg-white p-6">
           <p class="text-xs font-medium text-slate-500">자사 앱 대시보드 운영</p>
@@ -383,7 +393,7 @@
           <p class="flex items-center gap-2"><span class="text-sky-300">—</span> KPI 설계 · 지표 정의 · 자동화 알럿</p>
           <p class="flex items-center gap-2"><span class="text-sky-300">—</span> A/B 테스트 설계 · 해석 · 채택 판단</p>
           <p class="flex items-center gap-2"><span class="text-sky-300">—</span> Dagster · CI/CD 기반 데이터 파이프라인 운영</p>
-          <p class="flex items-center gap-2"><span class="text-sky-300">—</span> AI 에이전트 통합 (Claude Code · Codex · GPT)</p>
+          <p class="flex items-center gap-2"><span class="text-sky-300">—</span> AI 에이전트 운영 (Claude Code, Codex)</p>
         </div>
       </div>
       <div class="rounded-2xl border border-slate-200 bg-white p-7">
@@ -477,24 +487,19 @@
     <!-- ===== THOUGHTS ===== -->
     <section id="thoughts" class="mt-18 md:mt-24">
       <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900">경험과 생각</h2>
-      <p class="mt-3 text-[#222]">데이터를 다루며 배운 것들. <span class="text-slate-400">(아래는 예시 — 추후 본인 콘텐츠로 교체 예정)</span></p>
+      <p class="mt-3 text-[#222]">컨퍼런스 · 학습 · 회고. 카드를 클릭하면 상세 내용을 볼 수 있습니다.</p>
       <div class="mt-8 grid gap-4 md:grid-cols-2">
-        <article class="rounded-xl border border-slate-200 bg-white p-6">
+
+        <article onclick="openModal('t-aws')" class="proj-card proj-card--rose cursor-pointer rounded-xl border border-slate-200 bg-white p-6">
           <div class="flex items-center gap-2 mb-3">
-            <span class="rounded-full bg-violet-100 px-2 py-0.5 text-xs font-bold tracking-[0.18em] text-violet-700 uppercase">강의</span>
-            <span class="text-xs text-slate-500 font-mono">2026.03</span>
+            <span class="rounded-full bg-rose-100 px-2 py-0.5 text-xs font-bold tracking-[0.18em] text-rose-700 uppercase">후기</span>
+            <span class="text-xs text-slate-500 font-mono">2026.05.20</span>
           </div>
-          <h3 class="text-base font-semibold text-slate-900">사내 데이터 분석 워크숍 — KPI 정의부터 자동화까지</h3>
-          <p class="mt-2 text-base leading-relaxed text-[#222]"><span class="text-xs text-slate-400 font-mono">예시</span> 비분석 직군 대상 4주 과정. 매출 KPI 정의, 변화율 스코어링, 알럿 트리거 설정을 hands-on으로 진행.</p>
+          <h3 class="text-base font-semibold text-slate-900">AWS Summit Seoul 2026 — 분야별 AI · 에이전트 활용 사례</h3>
+          <p class="mt-2 text-base leading-relaxed text-[#222]">1,000만 유저 바비톡의 K-Beauty Agentic AI · 현대카드 Hybrid to Coding 에이전트 · 넥슨 에이전틱 Ops (장애 인지 30분 → 1분) 3개 세션 후기.</p>
+          <div class="mt-3 text-xs font-medium text-rose-700">자세히 보기 →</div>
         </article>
-        <article class="rounded-xl border border-slate-200 bg-white p-6">
-          <div class="flex items-center gap-2 mb-3">
-            <span class="rounded-full bg-sky-100 px-2 py-0.5 text-xs font-bold tracking-[0.18em] text-sky-700 uppercase">글</span>
-            <span class="text-xs text-slate-500 font-mono">2026.02</span>
-          </div>
-          <h3 class="text-base font-semibold text-slate-900">크론탭에서 Dagster로 — 데이터 파이프라인 인프라 전환기</h3>
-          <p class="mt-2 text-base leading-relaxed text-[#222]"><span class="text-xs text-slate-400 font-mono">예시</span> 라이브 서버 직접 수정에서 CI/CD 기반 자동 배포로 전환. 42개 알럿 마이그레이션과 운영 안정성 확보 사례.</p>
-        </article>
+
         <article class="rounded-xl border border-slate-200 bg-white p-6">
           <div class="flex items-center gap-2 mb-3">
             <span class="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-bold tracking-[0.18em] text-amber-700 uppercase">회고</span>
@@ -503,30 +508,7 @@
           <h3 class="text-base font-semibold text-slate-900">분석가에서 분석 엔지니어로 — 한 해의 전환</h3>
           <p class="mt-2 text-base leading-relaxed text-[#222]"><span class="text-xs text-slate-400 font-mono">예시</span> <code>SELECT *</code>에서 <code>dbt build</code>로. 분석을 소프트웨어처럼 다루기 시작한 첫 해의 기록.</p>
         </article>
-        <article class="rounded-xl border border-slate-200 bg-white p-6">
-          <div class="flex items-center gap-2 mb-3">
-            <span class="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-bold tracking-[0.18em] text-emerald-700 uppercase">발표</span>
-            <span class="text-xs text-slate-500 font-mono">2025.10</span>
-          </div>
-          <h3 class="text-base font-semibold text-slate-900">얼럿의 품질을 측정하다 — Recall · 정밀도 · 반응성 · 오탐률</h3>
-          <p class="mt-2 text-base leading-relaxed text-[#222]"><span class="text-xs text-slate-400 font-mono">예시</span> 사내 데이터 컨퍼런스. 얼럿 시스템의 정량 평가 체계와 반기 단위 개선 사이클 설계 공유.</p>
-        </article>
-        <article class="rounded-xl border border-slate-200 bg-white p-6">
-          <div class="flex items-center gap-2 mb-3">
-            <span class="rounded-full bg-sky-100 px-2 py-0.5 text-xs font-bold tracking-[0.18em] text-sky-700 uppercase">글</span>
-            <span class="text-xs text-slate-500 font-mono">2025.08</span>
-          </div>
-          <h3 class="text-base font-semibold text-slate-900">AI 에이전트를 일상 도구로 — 분석가의 작업 사이클 가속화</h3>
-          <p class="mt-2 text-base leading-relaxed text-[#222]"><span class="text-xs text-slate-400 font-mono">예시</span> Claude Code + Codex 병행 활용 + GPT 교차 검토. 단일 모델 편향을 줄이는 운영 패턴 정리.</p>
-        </article>
-        <article class="rounded-xl border border-slate-200 bg-white p-6">
-          <div class="flex items-center gap-2 mb-3">
-            <span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-bold tracking-[0.18em] text-[#222] uppercase">노트</span>
-            <span class="text-xs text-slate-500 font-mono">2025.06</span>
-          </div>
-          <h3 class="text-base font-semibold text-slate-900">매출 예측 모델 fitting — 계절성과 이벤트 가중치 다루기</h3>
-          <p class="mt-2 text-base leading-relaxed text-[#222]"><span class="text-xs text-slate-400 font-mono">예시</span> 주차별 매출 증감 정확도 76% → 86%까지 끌어올린 과정. 모델 선정과 검증 사이클 메모.</p>
-        </article>
+
       </div>
     </section>
 
@@ -850,11 +832,104 @@ flowchart LR
       </div>
     </div>
 
+    <!-- Thought: AWS Summit Seoul 2026 -->
+    <div id="content-t-aws">
+      <div class="flex items-start gap-5">
+        <div class="flex-shrink-0 h-16 w-16 flex flex-col items-center justify-center rounded-2xl bg-rose-50 border border-rose-100 leading-none">
+          <span class="text-[10px] font-mono font-bold text-rose-700 tracking-wider">2026</span>
+          <span class="mt-1 text-lg font-bold tracking-tight text-rose-700">05.20</span>
+        </div>
+        <div>
+          <p class="text-xs font-bold tracking-[0.3em] text-rose-700 uppercase">EXPERIENCE · 후기</p>
+          <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-900">AWS Summit Seoul 2026 — <span class="text-rose-700">분야별 AI · 에이전트 활용 사례</span></h2>
+        </div>
+      </div>
+      <div class="mt-5 inline-flex items-center flex-wrap gap-x-2 rounded-lg bg-rose-50 px-4 py-2.5 text-sm">
+        <span class="font-semibold text-slate-900">참석</span>
+        <span class="text-[#222]">조병호 · 조승현 · 차한영</span>
+        <span class="text-slate-400 mx-1">|</span>
+        <span class="font-semibold text-slate-900">주제</span>
+        <span class="text-[#222]">분야별 AI · 에이전트 활용 예시 시연 + AI 시스템 안에서의 AWS 기능 소개</span>
+      </div>
+
+      <section class="chapter">
+        <p class="chapter__num">SESSION 01</p>
+        <h3 class="chapter__title">바비톡의 AX 여정 — 에이전틱 AI로 K-beauty를 바꾸다</h3>
+        <p class="mt-2 text-sm text-slate-500">1,000만 유저 바비톡 · Monthly PoC 운영 · 차한영, 조승현 참석</p>
+        <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed">
+            <li>· <strong>Amazon Bedrock 기반 K-Beauty 어시스턴트</strong> 등 Agentic AI 도입 사례 공유</li>
+            <li>· <strong>AI-DLC</strong>(AI Development Life Cycle) 도입으로 마케팅·개발팀 협업 모델 변화 + 개발 문화·생산성 혁신</li>
+            <li>· 에이전트 하네스 엔지니어링 — 프롬프트 · 컨텍스트 · 하네스 세 가지로 정의, 서칭 범위 우선순위 계층화</li>
+            <li>· 회사 안 에이전트 공유 사이트 <strong>"AI Agent Studio"</strong> 운영 — 서비스 분야별 에이전트를 직접 설계 → 구성 → 배포 → 공유</li>
+          </ul>
+          <figure>
+            <div class="rounded-lg overflow-hidden border border-slate-200 bg-slate-50 aspect-video flex items-center justify-center text-xs text-slate-400 text-center p-4">
+              (이미지 추후 첨부 — 서칭 범위 우선순위 계층화 + AI Agent Studio 화면)
+            </div>
+            <p class="fig-caption">fig.01 — 바비톡 에이전트 하네스 + AI Agent Studio</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="chapter">
+        <p class="chapter__num">SESSION 02</p>
+        <h3 class="chapter__title">현대카드 — Hybrid to Coding 에이전트</h3>
+        <p class="mt-2 text-sm text-slate-500">금융권 보안·규제 환경 · 조병호 참석</p>
+        <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed">
+            <li>· 온프레미스–클라우드 <strong>하이브리드 아키텍처 (HDSP)</strong> 구축 → SageMaker 환경에서 코딩 에이전트 구현</li>
+            <li>· 금융권 보안·규제 환경에서 오픈소스 LLM 활용 — 실시간 코드 제안 · 코드 리뷰 등 개발 생산성 향상</li>
+            <li>· 도메인 목적에 부합하는 오픈소스 차용으로 시작 — <strong>차용 이후 보완 & 자체 구현을 분리해 기획</strong></li>
+            <li>· Agent별 전문가 구축 + 지속 학습 체제 확립</li>
+          </ul>
+          <figure>
+            <div class="rounded-lg overflow-hidden border border-slate-200 bg-slate-50 aspect-video flex items-center justify-center text-xs text-slate-400 text-center p-4">
+              (이미지 추후 첨부 — 클라우드 내부망 생성형 AI 연결 규제 준수 구조)
+            </div>
+            <p class="fig-caption">fig.02 — 금융권 내부망 + 오픈소스 LLM 연결 구조</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="chapter">
+        <p class="chapter__num">SESSION 03</p>
+        <h3 class="chapter__title">넥슨 — 새벽 3시, 18만 모델이 대신 판단한다</h3>
+        <p class="mt-2 text-sm text-slate-500">에이전틱 Ops · 59개 라이브 게임 24/365 무중단 대응 · 차한영, 조승현 참석</p>
+        <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed">
+            <li>· <strong>3-Layer 아키텍처</strong> — 18만 통계 모델(탐지) + 컨텍스트 레이크(의미 증류) + 멀티 에이전트(Bedrock 판단)</li>
+            <li>· 7개 <strong>탐지 전문가 에이전트</strong> (CCU · 매출 · 사용자 동향 등) + 리드 에이전트의 전략적 의사결정</li>
+            <li>· 모델링 전 필수 작업 — 과거 장애 이력 역추적 · 시스템 지표 간 관계 모델링 · 운영자 체화 경험 학습</li>
+            <li>· 성과: 장애 인지 <strong class="text-slate-900">30분 → 1분</strong>, 알람 <strong class="text-slate-900">1/3 감소</strong>, Recall <strong class="text-slate-900">100%</strong>. 운영자는 실행자 → 감독자로 전환</li>
+            <li>· 다음 단계: STAR 프레임워크로 이력 축적 → 퍼스널 에이전트 기반 <strong>Self-Healing 운영 확장</strong></li>
+          </ul>
+          <figure>
+            <div class="rounded-lg overflow-hidden border border-slate-200 bg-slate-50 aspect-video flex items-center justify-center text-xs text-slate-400 text-center p-4">
+              (이미지 추후 첨부 — 이상탐지 AI 에이전트 파이프라인 + 백본 데이터 설계)
+            </div>
+            <p class="fig-caption">fig.03 — 넥슨 에이전틱 Ops 파이프라인 + 백본 데이터 설계</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="chapter">
+        <p class="chapter__num">REFLECTION</p>
+        <h3 class="chapter__title">내 느낀점 — DUG에 가져올 수 있는 것</h3>
+        <ul class="mt-5 space-y-4 text-base text-[#222] leading-relaxed">
+          <li>· 회사 안 에이전트 공유 사이트를 제작해 자유롭게 공유하는 분위기 형성 방식이 인상적. <strong>DUG 내에서도 이런 공유 환경이 활성화된다면</strong> 좋은 방향의 AI 환경 구축이 될 것</li>
+          <li>· 최근 이슈 관리 자동화를 위해 백본 데이터를 제작 중인데, AWS는 백본 데이터의 중요성을 파악하고 <strong>자산화 최적화 작업</strong> (AI 라벨링 사이트 등)을 진행. GS팀도 백본 데이터 자산화 작업 최적화 방법 고민 필요</li>
+          <li>· 스케줄링에서 데이터 적재 실패는 감지하지만, 서버/DB 문제는 여전히 수동 대응. <strong>시간 단위 에이전트가 에러 로그를 읽고 자동 처리하는 환경</strong>을 만들면 효율 ↑ (로그 시스템은 이미 갖춰져 있어 에이전트 활성화만 하면 됨)</li>
+          <li>· 백본 데이터만 명확히 자산화되면 게임 운영 문제 발생 시 <strong>자동 발견 + 자동 배포까지 가능</strong></li>
+        </ul>
+      </section>
+    </div>
+
   </div>
 
   <footer class="my-20">
     <p class="text-center text-sm text-slate-500">Copyright © 2026 차한영. All rights reserved.</p>
-    <p class="text-center text-xs text-slate-500 mt-1">v2 polish preview · <a href="../" class="underline text-sky-700">← baseline 보기</a></p>
+    <p class="text-center text-xs text-slate-500 mt-1">v2 sandbox · <a href="../" class="underline text-sky-700">← canonical 보기</a></p>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>

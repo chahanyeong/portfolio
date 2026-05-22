@@ -511,7 +511,7 @@
   <div id="modal" class="fixed inset-0 z-50 hidden" onclick="closeModal()">
     <div class="absolute inset-0 bg-slate-900/65 backdrop-blur-sm"></div>
     <div class="relative flex min-h-screen items-start md:items-center justify-center p-4 md:p-8">
-      <div class="relative w-full max-w-5xl rounded-2xl bg-white shadow-2xl" id="modal-box" onclick="event.stopPropagation()">
+      <div class="relative w-full max-w-6xl rounded-2xl bg-white shadow-2xl" id="modal-box" onclick="event.stopPropagation()">
         <div class="absolute right-4 top-4 z-10 flex items-center gap-3">
           <span class="hidden md:inline text-xs font-mono tracking-widest text-slate-400 uppercase">ESC</span>
           <button onclick="closeModal()" aria-label="닫기" class="flex h-9 w-9 items-center justify-center rounded-full text-2xl text-slate-400 transition hover:bg-slate-100 hover:text-slate-900">&times;</button>
@@ -829,7 +829,8 @@ flowchart LR
         startOnLoad: false,
         theme: 'base',
         themeVariables: {
-          fontFamily: 'inherit',
+          fontFamily: 'Pretendard, -apple-system, sans-serif',
+          fontSize: '14px',
           primaryColor: '#e0f2fe',
           primaryTextColor: '#0f172a',
           primaryBorderColor: '#0284c7',
@@ -840,8 +841,9 @@ flowchart LR
         flowchart: {
           useMaxWidth: false,
           htmlLabels: true,
-          nodeSpacing: 40,
-          rankSpacing: 50,
+          nodeSpacing: 50,
+          rankSpacing: 60,
+          padding: 16,
         },
       });
     }
@@ -859,12 +861,16 @@ flowchart LR
       document.body.style.overflow = 'hidden';
       target.scrollTop = 0;
 
+      // Render mermaid AFTER modal animation completes so node sizing uses
+      // final dimensions (avoids text truncation from layout-shift).
       if (window.mermaid) {
         const nodes = target.querySelectorAll('.mermaid');
         if (nodes.length) {
           nodes.forEach(n => n.removeAttribute('data-processed'));
-          try { mermaid.run({ nodes: Array.from(nodes) }); }
-          catch (e) { console.warn('mermaid run failed:', e); }
+          setTimeout(() => {
+            try { mermaid.run({ nodes: Array.from(nodes) }); }
+            catch (e) { console.warn('mermaid run failed:', e); }
+          }, 320);
         }
       }
     }

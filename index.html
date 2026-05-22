@@ -67,7 +67,8 @@
     }
 
     /* Mermaid sizing inside modal */
-    #modal-content .mermaid { display: flex; justify-content: center; min-height: 200px; font-size: 14px; }
+    #modal-content .mermaid { display: flex; justify-content: center; min-height: 200px; font-size: 14px; overflow-x: auto; }
+    #modal-content .ba-diagram { overflow-x: auto; }
 
     /* Dashboard iframe scale inside modal */
     .dash-frame {
@@ -219,7 +220,7 @@
         <div>
           <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900">End-to-end<br>Data Analytics Engineer.</h1>
           <p class="mt-5 max-w-2xl text-base md:text-lg leading-relaxed text-[#222]">
-            지표 정의 · 파이프라인 · BI를 직접 만들고 운영합니다.<br/>
+            데이터 설계부터 분석, 의사결정까지 전 과정을 주도하며 문제를 해결합니다.<br/>
             AI 에이전트를 일상 도구로 써서 작업 사이클을 가속화합니다.
           </p>
           <div class="mt-7 flex flex-wrap gap-3">
@@ -433,10 +434,16 @@
           <h3 class="mt-2 text-xl font-semibold text-slate-900">플러그인 · 스킬 활용</h3>
           <ul class="mt-4 space-y-2 text-base text-[#222] relative z-10">
             <li>- superpowers 플러그인을 기저 하네스로 활용해 작업 품질 안정화</li>
-            <li>- 예시: 자동 일정 캘린더 — Google Calendar에 운영 이벤트 자동 등록</li>
           </ul>
+          <div class="mt-5 relative z-10">
+            <p class="text-sm font-bold tracking-[0.02em] text-violet-700">앱 일정 캘린더 에이전트</p>
+            <ul class="mt-2 space-y-1.5 text-sm text-[#222]">
+              <li>· Google Calendar에 운영 이벤트 자동 등록</li>
+              <li>· 개발 배포 · AB · 이벤트 등 종류별 기간 및 내용 자동 요약</li>
+            </ul>
+          </div>
           <figure class="mt-4 rounded-lg overflow-hidden border border-slate-200 relative z-10">
-            <img src="assets/img/auto-calendar-preview.png" alt="자동 일정 캘린더 — Google Calendar 월간 뷰" loading="lazy" class="w-full" />
+            <img src="assets/img/auto-calendar-preview.png" alt="앱 일정 캘린더 에이전트 — Google Calendar 월간 뷰" loading="lazy" class="w-full" />
           </figure>
         </article>
 
@@ -604,7 +611,7 @@
       </div>
       <div class="mt-5 inline-flex items-center flex-wrap gap-x-2 rounded-lg bg-emerald-50 px-4 py-2.5 text-sm">
         <span class="font-semibold text-slate-900">이슈 영향 시간 -94.47%</span>
-        <span class="text-[#222]">· 이슈간 평균 <strong class="text-slate-900">약 30시간</strong> 감소</span>
+        <span class="text-[#222]">(이슈 건 당 <strong class="text-slate-900">약 30시간</strong> 감소)</span>
       </div>
 
       <section class="chapter">
@@ -779,7 +786,7 @@ flowchart LR
       <div class="mt-8 grid gap-5 md:grid-cols-2">
         <div>
           <p class="text-xs font-semibold tracking-widest text-slate-500 uppercase">AB Test 운영 대시보드</p>
-          <p class="mt-2 text-base text-[#222] leading-relaxed">진행 중인 AB Test의 핵심 KPI(누적매출 · AU · 전환율 · ARPU)를 한 화면에서 확인.</p>
+          <p class="mt-2 text-base text-[#222] leading-relaxed">진행 중인 AB Test의 핵심 KPI(누적매출 · AU · 결제 전환율 · ARPU)를 한 화면에서 확인.</p>
           <a href="dashboards/duc-ops.html#page-abtesting" target="_blank" class="mt-4 block rounded-lg border border-slate-200 overflow-hidden hover:border-sky-400 transition">
             <div class="dash-frame">
               <iframe src="dashboards/duc-ops.html#page-abtesting" loading="lazy" title="AB Test 운영 대시보드 (목업)" tabindex="-1"></iframe>
@@ -793,7 +800,7 @@ flowchart LR
         </div>
         <div>
           <p class="text-xs font-semibold tracking-widest text-slate-500 uppercase">신규 슬롯 평가 대시보드</p>
-          <p class="mt-2 text-base text-[#222] leading-relaxed">새로 오픈한 슬롯의 매출 비중과 리텐션을 최근 8주 슬롯과 비교해 출시 여부를 결정.</p>
+          <p class="mt-2 text-base text-[#222] leading-relaxed">새로 오픈한 슬롯의 매출 비중과 리텐션을 최근 8주 슬롯과 비교해 추가 출시 여부를 결정.</p>
           <a href="dashboards/duc-ops.html#page-slottracking" target="_blank" class="mt-4 block rounded-lg border border-slate-200 overflow-hidden hover:border-sky-400 transition">
             <div class="dash-frame">
               <iframe src="dashboards/duc-ops.html#page-slottracking" loading="lazy" title="신규 슬롯 트레킹 대시보드 (목업)" tabindex="-1"></iframe>
@@ -830,6 +837,12 @@ flowchart LR
           lineColor: '#64748b',
           secondaryColor: '#f1f5f9',
           tertiaryColor: '#ffffff',
+        },
+        flowchart: {
+          useMaxWidth: false,
+          htmlLabels: true,
+          nodeSpacing: 40,
+          rankSpacing: 50,
         },
       });
     }

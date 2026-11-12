@@ -1,6 +1,6 @@
 # 차한영 — End-to-end Data Analytics Engineer 포트폴리오
 
-당근 Data Analytics Engineer 지원용 싱글 페이지 포트폴리오.
+Data Analytics Engineer 지원용 싱글 페이지 포트폴리오.
 
 ## 기술 스택
 

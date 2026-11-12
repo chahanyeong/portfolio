@@ -410,51 +410,48 @@
     <!-- ===== AI PRACTICE (P2: large outlined numbers) ===== -->
     <section id="practice" class="mt-18 md:mt-24">
       <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900">AI Engineering Practice</h2>
-      <p class="mt-3 text-[#222]">AI 에이전트로 일하는 방식 · 스케일 · 검증 · 도구 결합 · 학습</p>
+      <p class="mt-3 text-[#222] break-keep">AI 에이전트로 일하는 방식 · 조사 · 검증 · 자동화 · 자산화</p>
       <div class="mt-8 grid gap-5 md:grid-cols-2">
 
         <article class="rounded-2xl border border-slate-200 bg-white p-6">
-          <p class="text-xs font-bold tracking-[0.2em] text-sky-700">01 · SCALE</p>
+          <p class="text-xs font-bold tracking-[0.2em] text-sky-700">01 · INVESTIGATE</p>
           <h3 class="mt-2 text-xl font-semibold text-slate-900">얼럿 원인 조사 에이전트</h3>
-          <ul class="mt-4 space-y-2 text-base text-[#222] relative z-10">
-            <li>- 얼럿 발생 시 Claude가 1차 원인 조사 → Slack 스레드로 판정 · 근거 회신</li>
-            <li>- 일단위 얼럿 <strong>15종</strong> 적용, 건당 약 <strong>9~20분</strong> 내 회신</li>
-                      </ul>
+          <ul class="mt-4 space-y-2 text-base text-[#222] relative z-10 break-keep">
+            <li>- 얼럿 발생 시 에이전트가 데이터 조회 · 원인 분류 → Slack 스레드에 판정 · 근거 회신</li>
+            <li>- 일단위 얼럿 <strong>15종</strong> 대상, 2026.10 – 11 <strong>59건</strong> 판정, 발생 후 회신 중앙값 약 <strong>13분</strong></li>
+            <li>- 스레드 추가 질문 <strong>21건</strong> 대화형 답변</li>
+          </ul>
         </article>
 
         <article class="rounded-2xl border border-slate-200 bg-white p-6">
           <p class="text-xs font-bold tracking-[0.2em] text-emerald-700">02 · CROSS-CHECK</p>
-          <h3 class="mt-2 text-xl font-semibold text-slate-900">GPT · Claude 교차 검토 체계</h3>
-          <ul class="mt-4 space-y-2 text-base text-[#222] relative z-10">
-            <li>- 설계 확정 전 별도 에이전트의 반대 검토</li>
-            <li>- GPT(Codex) 교차 리뷰 병행으로 단일 모델 판단 편향 완화</li>
+          <h3 class="mt-2 text-xl font-semibold text-slate-900">설계 우선 · 교차 검토</h3>
+          <ul class="mt-4 space-y-2 text-base text-[#222] relative z-10 break-keep">
+            <li>- 주요 작업은 설계 → 구현 계획 → 구현 → 리뷰 순서, 2026.04 – 11 설계 문서 <strong>58건</strong> · 구현 계획 <strong>64건</strong></li>
+            <li>- 설계 확정 전 별도 에이전트 반대 검토 + GPT(Codex) 교차 리뷰로 단일 모델 편향 완화</li>
           </ul>
         </article>
 
         <article class="rounded-2xl border border-slate-200 bg-white p-6">
-          <p class="text-xs font-bold tracking-[0.2em] text-violet-700">03 · TOOLING</p>
-          <h3 class="mt-2 text-xl font-semibold text-slate-900">플러그인 · 스킬 활용</h3>
-          <ul class="mt-4 space-y-2 text-base text-[#222] relative z-10">
-            <li>- superpowers 플러그인을 기저 하네스로 활용해 작업 품질 안정화</li>
+          <p class="text-xs font-bold tracking-[0.2em] text-violet-700">03 · AUTOMATE</p>
+          <h3 class="mt-2 text-xl font-semibold text-slate-900">반복 업무 자동화</h3>
+          <ul class="mt-4 space-y-2 text-base text-[#222] relative z-10 break-keep">
+            <li>- 배포 · 패치 공지 메일 → 변경 항목 정리 → 담당자 승인 → Google Calendar 등록</li>
+            <li>- 기획 · 패치 문서 스캔 → 변경 사항 · 예상 영향도 정리, 2026.06 – 10 배포 <strong>20건</strong> 추적</li>
+            <li>- 캘린더 관리 · 주간 지표 작성 등 반복 업무 시간 약 <strong>50% 절감</strong></li>
           </ul>
-          <div class="mt-5 relative z-10">
-            <p class="text-sm font-bold tracking-[0.02em] text-violet-700">앱 일정 캘린더 에이전트</p>
-            <ul class="mt-2 space-y-1.5 text-sm text-[#222]">
-              <li>· 배포 · 패치 공지 메일 → 변경 항목 자동 정리 → 담당자 승인 → Google Calendar 등록</li>
-              <li>· 배포 · AB · 이벤트 등 종류별 기간 · 내용 자동 요약</li>
-              <li>· 캘린더 관리 · 주간 지표 작성 등 반복 업무 시간 약 <strong>50% 절감</strong></li>
-            </ul>
-          </div>
           <figure class="mt-4 rounded-lg overflow-hidden border border-slate-200 relative z-10">
             <img src="../assets/img/auto-calendar-preview.png" alt="앱 일정 캘린더 에이전트 — Google Calendar 월간 뷰" loading="lazy" class="w-full" />
           </figure>
         </article>
 
         <article class="rounded-2xl border border-slate-200 bg-white p-6">
-          <p class="text-xs font-bold tracking-[0.2em] text-amber-700">04 · LEARNING</p>
-          <h3 class="mt-2 text-xl font-semibold text-slate-900">분석 데이터 자산화</h3>
-          <ul class="mt-4 space-y-2 text-base text-[#222] relative z-10">
-            <li>- 분석 결과물 자산화 → 같은 분석 필요 시 에이전트에게 할당</li>
+          <p class="text-xs font-bold tracking-[0.2em] text-amber-700">04 · KNOWLEDGE</p>
+          <h3 class="mt-2 text-xl font-semibold text-slate-900">도메인 지식 자산화</h3>
+          <ul class="mt-4 space-y-2 text-base text-[#222] relative z-10 break-keep">
+            <li>- 테이블 명세 · 지표 정의 · 이슈 사례를 에이전트 지식 노트로 축적, 2026.11 기준 <strong>163건</strong> → 새 작업마다 자동 참조</li>
+            <li>- 주간 보고 기초 · 병렬 분석은 에이전트가 1차 → 분석가가 2차 검증 · 심화</li>
+            <li>- 분석 결과물 자산화 → 같은 분석은 에이전트에게 재할당</li>
             <li>- 산출 결과물 공유 (예시: Mobile CCU 이상치 분석)</li>
           </ul>
           <figure class="mt-4 rounded-lg overflow-hidden border border-slate-200 relative z-10">

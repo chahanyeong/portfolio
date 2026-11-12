@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>차한영 — End-to-end Data Analytics Engineer (v3 preview)</title>
+  <meta name="description" content="End-to-end Data Analytics Engineer 차한영의 포트폴리오. 지표 · 파이프라인 · BI를 직접 만들고 운영합니다." />
+  <meta name="theme-color" content="#FFFFFF" />
+  <meta property="og:title" content="차한영 — End-to-end Data Analytics Engineer" />
+  <meta property="og:description" content="Data Analytics Engineer 차한영 포트폴리오" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://chahanyeong.github.io/portfolio/" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230f172a'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700' font-size='18'%3Ec%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html, body {
+      font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    /* === M3: Modal entry/exit animation === */
+    #modal {
+      opacity: 0;
+      transition: opacity 220ms ease;
+    }
+    #modal.is-open { opacity: 1; }
+    #modal-box {
+      opacity: 0;
+      transform: scale(0.96) translateY(8px);
+      transition: opacity 260ms ease, transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #modal.is-open #modal-box {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    /* === M2: Chapter heading layout === */
+    .chapter {
+      margin-top: 56px;
+      padding-top: 32px;
+      border-top: 1px solid #e2e8f0;
+    }
+    .chapter:first-of-type { margin-top: 44px; padding-top: 0; border-top: none; }
+    .chapter__num {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      color: #0284c7;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .chapter__title {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      color: #0f172a;
+      line-height: 1.35;
+    }
+
+    /* === M5: fig caption (Stripe docs tone) === */
+    .fig-caption {
+      margin-top: 10px;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      color: #475569;
+    }
+
+    /* Mermaid sizing inside modal */
+    #modal-content .mermaid { display: flex; justify-content: center; min-height: 200px; font-size: 14px; overflow-x: auto; }
+    #modal-content .ba-diagram { overflow-x: auto; }
+
+    /* Dashboard iframe scale inside modal */
+    .dash-frame {
+      position: relative;
+      width: 100%;
+      height: 360px;
+      overflow: hidden;
+      background: #f1f5f9;
+    }
+    .dash-frame iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 200%; height: 200%;
+      border: none;
+      transform: scale(0.5);
+      transform-origin: top left;
+      pointer-events: none;
+    }
+
+    /* === M4: Before/After toggle with color signals === */
+    .ba-toggle {
+      display: inline-flex;
+      gap: 6px;
+      padding: 5px;
+      border-radius: 9999px;
+      background: #f1f5f9;
+      margin-bottom: 18px;
+    }
+    .ba-toggle__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 20px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      transition: all 220ms ease;
+    }
+    .ba-toggle__btn::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.5;
+    }
+    .ba-toggle__btn:hover { color: #0f172a; }
+    .ba-toggle__btn[data-state="before"].is-active {
+      background: #fff1f2;
+      color: #be123c;
+    }
+    .ba-toggle__btn[data-state="after"].is-active {
+      background: #ecfdf5;
+      color: #047857;
+    }
+    .ba-toggle__btn.is-active::before { opacity: 1; }
+
+    /* Stack two diagrams in same grid cell so mermaid can measure each */
+    .ba-stage {
+      display: grid;
+      grid-template-areas: 'stack';
+    }
+    .ba-diagram {
+      grid-area: stack;
+      margin: 0;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 300ms ease, visibility 0s 300ms;
+    }
+    .ba-diagram.is-active {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 300ms ease, visibility 0s 0s;
+    }
+    .ba-diagram figcaption {
+      margin-top: 12px;
+      text-align: center;
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    /* === P3: Project card hover left accent (per-project color) === */
+    .proj-card { position: relative; transition: all 200ms ease; }
+    .proj-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 0;
+      border-radius: 16px 0 0 16px;
+      transition: width 200ms ease;
+    }
+    .proj-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08); }
+    .proj-card:hover::before { width: 4px; }
+    .proj-card--sky::before { background: #0284c7; }
+    .proj-card--sky:hover { border-color: #bae6fd; }
+    .proj-card--emerald::before { background: #059669; }
+    .proj-card--emerald:hover { border-color: #a7f3d0; }
+    .proj-card--violet::before { background: #7c3aed; }
+    .proj-card--violet:hover { border-color: #ddd6fe; }
+    .proj-card--amber::before { background: #d97706; }
+    .proj-card--amber:hover { border-color: #fde68a; }
+
+    /* === Body text override (designer feedback: #222) === */
+    .body-ink { color: #222222; }
+  </style>
+</head>
+<body>
+  <div class="max-w-(--breakpoint-xl) mx-auto px-5">
+    <header class="flex flex-col lg:flex-row justify-between items-center my-5">
+      <nav class="flex w-full flex-col gap-4 lg:w-auto lg:flex-row lg:items-center">
+        <div class="flex w-full items-center justify-between lg:w-auto">
+          <a href="#top" class="text-lg">
+            <span class="font-bold text-slate-900">차한영</span><span class="text-slate-500"> · Data Analytics Engineer</span>
+          </a>
+        </div>
+        <ul class="flex flex-wrap gap-x-3 gap-y-1">
+          <li><a href="#about" class="flex px-0 py-2 text-sm text-gray-600 hover:text-gray-900 lg:px-3">소개</a></li>
+          <li><a href="#projects" class="flex px-0 py-2 text-sm text-gray-600 hover:text-gray-900 lg:px-3">프로젝트</a></li>
+          <li><a href="#skills" class="flex px-0 py-2 text-sm text-gray-600 hover:text-gray-900 lg:px-3">핵심 역량</a></li>
+          <li><a href="#practice" class="flex px-0 py-2 text-sm text-gray-600 hover:text-gray-900 lg:px-3">AI</a></li>
+          <li><a href="../resume.html" target="_blank" class="flex px-0 py-2 text-sm text-gray-600 hover:text-gray-900 lg:px-3">이력서 ↗</a></li>
+          <li><a href="#contact" class="flex px-0 py-2 text-sm text-gray-600 hover:text-gray-900 lg:px-3">연락</a></li>
+        </ul>
+        <div class="lg:hidden">
+          <a href="#contact" class="rounded-sm text-center w-full px-4 py-2 bg-slate-900 text-white hover:bg-slate-700">문의하기</a>
+        </div>
+      </nav>
+      <div>
+        <div class="hidden lg:flex items-center gap-4">
+          <a href="#contact" class="rounded-sm text-center px-4 py-2 bg-slate-900 text-white hover:bg-slate-700">문의하기</a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="max-w-(--breakpoint-xl) mx-auto px-5 pb-24" id="top">
+
+    <!-- ===== HERO ===== -->
+    <section id="about" class="mt-8 md:mt-12 rounded-3xl border border-slate-200 bg-[radial-gradient(circle_at_20%_10%,#e0f2fe_0%,#f8fafc_45%,#ffffff_100%)] p-8 md:p-12">
+      <p class="text-xs font-semibold tracking-[0.28em] text-sky-700">DATA ANALYTICS ENGINEER · PORTFOLIO</p>
+      <div class="mt-5 grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:items-end">
+        <div>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900">End-to-end<br>Data Analytics Engineer.</h1>
+          <p class="mt-5 max-w-2xl text-base md:text-lg leading-relaxed text-[#222]">
+            결제 · 재화 · 접속 이상 탐지부터 원인 분석, 정책 효과 판정까지<br/>
+            얼럿 제작 · 운영 · 품질 평가와 AI 에이전트 기반 업무 자동화
+          </p>
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a href="#projects" class="inline-flex items-center gap-2 rounded-sm bg-slate-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-slate-700">프로젝트 보기 →</a>
+            <a href="mailto:chahanyeong@naver.com" class="inline-flex items-center gap-2 rounded-sm border border-slate-300 bg-white px-5 py-2.5 text-sm font-medium text-[#222] transition hover:bg-slate-100">연락하기 →</a>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white/80 p-6 backdrop-blur-sm">
+          <p class="text-sm font-medium text-slate-500">집중 분야</p>
+          <ul class="mt-4 space-y-3 text-sm text-[#222]">
+            <li class="flex items-start gap-2"><span class="text-emerald-600 mt-0.5">✓</span> 이상 탐지 얼럿 설계 · 운영 · 품질 평가</li>
+            <li class="flex items-start gap-2"><span class="text-emerald-600 mt-0.5">✓</span> 매출 예측 · 정책 효과 판정 (인플레이션 · AB 테스트)</li>
+            <li class="flex items-start gap-2"><span class="text-emerald-600 mt-0.5">✓</span> 결제 · 재화 데이터 정합성 관리</li>
+            <li class="flex items-start gap-2"><span class="text-emerald-600 mt-0.5">✓</span> Dagster + Bitbucket 파이프라인 · AI 에이전트 운영</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- P1: bigger stat numbers + tighter -->
+      <div class="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">앱 헬스케어 시스템 구축</p>
+          <p class="mt-3 text-5xl font-bold tracking-tight text-sky-700">60<span class="text-2xl text-sky-400 ml-0.5">%</span></p>
+          <p class="mt-2 text-base text-[#222]">이슈 조치 소요시간 단축</p>
+          <p class="mt-1 text-xs text-slate-500">2025 하반기 대비 2026 상반기</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">재화 인플레이션 1 · 2차</p>
+          <p class="mt-3 text-5xl font-bold tracking-tight text-emerald-700">+12.8<span class="text-2xl text-emerald-400 ml-0.5">%</span></p>
+          <p class="mt-2 text-base text-[#222]">2차 인플레이션 2주 매출</p>
+          <p class="mt-1 text-xs text-slate-500">오픈 전 같은 요일 8주 평균 대비</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">데이터 정합성 · 인프라 마이그레이션</p>
+          <p class="mt-3 text-4xl font-bold tracking-tight text-violet-700">-76.8<span class="text-xl text-violet-400">%p</span><span class="text-slate-300 font-normal mx-1">·</span>-99<span class="text-xl text-violet-400">%</span></p>
+          <p class="mt-2 text-base text-[#222]">코인 정합성 오차율 · 결제 미지급 건수</p>
+          <p class="mt-1 text-xs text-slate-500">2025.07 · 2025.01 – 02 (안드로이드 주간)</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-medium text-slate-500">매출 모니터링 · AB 테스트 운영</p>
+          <p class="mt-3 text-4xl font-bold tracking-tight text-amber-700">85.7<span class="text-xl text-amber-400">%</span><span class="text-slate-300 font-normal mx-1">·</span>28<span class="text-xl text-amber-400">건</span></p>
+          <p class="mt-2 text-base text-[#222]">매출 증감 예측 정확도 · AB 대상자 추출</p>
+          <p class="mt-1 text-xs text-slate-500">2025 하반기 (이슈 주간 제외) · 추출 오류 0건</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PROJECTS ===== -->
+    <section id="projects" class="mt-18 md:mt-24">
+      <div class="flex items-end justify-between gap-4">
+        <div>
+          <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900">대표 프로젝트</h2>
+          <p class="mt-3 text-[#222]">카드 클릭 시 상세 내용 · 이미지 · 다이어그램 · 라이브 데모</p>
+        </div>
+      </div>
+      <div class="mt-8 grid gap-5 md:grid-cols-2">
+
+        <article onclick="openModal('p1')" class="proj-card proj-card--sky cursor-pointer h-full rounded-2xl border border-slate-200 bg-white p-6 flex flex-col">
+          <h3 class="text-xl font-semibold text-slate-900 leading-snug">앱 헬스케어 시스템 구축</h3>
+          <ul class="mt-4 space-y-2 text-base text-[#222] flex-grow">
+            <li>· 크론탭 얼럿 <strong>42개 Dagster + Bitbucket CI/CD 이관</strong>, 5개 게임 · 전략분석팀 공용 서버로 확장</li>
+            <li>· 얼럿 44개 리뷰, 15개 <strong>Recall · 정밀도 · 반응성 · 오탐률</strong> 정량 평가 · 반기 개선 사이클</li>
+            <li>· 2026 상반기 얼럿으로 이슈 <strong class="text-slate-900">8건 조기 식별</strong>, 이슈 조치 소요시간 <strong class="text-slate-900">-60%</strong></li>
+          </ul>
+          <div class="mt-5 flex flex-wrap gap-1.5">
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Python</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">SQL</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Dagster</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Docker</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Redshift</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">MySQL</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">PostgreSQL</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Slack API</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">AWS EC2</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Bitbucket</span>
+          </div>
+          <div class="mt-4 text-xs font-medium text-sky-700">자세히 보기 →</div>
+        </article>
+
+        <article onclick="openModal('p2')" class="proj-card proj-card--emerald cursor-pointer h-full rounded-2xl border border-slate-200 bg-white p-6 flex flex-col">
+          <h3 class="text-xl font-semibold text-slate-900 leading-snug">재화 인플레이션 1 · 2차 운영 지원</h3>
+          <ul class="mt-4 space-y-2 text-base text-[#222] flex-grow">
+            <li>· 1차: 가격대별 베팅 수준 분석 · 회귀 시각화 → $99 이상 상품 코인 지급량 <strong>약 20% 추가 상향</strong>에 반영</li>
+            <li>· 2차: GS 액션 플랜 수립, 상품 2,705개 지급량 전수 점검 · <strong>매출 판정 기준</strong> 설계</li>
+            <li>· 2차 매출 <strong class="text-slate-900">첫 주 +24.8% · 2주 +12.8%</strong> (오픈 전 같은 요일 8주 평균 대비)</li>
+          </ul>
+          <div class="mt-5 flex flex-wrap gap-1.5">
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Python</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">SQL</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Redshift</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Redash</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">회귀 분석</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">시계열 예측</span>
+          </div>
+          <div class="mt-4 text-xs font-medium text-sky-700">자세히 보기 →</div>
+        </article>
+
+        <article onclick="openModal('p3')" class="proj-card proj-card--violet cursor-pointer h-full rounded-2xl border border-slate-200 bg-white p-6 flex flex-col">
+          <h3 class="text-xl font-semibold text-slate-900 leading-snug">데이터 정합성 관리 · 분석 인프라 마이그레이션</h3>
+          <ul class="mt-4 space-y-2 text-base text-[#222] flex-grow">
+            <li>· Play Console 영수증 크롤링 + 결제 테이블 대조, 안드 주간 미지급 <strong class="text-slate-900">462 → 5건 (-99%)</strong> · 금액 <strong class="text-slate-900">-98%</strong></li>
+            <li>· 통계 페이지 코인 정합성 오차율 <strong class="text-slate-900">88.90% → 12.10% (-76.8%p)</strong>, 중복 useridx 유저 1,155명 정리</li>
+            <li>· 인수 게임사 분석 데이터 이관 설계 (원장 <strong class="text-slate-900">일 1.7억 행</strong>, 테이블 7종) · 자사와 동일한 이상 탐지로 확장</li>
+          </ul>
+          <div class="mt-5 flex flex-wrap gap-1.5">
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Python</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">SQL</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Crawler</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Redshift</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">GaussDB(DWS)</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Google Play Console</span>
+          </div>
+          <div class="mt-4 text-xs font-medium text-sky-700">자세히 보기 →</div>
+        </article>
+
+        <article onclick="openModal('p4')" class="proj-card proj-card--amber cursor-pointer h-full rounded-2xl border border-slate-200 bg-white p-6 flex flex-col">
+          <h3 class="text-xl font-semibold text-slate-900 leading-snug">매출 모니터링 · AB 테스트 운영</h3>
+          <ul class="mt-4 space-y-2 text-base text-[#222] flex-grow">
+            <li>· 4주 단기 · 세그먼트별 매출 증감 예측, 정확도 <strong class="text-slate-900">76% → 85.71%</strong> (이슈 주간 제외)</li>
+            <li>· 주간 모니터링 보고로 운영 의사결정 <strong>6건</strong> 지원</li>
+            <li>· AB 대상자 추출 <strong class="text-slate-900">28건 오류 0건</strong>, 추출 20~40분 → 약 5분 · AB 자동 트래킹 대시보드</li>
+          </ul>
+          <div class="mt-5 flex flex-wrap gap-1.5">
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Python</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Prophet</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">SQL</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Redshift</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">PostgreSQL</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Dagster</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Chart.js</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">HTML</span>
+          </div>
+          <div class="mt-4 text-xs font-medium text-sky-700">라이브 데모 보기 →</div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ===== SKILLS ===== -->
+    <section id="skills" class="mt-18 md:mt-24 grid gap-6 lg:grid-cols-[1fr_1.4fr]">
+      <div class="rounded-2xl bg-slate-900 p-7 text-white">
+        <h2 class="text-2xl md:text-3xl font-bold">핵심 역량</h2>
+        <p class="mt-4 text-sm leading-relaxed text-slate-300">
+          지표 정의 → 파이프라인 → 얼럿 · 대시보드 → 효과 판정까지 직접 운영
+        </p>
+        <div class="mt-6 space-y-3 text-sm">
+          <p class="flex items-center gap-2"><span class="text-sky-300">—</span> 이상 탐지 얼럿 설계 · 품질 평가</p>
+          <p class="flex items-center gap-2"><span class="text-sky-300">—</span> 매출 예측 · 정책 효과 판정</p>
+          <p class="flex items-center gap-2"><span class="text-sky-300">—</span> A/B 테스트 대상자 설계 · 결과 트래킹</p>
+          <p class="flex items-center gap-2"><span class="text-sky-300">—</span> Dagster · CI/CD 파이프라인, AI 에이전트 운영 (Claude Code, Codex)</p>
+        </div>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-white p-7">
+        <h3 class="text-lg font-semibold text-slate-900">Tech Stack</h3>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">Python</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">SQL</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">HTML/CSS</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">Redshift</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">PostgreSQL</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">MySQL</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">Dagster</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">Docker</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">Bitbucket CI/CD</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">Excel</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">PowerPoint</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">DBeaver</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">Redash</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">Jupyter</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">Slack</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">Jira</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">Confluence</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">Google Workspace</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">Claude Code</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">Codex</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">GPT</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">Anthropic API</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">Chart.js</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">D3.js</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">Mermaid</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">Tailwind</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">Selenium</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">Playwright</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">A/B Testing</span>
+          <span class="rounded-sm bg-slate-100 px-3 py-1.5 text-sm text-[#222]">시계열 예측</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== AI PRACTICE (P2: large outlined numbers) ===== -->
+    <section id="practice" class="mt-18 md:mt-24">
+      <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900">AI Engineering Practice</h2>
+      <p class="mt-3 text-[#222]">AI 에이전트로 일하는 방식 · 스케일 · 검증 · 도구 결합 · 학습</p>
+      <div class="mt-8 grid gap-5 md:grid-cols-2">
+
+        <article class="rounded-2xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-bold tracking-[0.2em] text-sky-700">01 · SCALE</p>
+          <h3 class="mt-2 text-xl font-semibold text-slate-900">얼럿 원인 조사 에이전트</h3>
+          <ul class="mt-4 space-y-2 text-base text-[#222] relative z-10">
+            <li>- 얼럿 발생 시 Claude가 1차 원인 조사 → Slack 스레드로 판정 · 근거 회신 (약 <strong>9~20분</strong>)</li>
+            <li>- 개발 환경 일단위 얼럿 <strong>15종</strong> 대상 운영</li>
+            <li>- 원인 판정 · 근거 중심의 답글 형식 설계</li>
+          </ul>
+        </article>
+
+        <article class="rounded-2xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-bold tracking-[0.2em] text-emerald-700">02 · CROSS-CHECK</p>
+          <h3 class="mt-2 text-xl font-semibold text-slate-900">GPT · Claude 교차 검토 체계</h3>
+          <ul class="mt-4 space-y-2 text-base text-[#222] relative z-10">
+            <li>- 설계 확정 전 별도 에이전트의 반대 검토</li>
+            <li>- GPT(Codex) 교차 리뷰 병행으로 단일 모델 판단 편향 완화</li>
+          </ul>
+        </article>
+
+        <article class="rounded-2xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-bold tracking-[0.2em] text-violet-700">03 · TOOLING</p>
+          <h3 class="mt-2 text-xl font-semibold text-slate-900">플러그인 · 스킬 활용</h3>
+          <ul class="mt-4 space-y-2 text-base text-[#222] relative z-10">
+            <li>- superpowers 플러그인을 기저 하네스로 활용해 작업 품질 안정화</li>
+          </ul>
+          <div class="mt-5 relative z-10">
+            <p class="text-sm font-bold tracking-[0.02em] text-violet-700">앱 일정 캘린더 에이전트</p>
+            <ul class="mt-2 space-y-1.5 text-sm text-[#222]">
+              <li>· 배포 · 패치 공지 메일 → 변경 항목 자동 정리 → 담당자 승인 → Google Calendar 등록</li>
+              <li>· 배포 · AB · 이벤트 등 종류별 기간 · 내용 자동 요약</li>
+              <li>· 캘린더 관리 · 주간 지표 작성 등 반복 업무 시간 약 <strong>50% 절감</strong> (자체 추정)</li>
+            </ul>
+          </div>
+          <figure class="mt-4 rounded-lg overflow-hidden border border-slate-200 relative z-10">
+            <img src="../assets/img/auto-calendar-preview.png" alt="앱 일정 캘린더 에이전트 — Google Calendar 월간 뷰" loading="lazy" class="w-full" />
+          </figure>
+        </article>
+
+        <article class="rounded-2xl border border-slate-200 bg-white p-6">
+          <p class="text-xs font-bold tracking-[0.2em] text-amber-700">04 · LEARNING</p>
+          <h3 class="mt-2 text-xl font-semibold text-slate-900">분석 데이터 자산화</h3>
+          <ul class="mt-4 space-y-2 text-base text-[#222] relative z-10">
+            <li>- 분석 결과물 자산화 → 같은 분석 필요 시 에이전트에게 할당</li>
+            <li>- 산출 결과물 공유 (예시: Mobile CCU 이상치 분석)</li>
+          </ul>
+          <figure class="mt-4 rounded-lg overflow-hidden border border-slate-200 relative z-10">
+            <img src="../assets/img/sample-mobile-ccu.png" alt="Mobile CCU 이상치 분석 리포트" loading="lazy" class="w-full" />
+          </figure>
+          <a href="../samples/mobile-ccu-anomaly.html" target="_blank" class="mt-4 inline-block text-xs font-medium text-sky-700 hover:text-sky-900 relative z-10">인터랙티브 리포트 열기 ↗</a>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section id="contact" class="mt-18 md:mt-24 rounded-3xl border border-sky-200 bg-sky-50 p-8 md:p-12">
+      <div class="grid gap-8 md:grid-cols-[1.1fr_1fr] md:items-center">
+        <div>
+          <p class="text-sm font-bold tracking-[0.28em] text-sky-700">APPROACH</p>
+          <ol class="mt-6 space-y-5">
+            <li class="flex gap-4">
+              <span class="shrink-0 pt-1 font-mono text-xs font-bold tracking-widest text-sky-700">01</span>
+              <p class="text-lg md:text-xl leading-relaxed text-[#222]">
+                한 번 한 작업은 <strong class="font-bold text-slate-900">정형화 · 자산화</strong> → 다음 <strong class="font-bold text-slate-900">AI 자동화</strong>의 재료로
+              </p>
+            </li>
+            <li class="flex gap-4">
+              <span class="shrink-0 pt-1 font-mono text-xs font-bold tracking-widest text-sky-700">02</span>
+              <p class="text-lg md:text-xl leading-relaxed text-[#222]">
+                <strong class="font-bold text-slate-900">측정 가능한 형태</strong>로 작업, 숫자마다 <strong class="font-bold text-slate-900">기준(기간 · 비교 대상)</strong> 명시
+              </p>
+            </li>
+            <li class="flex gap-4">
+              <span class="shrink-0 pt-1 font-mono text-xs font-bold tracking-widest text-sky-700">03</span>
+              <p class="text-lg md:text-xl leading-relaxed text-[#222]">
+                결과물은 보는 사람 · 쓰는 사람 모두 편하도록 <strong class="font-bold text-slate-900">시각</strong>과 <strong class="font-bold text-slate-900">사용감</strong>까지
+              </p>
+            </li>
+          </ol>
+        </div>
+
+        <!-- vCard -->
+        <div class="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+          <p class="text-2xl font-bold text-slate-900 tracking-tight">차한영</p>
+          <p class="text-sm text-slate-500">Data Analytics Engineer</p>
+
+          <div class="mt-6 space-y-3">
+            <a href="mailto:chahanyeong@naver.com" class="group flex items-center gap-3 text-sm text-[#222]">
+              <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-sky-50 text-sky-700 group-hover:bg-sky-100 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" /></svg>
+              </span>
+              <span class="group-hover:text-sky-700 transition">chahanyeong@naver.com</span>
+            </a>
+            <a href="tel:+821075416426" class="group flex items-center gap-3 text-sm text-[#222]">
+              <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-sky-50 text-sky-700 group-hover:bg-sky-100 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" /></svg>
+              </span>
+              <span class="group-hover:text-sky-700 transition">010-7541-6426</span>
+            </a>
+            <a href="https://github.com/chahanyeong" target="_blank" rel="noopener" class="group flex items-center gap-3 text-sm text-[#222]">
+              <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-sky-50 text-sky-700 group-hover:bg-sky-100 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z" clip-rule="evenodd" /></svg>
+              </span>
+              <span class="group-hover:text-sky-700 transition">github.com/chahanyeong</span>
+            </a>
+          </div>
+
+          <div class="mt-6 pt-5 border-t border-slate-100">
+            <a href="../resume.html" target="_blank" rel="noopener" class="block text-center rounded-sm border border-slate-300 bg-white px-3 py-2.5 text-xs font-medium text-[#222] hover:bg-slate-50 transition">Resume ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ===== MODAL ===== -->
+  <div id="modal" class="fixed inset-0 z-50 hidden" onclick="closeModal()">
+    <div class="absolute inset-0 bg-slate-900/65 backdrop-blur-sm"></div>
+    <div class="relative flex min-h-screen items-start md:items-center justify-center p-4 md:p-8">
+      <div class="relative w-full max-w-6xl rounded-2xl bg-white shadow-2xl" id="modal-box" onclick="event.stopPropagation()">
+        <div class="absolute right-4 top-4 z-10 flex items-center gap-3">
+          <span class="hidden md:inline text-xs font-mono tracking-widest text-slate-400 uppercase">ESC</span>
+          <button onclick="closeModal()" aria-label="닫기" class="flex h-9 w-9 items-center justify-center rounded-full text-2xl text-slate-400 transition hover:bg-slate-100 hover:text-slate-900">&times;</button>
+        </div>
+        <div class="max-h-[88vh] overflow-y-auto p-6 md:p-10" id="modal-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== HIDDEN MODAL CONTENT TEMPLATES ===== -->
+  <div class="hidden">
+
+    <!-- Project 01 content -->
+    <div id="content-p1">
+      <!-- M1: revamped header -->
+      <div class="flex items-start gap-5">
+        <div class="flex-shrink-0 h-16 w-16 flex items-center justify-center rounded-2xl bg-sky-50 border border-sky-100">
+          <span class="text-3xl font-bold tracking-tight text-sky-700">01</span>
+        </div>
+        <div>
+          <p class="text-xs font-bold tracking-[0.3em] text-sky-700 uppercase">PROJECT</p>
+          <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-900">앱 <span class="text-sky-700">헬스케어 시스템</span> 구축</h2>
+          <p class="mt-2 text-sm text-slate-500">2025.08 – 2026.07 · 기획 · 개발 · 운영</p>
+        </div>
+      </div>
+      <div class="mt-5 inline-flex items-center flex-wrap gap-x-2 rounded-lg bg-sky-50 px-4 py-2.5 text-sm">
+        <span class="font-semibold text-slate-900">이슈 조치 소요시간 -60%</span>
+        <span class="text-[#222]">· 2026 상반기 얼럿으로 이슈 <strong class="text-slate-900">8건</strong> 조기 식별 · 얼럿 반응성 <strong class="text-slate-900">+1.39%p</strong> (2025 하반기 대비)</span>
+      </div>
+
+      <!-- M2: Chapter 1 -->
+      <section class="chapter">
+        <p class="chapter__num">CH.01</p>
+        <h3 class="chapter__title">Dagster + Bitbucket으로 기존 서버를 보완하는 DevOps 인프라 개발</h3>
+        <div class="mt-5 grid gap-5 md:grid-cols-2">
+          <div class="rounded-lg border border-rose-100 bg-rose-50 p-5">
+            <p class="text-xs font-semibold tracking-widest text-rose-600 uppercase">기존 운영의 한계</p>
+            <ul class="mt-3 space-y-2 text-base text-[#222]">
+              <li>· 주피터 노트북 직접 사용 → 버전 관리 불가</li>
+              <li>· 크론탭 UI · 로그 부재 → 점검 비용 큼</li>
+              <li>· 라이브 서버 직접 수정 · 배포</li>
+              <li>· 얼럿이 실제 이슈를 잡는지 측정 기록 없음</li>
+            </ul>
+          </div>
+          <div class="rounded-lg border border-emerald-100 bg-emerald-50 p-5">
+            <p class="text-xs font-semibold tracking-widest text-emerald-700 uppercase">현재 운영 인프라</p>
+            <ul class="mt-3 space-y-2 text-base text-[#222]">
+              <li>· Bitbucket 코드 버전 관리 · 롤백 체계 표준화</li>
+              <li>· Bitbucket Runner CI/CD 자동 배포, 비개발자도 같은 절차로 수정</li>
+              <li>· Dagster UI로 실행 로그 · 작업 흐름 시각화</li>
+              <li>· 크론탭 얼럿 <strong>42개</strong> → Dagster 마이그레이션 완료</li>
+              <li>· 5분 주기 상태 점검, 장애 시 Slack 알림 · 자동 재기동</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mt-6 grid gap-6 md:grid-cols-2 items-start">
+          <div>
+            <p class="text-xs font-semibold tracking-widest text-slate-500 uppercase">운영 규모 (2026.11 현재)</p>
+            <ul class="mt-3 space-y-3 text-base text-[#222] leading-relaxed">
+              <li>· 자사 <strong class="text-slate-900">5개 게임</strong> + 전략분석팀 공용 얼럿 서버로 확장</li>
+              <li>· 운영 스케줄 <strong class="text-slate-900">114개</strong>(가동 91) · 센서 <strong class="text-slate-900">10개</strong></li>
+              <li>· 운영 레포 커밋 1,483건 중 <strong class="text-slate-900">809건(55%)</strong> 작성</li>
+              <li>· 얼럿 쿼리 최적화 <strong class="text-slate-900">186초 → 28초 (-85%)</strong></li>
+            </ul>
+          </div>
+          <figure>
+            <div class="rounded-lg overflow-hidden border border-slate-200">
+              <img src="../assets/img/alert-server-timeline.png" alt="Dagster 실행 타임라인 — 게임별 얼럿 잡 실행 기록" class="w-full block" />
+            </div>
+            <p class="fig-caption">fig.01 — Dagster 실행 타임라인 (게임별 얼럿 잡 하루 실행 기록)</p>
+          </figure>
+        </div>
+
+        <div class="mt-6 rounded-lg border border-slate-200 bg-white p-5">
+          <p class="text-xs font-mono tracking-widest text-slate-500 mb-3">FIG.02 — 운영 흐름 비교</p>
+          <div class="ba-toggle" role="tablist" aria-label="Before/After 다이어그램 전환">
+            <button type="button" class="ba-toggle__btn is-active" data-state="before" role="tab" aria-selected="true">기존 운영</button>
+            <button type="button" class="ba-toggle__btn" data-state="after" role="tab" aria-selected="false">현재 운영</button>
+          </div>
+          <div class="ba-stage">
+            <figure class="ba-diagram is-active" data-state="before">
+              <div class="mermaid">
+flowchart LR
+    A([요구사항 접수]) --> B[쿼리 작성]
+    B --> C[파이프라인 코드 작성]
+    C --> D[포맷 룰 수동 점검<br/>config · DB헬퍼 · 하드코딩 등]
+    D --> E[디버깅 · 검증]
+    E -->|오류 발생| C
+    E --> F([수정 버전 배포<br/>라이브 직접 반영])
+
+    style D fill:#ffd6d6,stroke:#ff4444
+    style E fill:#ffd6d6,stroke:#ff4444
+    style F fill:#ffe0b2,stroke:#ff6600
+              </div>
+              <figcaption>포맷 점검 · 디버깅 수동, 검증 없이 라이브 직접 반영</figcaption>
+            </figure>
+            <figure class="ba-diagram" data-state="after">
+              <div class="mermaid">
+flowchart LR
+    subgraph MGR [관리자]
+        direction TB
+        TASK([요구사항 전달])
+        APPR([검토 및 승인])
+        PAR[/다른 분석 업무 병행/]
+    end
+    subgraph AGBOX [AI 에이전트]
+        direction TB
+        AG[Claude Code]
+        RB[CLAUDE.md 포맷]
+        AG -.-> RB
+    end
+    DV[(dagster_dev<br/>개발 환경)]
+    LV[(dagster<br/>라이브 환경)]
+    TASK -->|① 요구사항 전달| AG
+    AG -->|② 코드 작성 및 검증| DV
+    DV -->|③ 결과 확인| APPR
+    APPR -->|④ 승인| LV
+    style MGR fill:#f9fafb,stroke:#6b7280
+    style AGBOX fill:#e8f5e9,stroke:#4CAF50
+    style RB fill:#e8f4fd,stroke:#2196F3
+    style DV fill:#eff6ff,stroke:#3b82f6
+    style LV fill:#dcfce7,stroke:#16a34a
+    style PAR fill:#fff9c4,stroke:#ffc107
+              </div>
+              <figcaption>AI 에이전트가 Dev에서 작업 → 관리자 검토 → Live 반영, 그동안 관리자는 다른 분석 병행</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- Chapter 2 -->
+      <section class="chapter">
+        <p class="chapter__num">CH.02</p>
+        <h3 class="chapter__title">기존 얼럿 시스템의 불확실성을 측정가능한 체계로 재구성</h3>
+        <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed">
+            <li>· 2025 개발 이슈 <strong>75건</strong>을 정답셋으로 자사 앱 얼럿 <strong>44개</strong> 리뷰</li>
+            <li>· 얼럿 평가 지표 4종(Recall · 정밀도 · 반응성 · 오탐률) 정의, 얼럿 <strong>15개</strong> 정량 평가</li>
+            <li>· 반기 단위 평가 · 개선 사이클 수립</li>
+            <li>· 평가 결과로 얼럿 재설계
+              <ul class="mt-2 space-y-1 text-sm text-slate-600">
+                <li>시간별 프리코인 얼럿 재설계 (666회 중 실제 이슈 관련 0.45%)</li>
+                <li>재화 획득 얼럿 기준선 변경 → 예측 오차(RMSE) -65%</li>
+                <li>코인 정합성 얼럿 판정식 교체 → 오탐 일수 7일 → 2일</li>
+                <li>다른 얼럿과 겹치는 얼럿 삭제</li>
+              </ul>
+            </li>
+          </ul>
+          <figure>
+            <div class="overflow-x-auto rounded-lg border border-slate-200">
+              <table class="w-full text-sm">
+                <thead class="bg-slate-50 text-xs text-slate-500">
+                  <tr>
+                    <th class="px-3 py-2 text-left font-medium">스핀 수 감소 얼럿</th>
+                    <th class="px-3 py-2 text-right font-medium">Recall</th>
+                    <th class="px-3 py-2 text-right font-medium">정밀도</th>
+                    <th class="px-3 py-2 text-right font-medium">반응성</th>
+                    <th class="px-3 py-2 text-right font-medium">오탐률</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-[#222]">
+                  <tr>
+                    <td class="px-3 py-2">전체 · 시간별</td>
+                    <td class="px-3 py-2 text-right tabular-nums">62.50%</td>
+                    <td class="px-3 py-2 text-right tabular-nums">7.99%</td>
+                    <td class="px-3 py-2 text-right tabular-nums">12.15%</td>
+                    <td class="px-3 py-2 text-right tabular-nums">3.45%</td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2">플랫폼별 · 시간별</td>
+                    <td class="px-3 py-2 text-right tabular-nums">37.50%</td>
+                    <td class="px-3 py-2 text-right tabular-nums">20.37%</td>
+                    <td class="px-3 py-2 text-right tabular-nums">29.63%</td>
+                    <td class="px-3 py-2 text-right tabular-nums">0.56%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="fig-caption">fig.03 — 얼럿 평가 예시: 같은 지표를 보는 두 얼럿 (2025.01 – 11)</p>
+          </figure>
+        </div>
+      </section>
+
+      <!-- Chapter 3 -->
+      <section class="chapter">
+        <p class="chapter__num">CH.03</p>
+        <h3 class="chapter__title">앱 배포 이력 추적 → 변경 사항 파악 → 사전 대응</h3>
+        <ul class="mt-5 space-y-3 text-base text-[#222] leading-relaxed">
+          <li>· 배포 · 패치 공지 메일을 AI 에이전트가 정리해 팀 캘린더에 자동 등록하는 <strong>배포 기록 체계</strong> 구축 → 캘린더 · 주간 지표 등 반복 업무 시간 약 <strong>50%</strong> 절감 (자체 추정)</li>
+          <li>· 강제 업데이트 · 상점 개편 · 광고 도입 등 변경 <strong>20건</strong> 배포 전후 영향 추적</li>
+          <li>· 배포 직후 이상 탐지 알림 개발 (후속 작업, 2026.09 운영): 스토어 배포 버전과 라이브 접속 버전 비율 차이 매시 판정 → 과거 배포 사고 재현 시 <strong>배포 3시간 15분 후 탐지</strong> (당시 인지 8시간), 과거 릴리즈 596건 오발화 0건</li>
+        </ul>
+      </section>
+
+      <!-- Chapter 4 -->
+      <section class="chapter">
+        <p class="chapter__num">CH.04</p>
+        <h3 class="chapter__title">운영 중 주요 이슈 대응</h3>
+        <div class="mt-5 overflow-x-auto rounded-lg border border-slate-200">
+          <table class="w-full text-sm">
+            <thead class="bg-slate-50 text-xs text-slate-500">
+              <tr>
+                <th class="px-3 py-2 text-left font-medium whitespace-nowrap">날짜</th>
+                <th class="px-3 py-2 text-left font-medium">이슈</th>
+                <th class="px-3 py-2 text-left font-medium">탐지</th>
+                <th class="px-3 py-2 text-left font-medium">대응</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 text-[#222] align-top">
+              <tr>
+                <td class="px-3 py-2.5 whitespace-nowrap font-mono text-xs text-slate-500">2026.11.06</td>
+                <td class="px-3 py-2.5">플랫폼 DB 이관 누락 → 당일 매출 데이터 일부 유실</td>
+                <td class="px-3 py-2.5">얼럿 값 약 20% 저하 → 역산</td>
+                <td class="px-3 py-2.5">플랫폼팀 재백업 요청, 적재 우선 재처리 순서 정리</td>
+              </tr>
+              <tr>
+                <td class="px-3 py-2.5 whitespace-nowrap font-mono text-xs text-slate-500">2026.11.02</td>
+                <td class="px-3 py-2.5">페이스북 '최근 플레이' 경로 유입 -95%</td>
+                <td class="px-3 py-2.5">VIP 방문율 얼럿 → 원인 분석</td>
+                <td class="px-3 py-2.5">웹 일 로그인 영향(-7.24%) 산정, 복귀 메일 대상 추출</td>
+              </tr>
+              <tr>
+                <td class="px-3 py-2.5 whitespace-nowrap font-mono text-xs text-slate-500">2026.10.20</td>
+                <td class="px-3 py-2.5">콘텐츠 오류로 모바일 플레이 약 9시간 차단</td>
+                <td class="px-3 py-2.5">개발 측 '기능 정상' 판단 후 CS 문의로 영향 첫 공유</td>
+                <td class="px-3 py-2.5">이중차분 피해 규모 산정 (95% 신뢰구간)</td>
+              </tr>
+              <tr>
+                <td class="px-3 py-2.5 whitespace-nowrap font-mono text-xs text-slate-500">2026.09.08</td>
+                <td class="px-3 py-2.5">시즌 교체 시 와일드카드 2중 지급</td>
+                <td class="px-3 py-2.5">지급량 얼럿(+100.8%) → 분석</td>
+                <td class="px-3 py-2.5">3월 이후 시즌 교체 6회 모두 재발 확인, 개발팀 전달</td>
+              </tr>
+              <tr>
+                <td class="px-3 py-2.5 whitespace-nowrap font-mono text-xs text-slate-500">2026.04.06</td>
+                <td class="px-3 py-2.5">패치 배포 중 서버 부하 → 접속자 급감</td>
+                <td class="px-3 py-2.5">접속자 얼럿</td>
+                <td class="px-3 py-2.5">발화 3분 뒤 라이브 이슈 채널 공유, 개발팀 모바일 즉시 롤백</td>
+              </tr>
+              <tr>
+                <td class="px-3 py-2.5 whitespace-nowrap font-mono text-xs text-slate-500">2025.09.15</td>
+                <td class="px-3 py-2.5">슬롯 입장 후 첫 스핀 베팅 서버 코인 미반영</td>
+                <td class="px-3 py-2.5">직접 발견, 라이브 이슈 채널 제기</td>
+                <td class="px-3 py-2.5">코어팀 원인 3가지 규명</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- Project 02 content -->
+    <div id="content-p2">
+      <div class="flex items-start gap-5">
+        <div class="flex-shrink-0 h-16 w-16 flex items-center justify-center rounded-2xl bg-emerald-50 border border-emerald-100">
+          <span class="text-3xl font-bold tracking-tight text-emerald-700">02</span>
+        </div>
+        <div>
+          <p class="text-xs font-bold tracking-[0.3em] text-emerald-700 uppercase">PROJECT</p>
+          <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-900">재화 <span class="text-emerald-700">인플레이션</span> 1 · 2차 운영 지원</h2>
+          <p class="mt-2 text-sm text-slate-500">1차 2025.03 – 04 · 분석 참여 &nbsp;/&nbsp; 2차 2026.10 – 11 · GS 액션 플랜 작성 · 효과 판정</p>
+        </div>
+      </div>
+      <div class="mt-5 inline-flex items-center flex-wrap gap-x-2 rounded-lg bg-emerald-50 px-4 py-2.5 text-sm">
+        <span class="font-semibold text-slate-900">2차 매출 첫 주 +24.8% · 2주 +12.8%</span>
+        <span class="text-[#222]">(오픈 전 같은 요일 8주 평균 대비)</span>
+      </div>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.01</p>
+        <h3 class="chapter__title">1차 · 베팅 수준 기반 코인 지급량 분석</h3>
+        <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed">
+            <li>· 구매 후 24시간 베팅 수준을 가격대별로 분석 → 상품 가격과 베팅 수준의 비례 관계 확인</li>
+            <li>· 회귀모형으로 인플레이션 후 코인 소비 추세 예측 · 시각화</li>
+            <li>· $99 이상 고액 상품 코인 지급량 <strong class="text-slate-900">약 20% 추가 상향</strong>에 분석 반영 (분석 설계는 팀장 주도, 분석 · 시각화 담당)</li>
+          </ul>
+          <figure>
+            <div class="rounded-lg overflow-hidden border border-slate-200">
+              <img src="../assets/img/project1_decision_betting.png" alt="가격대별 결제 코인과 최빈 베팅 금액" class="w-full block" />
+            </div>
+            <p class="fig-caption">fig.01 — 가격대별 결제 코인 · 최빈 베팅 금액 (1차 분석)</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.02</p>
+        <h3 class="chapter__title">2차 · 액션 플랜 수립 · 오픈 점검</h3>
+        <ul class="mt-5 space-y-3 text-base text-[#222] leading-relaxed">
+          <li>· GS팀 2차 인플레이션 액션 플랜 작성: 변경 내용 · 점검 항목 · 매출 판정 기준 · 미달 시 대응 시나리오</li>
+          <li>· 모바일 · 통합 상품 <strong>2,705개</strong> 코인 지급량 변경 전수 대조 → 배수 이상치 0건</li>
+          <li>· 코인 금액을 쓰는 얼럿 · 마트 <strong>60여 개</strong> 영향 점검, 오작동이 예상된 할인율 얼럿 오픈 전 수정</li>
+        </ul>
+      </section>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.03</p>
+        <h3 class="chapter__title">2차 · 매출 효과 판정</h3>
+        <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed">
+            <li>· 1차 때 없던 효과 판정 기준 설계: 같은 요일 8주 평균 대비 매출 변화율, 하한선(기대 효과의 절반) · 상한선(미실행 예측 90% 구간)</li>
+            <li>· 기준 미달 시 대응 시나리오 수립: 복귀 결제 부족 → 저가 상품 배율 확대 / 고가 다운셀 → $99 배수 조정 · 업셀 오퍼</li>
+            <li>· 결과: 첫 주 매출 <strong class="text-slate-900">+24.8%</strong>로 두 기준 모두 상회, 2주 누적 <strong class="text-slate-900">+12.8%</strong></li>
+          </ul>
+          <figure>
+            <div class="overflow-x-auto rounded-lg border border-slate-200">
+              <table class="w-full text-sm">
+                <thead class="bg-slate-50 text-xs text-slate-500">
+                  <tr>
+                    <th class="px-3 py-2 text-left font-medium">매출 변화율</th>
+                    <th class="px-3 py-2 text-right font-medium">1차 (2025.04)</th>
+                    <th class="px-3 py-2 text-right font-medium">2차 (2026.10)</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-[#222]">
+                  <tr>
+                    <td class="px-3 py-2">첫 주</td>
+                    <td class="px-3 py-2 text-right tabular-nums">+17.8%</td>
+                    <td class="px-3 py-2 text-right tabular-nums font-semibold text-slate-900">+24.8%</td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2">2주</td>
+                    <td class="px-3 py-2 text-right tabular-nums">+14.2%</td>
+                    <td class="px-3 py-2 text-right tabular-nums font-semibold text-slate-900">+12.8%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="fig-caption">fig.02 — 오픈 전 같은 요일 8주 평균 대비 매출 변화율 (내부 계정 제외)</p>
+          </figure>
+        </div>
+      </section>
+    </div>
+
+    <!-- Project 03 content -->
+    <div id="content-p3">
+      <div class="flex items-start gap-5">
+        <div class="flex-shrink-0 h-16 w-16 flex items-center justify-center rounded-2xl bg-violet-50 border border-violet-100">
+          <span class="text-3xl font-bold tracking-tight text-violet-700">03</span>
+        </div>
+        <div>
+          <p class="text-xs font-bold tracking-[0.3em] text-violet-700 uppercase">PROJECT</p>
+          <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-900">데이터 <span class="text-violet-700">정합성 관리</span> · 분석 인프라 마이그레이션</h2>
+          <p class="mt-2 text-sm text-slate-500">미지급 2025.01 – 02 · 코인 정합성 2025.07 · 인수 게임사 2025.09 – 현재</p>
+        </div>
+      </div>
+      <div class="mt-5 inline-flex items-center flex-wrap gap-x-2 rounded-lg bg-violet-50 px-4 py-2.5 text-sm">
+        <span class="font-semibold text-slate-900">안드 결제 미지급 건수 -99% · 금액 -98%</span>
+        <span class="text-[#222]">· 코인 정합성 오차율 <strong class="text-slate-900">-76.8%p</strong> · 인수 게임사 분석 데이터 이관</span>
+      </div>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.01</p>
+        <h3 class="chapter__title">안드로이드 상품 구매 시 재화 미지급 추적</h3>
+        <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed">
+            <li>· UE팀 급증 문의를 데이터 이슈로 정의 → 구매 로그 퍼널 분석으로 미지급 유형 분류</li>
+            <li>· API가 없는 구글 결제 영수증을 Play Console 크롤링으로 수집 → 결제 테이블과 대조해 미지급 건수 정량화</li>
+            <li>· 일 단위 미지급 대시보드로 개발팀 수정 배포 효과 추적 → 주간 <strong class="text-slate-900">462 → 5건 (-99%)</strong>, <strong class="text-slate-900">$16,000 → $300 (-98%)</strong></li>
+            <li>· 재발 감지용 구매 칩 미지급 증가 얼럿 추가</li>
+          </ul>
+          <figure>
+            <div class="rounded-lg overflow-hidden border border-slate-200">
+              <img src="../assets/img/project3_2.png" alt="안드로이드 결제 이력 정합성" class="w-full block" />
+            </div>
+            <p class="fig-caption">fig.01 — Google Play 영수증 크롤링 + 결제 테이블 대조</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.02</p>
+        <h3 class="chapter__title">서버 코인 및 유저 트랜잭션 코인 트레킹</h3>
+        <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed">
+            <li>· 통계 페이지 코인 정합성 오차율 <strong class="text-slate-900">88.90% → 12.10% (-76.8%p)</strong> 개선 (2025.07)</li>
+            <li>· 오차 원인 2가지 규명 · 해결: 중복 useridx 유저 <strong>1,155명</strong> 정리(-59.18%p), 유저 코인 미반영 비디오포커 기록 제외(-17.62%p)</li>
+            <li>· 노이즈 많던 대시보드를 이상치 탐지 도구로 전환 → 비정상 코인 변화 유저 특정, 코인 정합성 얼럿 상시 운영</li>
+          </ul>
+          <figure>
+            <div class="rounded-lg overflow-hidden border border-slate-200">
+              <img src="../assets/img/project3_1.png" alt="서버 코인 및 유저 트랜잭션 코인 트레킹" class="w-full block" />
+            </div>
+            <p class="fig-caption">fig.02 — 서버 ↔ 유저 트랜잭션 코인 정합성 추적</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.03</p>
+        <h3 class="chapter__title">인수 게임사 분석 데이터 마이그레이션</h3>
+        <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed">
+            <li>· 인수 게임사 DWH 전환(Redshift → GaussDB)에 맞춰 분석 데이터 이관 설계</li>
+            <li>· 원천 구조 분석 → 이관 테이블 <strong>7종</strong> 정의 · 명세화 (원천 원장 <strong class="text-slate-900">일 약 1.7억 행</strong>)</li>
+            <li>· 스핀 단위 키가 없는 원장에서 베팅 · 당첨을 연결하는 게임로그 집계 로직 설계 → 집계 누락 당첨금 <strong class="text-slate-900">26.72% → 2.93%</strong></li>
+            <li>· 슬롯 데이터 흐름 <strong>6계층 42개 객체</strong> 문서화 → 분석 레퍼런스로 공유</li>
+          </ul>
+          <figure>
+            <div class="overflow-x-auto rounded-lg border border-slate-200">
+              <table class="w-full text-sm">
+                <thead class="bg-slate-50 text-xs text-slate-500">
+                  <tr>
+                    <th class="px-3 py-2 text-left font-medium">이관 테이블</th>
+                    <th class="px-3 py-2 text-right font-medium">일 행수</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-[#222]">
+                  <tr><td class="px-3 py-2">프리코인 지급</td><td class="px-3 py-2 text-right tabular-nums">~139만</td></tr>
+                  <tr><td class="px-3 py-2">게임로그</td><td class="px-3 py-2 text-right tabular-nums">~90만</td></tr>
+                  <tr><td class="px-3 py-2">로그인</td><td class="px-3 py-2 text-right tabular-nums">~8.5만</td></tr>
+                  <tr><td class="px-3 py-2">이벤트 · 마켓</td><td class="px-3 py-2 text-right tabular-nums">~7.5만</td></tr>
+                  <tr><td class="px-3 py-2">리텐션</td><td class="px-3 py-2 text-right tabular-nums">~4.0만</td></tr>
+                  <tr><td class="px-3 py-2">잭팟</td><td class="px-3 py-2 text-right tabular-nums">~3.0만</td></tr>
+                  <tr><td class="px-3 py-2">결제 주문</td><td class="px-3 py-2 text-right tabular-nums">~0.9만</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="fig-caption">fig.03 — 이관 테이블 7종 · 일 행수</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.04</p>
+        <h3 class="chapter__title">인수 게임사 이상 탐지 확장</h3>
+        <ul class="mt-5 space-y-3 text-base text-[#222] leading-relaxed">
+          <li>· 인수 게임사 모니터링 얼럿 신설 (2025.09): VIP · VVIP 방문, 매출 · PU · ARPPU 이상 감지</li>
+          <li>· 자사 게임과 같은 형태의 이상탐지 마트 <strong>3종</strong> 구축 (2026.08): 유저별 결제 스탯 · 매출 · PU · ARPPU · 슬롯 머니인 · 스핀</li>
+          <li>· 인수 게임사도 자사 게임과 같은 기준으로 매일 이상 여부 판정</li>
+        </ul>
+      </section>
+    </div>
+
+    <!-- Project 04 content -->
+    <div id="content-p4">
+      <div class="flex items-start gap-5">
+        <div class="flex-shrink-0 h-16 w-16 flex items-center justify-center rounded-2xl bg-amber-50 border border-amber-100">
+          <span class="text-3xl font-bold tracking-tight text-amber-700">04</span>
+        </div>
+        <div>
+          <p class="text-xs font-bold tracking-[0.3em] text-amber-700 uppercase">PROJECT</p>
+          <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-900">매출 모니터링 · <span class="text-amber-700">AB 테스트</span> 운영</h2>
+          <p class="mt-2 text-sm text-slate-500">2025 – 현재 · 매출 예측 · 주간 모니터링 보고 · AB 대상자 추출 · 대시보드</p>
+        </div>
+      </div>
+      <div class="mt-5 inline-flex items-center flex-wrap gap-x-2 rounded-lg bg-amber-50 px-4 py-2.5 text-sm">
+        <span class="font-semibold text-slate-900">매출 증감 예측 정확도 76% → 85.71%</span>
+        <span class="text-[#222]">· AB 대상자 추출 <strong class="text-slate-900">28건</strong> 오류 0건 · 운영 의사결정 <strong class="text-slate-900">6건</strong> 지원</span>
+      </div>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.01</p>
+        <h3 class="chapter__title">주 단위 매출 증감 예측</h3>
+        <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed">
+            <li>· 장기 매출 모델을 4주 단기 · 세그먼트별 증감 예측 모델로 전환</li>
+            <li>· 첫 4주(2025.05 – 06) 증감 정확도 <strong>76%</strong>, 매출 감소 구간 Recall <strong>93.75%</strong></li>
+            <li>· 예측 단위 28일 전환 → 2025 하반기 증감 정확도 <strong class="text-slate-900">85.71%</strong> (이슈 주간 제외), 예측 오차율 <strong class="text-slate-900">3.6% → 0.7%</strong></li>
+            <li>· 예측 이탈 시 AB 영향 → 이슈 발생 → 코어 지표 순 점검 프로세스 구축</li>
+          </ul>
+          <figure>
+            <div class="rounded-lg overflow-hidden border border-slate-200">
+              <img src="../assets/img/project1_2.png" alt="주간 매출 예측과 신뢰구간" class="w-full block" />
+            </div>
+            <p class="fig-caption">fig.01 — 주차별 실측 vs 예측 매출 + 신뢰구간</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.02</p>
+        <h3 class="chapter__title">주 단위 게임 모니터링 보고</h3>
+        <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed">
+            <li>· 28일 결제력 기반 세그먼트별 지표를 이전 4주 대비 변화율로 스코어링해 주간 보고</li>
+            <li>· 고결제 세그먼트일수록 기념일 이벤트보다 스핀 수 · 올인 등 게임 내 지표에 민감함을 발견</li>
+            <li>· 운영 의사결정 <strong>6건</strong> 지원
+              <ul class="mt-2 space-y-1 text-sm text-slate-600">
+                <li>2025 하반기: 로비 큐레이션 그룹 추가 · 신규 슬롯 추가 출시 정량 기준 · 큐레이션 모니터링 제안</li>
+                <li>2026 상반기: 팬 페이지 접근 제한 이탈 유저 복귀 대응 · 매출 손해 슬롯 로비 노출 억제 · 외부 PG · 온캔버스 정리 방향</li>
+              </ul>
+            </li>
+          </ul>
+          <figure>
+            <div class="rounded-lg overflow-hidden border border-slate-200">
+              <img src="../assets/img/project1_1.png" alt="유저 세그먼트별 4주 대비 변화율" class="w-full block" />
+            </div>
+            <p class="fig-caption">fig.02 — 유저 세그먼트별 4주 대비 변화율 히트맵</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.03</p>
+        <h3 class="chapter__title">AB 테스트 대상자 추출 · 트래킹</h3>
+        <ul class="mt-5 space-y-3 text-base text-[#222] leading-relaxed">
+          <li>· 수작업이던 대상자 추출 자동화, 디자인본부 → GS → 플랫폼팀 절차 일원화 → <strong class="text-slate-900">28건</strong> 추출 오류 0건 (2025 하반기 17 · 2026 상반기 11)</li>
+          <li>· 결제액 차이가 큰 유저끼리 짝지어지는 문제 개선 → 짝 간 실험 전 결제액 차이 <strong class="text-slate-900">$59 → $11</strong></li>
+          <li>· 대상자 누락 원인 수정 → 평균 약 <strong>6,000명</strong> 추가 확보, 추출 시간 <strong>20 ~ 40분 → 약 5분</strong></li>
+          <li>· AB 자동 트래킹 대시보드 구축 (2026.10): 실험별 수작업 Redash 복제 대체, 실험 시작 이후 차이 · 통계적 유의성 중심 표시</li>
+        </ul>
+      </section>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.04</p>
+        <h3 class="chapter__title">전사 모니터링 대시보드</h3>
+        <div class="mt-5 grid gap-5 md:grid-cols-2">
+          <div>
+            <p class="text-xs font-semibold tracking-widest text-slate-500 uppercase">AB Test 운영 대시보드</p>
+            <p class="mt-2 text-base text-[#222] leading-relaxed">진행 중 AB Test 핵심 KPI(누적매출 · AU · 결제 전환율 · ARPU) 한 화면 확인</p>
+            <a href="../dashboards/duc-ops.html#page-abtesting" target="_blank" class="mt-4 block rounded-lg border border-slate-200 overflow-hidden hover:border-sky-400 transition">
+              <div class="dash-frame">
+                <iframe src="../dashboards/duc-ops.html#page-abtesting" loading="lazy" title="AB Test 운영 대시보드 (목업)" tabindex="-1"></iframe>
+              </div>
+              <div class="flex items-center justify-between px-4 py-3 text-sm font-medium text-sky-700">
+                <span>AB Test 운영 대시보드 (목업)</span>
+                <span>↗</span>
+              </div>
+            </a>
+            <p class="fig-caption">fig.03 — AB Test 모니터링 화면</p>
+          </div>
+          <div>
+            <p class="text-xs font-semibold tracking-widest text-slate-500 uppercase">신규 슬롯 평가 대시보드</p>
+            <p class="mt-2 text-base text-[#222] leading-relaxed">신규 슬롯 매출 비중 · 리텐션을 최근 8주 슬롯과 비교 → 추가 출시 판단</p>
+            <a href="../dashboards/duc-ops.html#page-slottracking" target="_blank" class="mt-4 block rounded-lg border border-slate-200 overflow-hidden hover:border-sky-400 transition">
+              <div class="dash-frame">
+                <iframe src="../dashboards/duc-ops.html#page-slottracking" loading="lazy" title="신규 슬롯 트레킹 대시보드 (목업)" tabindex="-1"></iframe>
+              </div>
+              <div class="flex items-center justify-between px-4 py-3 text-sm font-medium text-sky-700">
+                <span>신규 슬롯 트레킹 대시보드 (목업)</span>
+                <span>↗</span>
+              </div>
+            </a>
+            <p class="fig-caption">fig.04 — 신규 슬롯 트레킹 화면</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+
+  </div>
+
+  <footer class="my-20">
+    <p class="text-center text-sm text-slate-500">Copyright © 2026 차한영. All rights reserved.</p>
+    <p class="text-center text-xs text-slate-500 mt-1"><a href="../v2/" class="underline text-sky-700">v2 preview ↗</a></p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'base',
+        themeVariables: {
+          fontFamily: 'Pretendard, -apple-system, sans-serif',
+          fontSize: '14px',
+          primaryColor: '#e0f2fe',
+          primaryTextColor: '#0f172a',
+          primaryBorderColor: '#0284c7',
+          lineColor: '#64748b',
+          secondaryColor: '#f1f5f9',
+          tertiaryColor: '#ffffff',
+        },
+        flowchart: {
+          useMaxWidth: false,
+          htmlLabels: true,
+          nodeSpacing: 50,
+          rankSpacing: 60,
+          padding: 16,
+        },
+      });
+    }
+
+    function openModal(key) {
+      const source = document.getElementById('content-' + key);
+      if (!source) return;
+      const target = document.getElementById('modal-content');
+      target.innerHTML = source.innerHTML;
+      const modal = document.getElementById('modal');
+      modal.classList.remove('hidden');
+      // Force reflow then add is-open for transition
+      void modal.offsetWidth;
+      modal.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      target.scrollTop = 0;
+
+      // Render mermaid AFTER modal animation completes so node sizing uses
+      // final dimensions (avoids text truncation from layout-shift).
+      if (window.mermaid) {
+        const nodes = target.querySelectorAll('.mermaid');
+        if (nodes.length) {
+          nodes.forEach(n => n.removeAttribute('data-processed'));
+          setTimeout(() => {
+            try { mermaid.run({ nodes: Array.from(nodes) }); }
+            catch (e) { console.warn('mermaid run failed:', e); }
+          }, 320);
+        }
+      }
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('modal');
+      modal.classList.remove('is-open');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }, 220);
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // Before/After toggle inside modal (event delegation)
+    document.getElementById('modal-content').addEventListener('click', (e) => {
+      const btn = e.target.closest('.ba-toggle__btn');
+      if (!btn) return;
+      const state = btn.dataset.state;
+      const root = btn.closest('#modal-content');
+      root.querySelectorAll('.ba-toggle__btn').forEach(b => {
+        const active = b.dataset.state === state;
+        b.classList.toggle('is-active', active);
+        b.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+      root.querySelectorAll('.ba-diagram').forEach(d => {
+        d.classList.toggle('is-active', d.dataset.state === state);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -233,7 +233,7 @@
           <p class="text-sm font-medium text-slate-500">집중 분야</p>
           <ul class="mt-4 space-y-3 text-sm text-[#222]">
             <li class="flex items-start gap-2"><span class="text-emerald-600 mt-0.5">✓</span> 이상 탐지 얼럿 설계 · 운영 · 품질 평가</li>
-            <li class="flex items-start gap-2"><span class="text-emerald-600 mt-0.5">✓</span> 매출 예측 · 정책 효과 판정 (인플레이션 · AB 테스트)</li>
+            <li class="flex items-start gap-2"><span class="text-emerald-600 mt-0.5">✓</span> 매출 예측 · 정책 효과 판정</li>
             <li class="flex items-start gap-2"><span class="text-emerald-600 mt-0.5">✓</span> 결제 · 재화 데이터 정합성 관리</li>
             <li class="flex items-start gap-2"><span class="text-emerald-600 mt-0.5">✓</span> Dagster + Bitbucket 파이프라인 · AI 에이전트 운영</li>
           </ul>
@@ -246,25 +246,21 @@
           <p class="text-xs font-medium text-slate-500">앱 헬스케어 시스템 구축</p>
           <p class="mt-3 text-5xl font-bold tracking-tight text-sky-700">60<span class="text-2xl text-sky-400 ml-0.5">%</span></p>
           <p class="mt-2 text-base text-[#222]">이슈 조치 소요시간 단축</p>
-          <p class="mt-1 text-xs text-slate-500">2025 하반기 대비 2026 상반기</p>
         </div>
         <div class="rounded-xl border border-slate-200 bg-white p-6">
           <p class="text-xs font-medium text-slate-500">재화 인플레이션 1 · 2차</p>
           <p class="mt-3 text-5xl font-bold tracking-tight text-emerald-700">+12.8<span class="text-2xl text-emerald-400 ml-0.5">%</span></p>
           <p class="mt-2 text-base text-[#222]">2차 인플레이션 2주 매출</p>
-          <p class="mt-1 text-xs text-slate-500">오픈 전 같은 요일 8주 평균 대비</p>
         </div>
         <div class="rounded-xl border border-slate-200 bg-white p-6">
           <p class="text-xs font-medium text-slate-500">데이터 정합성 · 인프라 마이그레이션</p>
           <p class="mt-3 text-4xl font-bold tracking-tight text-violet-700">-76.8<span class="text-xl text-violet-400">%p</span><span class="text-slate-300 font-normal mx-1">·</span>-99<span class="text-xl text-violet-400">%</span></p>
           <p class="mt-2 text-base text-[#222]">코인 정합성 오차율 · 결제 미지급 건수</p>
-          <p class="mt-1 text-xs text-slate-500">2025.07 · 2025.01 – 02 (안드로이드 주간)</p>
         </div>
         <div class="rounded-xl border border-slate-200 bg-white p-6">
           <p class="text-xs font-medium text-slate-500">매출 모니터링 · AB 테스트 운영</p>
           <p class="mt-3 text-4xl font-bold tracking-tight text-amber-700">85.7<span class="text-xl text-amber-400">%</span><span class="text-slate-300 font-normal mx-1">·</span>28<span class="text-xl text-amber-400">건</span></p>
           <p class="mt-2 text-base text-[#222]">매출 증감 예측 정확도 · AB 대상자 추출</p>
-          <p class="mt-1 text-xs text-slate-500">2025 하반기 (이슈 주간 제외) · 추출 오류 0건</p>
         </div>
       </div>
     </section>
@@ -304,9 +300,9 @@
         <article onclick="openModal('p2')" class="proj-card proj-card--emerald cursor-pointer h-full rounded-2xl border border-slate-200 bg-white p-6 flex flex-col">
           <h3 class="text-xl font-semibold text-slate-900 leading-snug">재화 인플레이션 1 · 2차 운영 지원</h3>
           <ul class="mt-4 space-y-2 text-base text-[#222] flex-grow">
-            <li>· 1차: 가격대별 베팅 수준 분석 · 회귀 시각화 → $99 이상 상품 코인 지급량 <strong>약 20% 추가 상향</strong>에 반영</li>
+            <li>· 1차: 베팅 수준 분석 · 회귀 시각화로 고액 상품 코인 지급량 <strong>약 20% 추가 상향</strong>에 기여</li>
             <li>· 2차: GS 액션 플랜 수립, 상품 2,705개 지급량 전수 점검 · <strong>매출 판정 기준</strong> 설계</li>
-            <li>· 2차 매출 <strong class="text-slate-900">첫 주 +24.8% · 2주 +12.8%</strong> (오픈 전 같은 요일 8주 평균 대비)</li>
+            <li>· 2차 매출 <strong class="text-slate-900">첫 주 +24.8% · 2주 +12.8%</strong></li>
           </ul>
           <div class="mt-5 flex flex-wrap gap-1.5">
             <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Python</span>
@@ -324,7 +320,7 @@
           <ul class="mt-4 space-y-2 text-base text-[#222] flex-grow">
             <li>· Play Console 영수증 크롤링 + 결제 테이블 대조, 안드 주간 미지급 <strong class="text-slate-900">462 → 5건 (-99%)</strong> · 금액 <strong class="text-slate-900">-98%</strong></li>
             <li>· 통계 페이지 코인 정합성 오차율 <strong class="text-slate-900">88.90% → 12.10% (-76.8%p)</strong>, 중복 useridx 유저 1,155명 정리</li>
-            <li>· 인수 게임사 분석 데이터 이관 설계 (원장 <strong class="text-slate-900">일 1.7억 행</strong>, 테이블 7종) · 자사와 동일한 이상 탐지로 확장</li>
+            <li>· <strong class="text-slate-900">일 1.7억 행</strong> 규모 인수 게임사 분석 데이터 이관 설계 · 이상 탐지 확장</li>
           </ul>
           <div class="mt-5 flex flex-wrap gap-1.5">
             <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Python</span>
@@ -340,7 +336,7 @@
         <article onclick="openModal('p4')" class="proj-card proj-card--amber cursor-pointer h-full rounded-2xl border border-slate-200 bg-white p-6 flex flex-col">
           <h3 class="text-xl font-semibold text-slate-900 leading-snug">매출 모니터링 · AB 테스트 운영</h3>
           <ul class="mt-4 space-y-2 text-base text-[#222] flex-grow">
-            <li>· 4주 단기 · 세그먼트별 매출 증감 예측, 정확도 <strong class="text-slate-900">76% → 85.71%</strong> (이슈 주간 제외)</li>
+            <li>· 4주 단기 · 세그먼트별 매출 증감 예측, 정확도 <strong class="text-slate-900">76% → 85.71%</strong></li>
             <li>· 주간 모니터링 보고로 운영 의사결정 <strong>6건</strong> 지원</li>
             <li>· AB 대상자 추출 <strong class="text-slate-900">28건 오류 0건</strong>, 추출 20~40분 → 약 5분 · AB 자동 트래킹 대시보드</li>
           </ul>
@@ -421,10 +417,9 @@
           <p class="text-xs font-bold tracking-[0.2em] text-sky-700">01 · SCALE</p>
           <h3 class="mt-2 text-xl font-semibold text-slate-900">얼럿 원인 조사 에이전트</h3>
           <ul class="mt-4 space-y-2 text-base text-[#222] relative z-10">
-            <li>- 얼럿 발생 시 Claude가 1차 원인 조사 → Slack 스레드로 판정 · 근거 회신 (약 <strong>9~20분</strong>)</li>
-            <li>- 개발 환경 일단위 얼럿 <strong>15종</strong> 대상 운영</li>
-            <li>- 원인 판정 · 근거 중심의 답글 형식 설계</li>
-          </ul>
+            <li>- 얼럿 발생 시 Claude가 1차 원인 조사 → Slack 스레드로 판정 · 근거 회신</li>
+            <li>- 일단위 얼럿 <strong>15종</strong> 적용, 건당 약 <strong>9~20분</strong> 내 회신</li>
+                      </ul>
         </article>
 
         <article class="rounded-2xl border border-slate-200 bg-white p-6">
@@ -447,7 +442,7 @@
             <ul class="mt-2 space-y-1.5 text-sm text-[#222]">
               <li>· 배포 · 패치 공지 메일 → 변경 항목 자동 정리 → 담당자 승인 → Google Calendar 등록</li>
               <li>· 배포 · AB · 이벤트 등 종류별 기간 · 내용 자동 요약</li>
-              <li>· 캘린더 관리 · 주간 지표 작성 등 반복 업무 시간 약 <strong>50% 절감</strong> (자체 추정)</li>
+              <li>· 캘린더 관리 · 주간 지표 작성 등 반복 업무 시간 약 <strong>50% 절감</strong></li>
             </ul>
           </div>
           <figure class="mt-4 rounded-lg overflow-hidden border border-slate-200 relative z-10">
@@ -565,7 +560,7 @@
       </div>
       <div class="mt-5 inline-flex items-center flex-wrap gap-x-2 rounded-lg bg-sky-50 px-4 py-2.5 text-sm">
         <span class="font-semibold text-slate-900">이슈 조치 소요시간 -60%</span>
-        <span class="text-[#222]">· 2026 상반기 얼럿으로 이슈 <strong class="text-slate-900">8건</strong> 조기 식별 · 얼럿 반응성 <strong class="text-slate-900">+1.39%p</strong> (2025 하반기 대비)</span>
+        <span class="text-[#222]">· 2026 상반기 얼럿으로 이슈 <strong class="text-slate-900">8건</strong> 조기 식별</span>
       </div>
 
       <!-- M2: Chapter 1 -->
@@ -579,36 +574,31 @@
               <li>· 주피터 노트북 직접 사용 → 버전 관리 불가</li>
               <li>· 크론탭 UI · 로그 부재 → 점검 비용 큼</li>
               <li>· 라이브 서버 직접 수정 · 배포</li>
-              <li>· 얼럿이 실제 이슈를 잡는지 측정 기록 없음</li>
             </ul>
           </div>
           <div class="rounded-lg border border-emerald-100 bg-emerald-50 p-5">
             <p class="text-xs font-semibold tracking-widest text-emerald-700 uppercase">현재 운영 인프라</p>
             <ul class="mt-3 space-y-2 text-base text-[#222]">
               <li>· Bitbucket 코드 버전 관리 · 롤백 체계 표준화</li>
-              <li>· Bitbucket Runner CI/CD 자동 배포, 비개발자도 같은 절차로 수정</li>
+              <li>· Bitbucket Runner CI/CD 자동 배포</li>
               <li>· Dagster UI로 실행 로그 · 작업 흐름 시각화</li>
               <li>· 크론탭 얼럿 <strong>42개</strong> → Dagster 마이그레이션 완료</li>
-              <li>· 5분 주기 상태 점검, 장애 시 Slack 알림 · 자동 재기동</li>
             </ul>
           </div>
         </div>
 
         <div class="mt-6 grid gap-6 md:grid-cols-2 items-start">
-          <div>
-            <p class="text-xs font-semibold tracking-widest text-slate-500 uppercase">운영 규모 (2026.11 현재)</p>
-            <ul class="mt-3 space-y-3 text-base text-[#222] leading-relaxed">
-              <li>· 자사 <strong class="text-slate-900">5개 게임</strong> + 전략분석팀 공용 얼럿 서버로 확장</li>
-              <li>· 운영 스케줄 <strong class="text-slate-900">114개</strong>(가동 91) · 센서 <strong class="text-slate-900">10개</strong></li>
-              <li>· 운영 레포 커밋 1,483건 중 <strong class="text-slate-900">809건(55%)</strong> 작성</li>
-              <li>· 얼럿 쿼리 최적화 <strong class="text-slate-900">186초 → 28초 (-85%)</strong></li>
-            </ul>
-          </div>
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed">
+            <li>· 자사 <strong class="text-slate-900">5개 게임</strong> · 전략분석팀 공용 얼럿 서버로 확장</li>
+            <li>· 운영 스케줄 <strong class="text-slate-900">114개</strong> · 센서 <strong class="text-slate-900">10개</strong> 운영</li>
+            <li>· 운영 레포 커밋 <strong class="text-slate-900">55%</strong> 직접 작성</li>
+            <li>· 얼럿 쿼리 실행 시간 <strong class="text-slate-900">186초 → 28초</strong> 단축</li>
+          </ul>
           <figure>
             <div class="rounded-lg overflow-hidden border border-slate-200">
               <img src="../assets/img/alert-server-timeline.png" alt="Dagster 실행 타임라인 — 게임별 얼럿 잡 실행 기록" class="w-full block" />
             </div>
-            <p class="fig-caption">fig.01 — Dagster 실행 타임라인 (게임별 얼럿 잡 하루 실행 기록)</p>
+            <p class="fig-caption">fig.01 — Dagster 얼럿 실행 타임라인</p>
           </figure>
         </div>
 
@@ -675,49 +665,15 @@ flowchart LR
         <h3 class="chapter__title">기존 얼럿 시스템의 불확실성을 측정가능한 체계로 재구성</h3>
         <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
           <ul class="space-y-3 text-base text-[#222] leading-relaxed">
-            <li>· 2025 개발 이슈 <strong>75건</strong>을 정답셋으로 자사 앱 얼럿 <strong>44개</strong> 리뷰</li>
-            <li>· 얼럿 평가 지표 4종(Recall · 정밀도 · 반응성 · 오탐률) 정의, 얼럿 <strong>15개</strong> 정량 평가</li>
-            <li>· 반기 단위 평가 · 개선 사이클 수립</li>
-            <li>· 평가 결과로 얼럿 재설계
-              <ul class="mt-2 space-y-1 text-sm text-slate-600">
-                <li>시간별 프리코인 얼럿 재설계 (666회 중 실제 이슈 관련 0.45%)</li>
-                <li>재화 획득 얼럿 기준선 변경 → 예측 오차(RMSE) -65%</li>
-                <li>코인 정합성 얼럿 판정식 교체 → 오탐 일수 7일 → 2일</li>
-                <li>다른 얼럿과 겹치는 얼럿 삭제</li>
-              </ul>
-            </li>
+            <li>· 자사 앱 운영 얼럿 <strong>44개</strong> 리뷰, 평가용 2025년 개발 이슈 <strong>75건</strong> 리스트업</li>
+            <li>· 평가 가능한 <strong>15개</strong> 얼럿을 <strong>Recall · 정밀도 · 반응성 · 오탐률</strong> 4가지 지표로 정량 평가</li>
+            <li>· 반기 단위 평가 · 개선 사이클로 운영되는 얼럿 품질 관리 체계 수립</li>
           </ul>
           <figure>
-            <div class="overflow-x-auto rounded-lg border border-slate-200">
-              <table class="w-full text-sm">
-                <thead class="bg-slate-50 text-xs text-slate-500">
-                  <tr>
-                    <th class="px-3 py-2 text-left font-medium">스핀 수 감소 얼럿</th>
-                    <th class="px-3 py-2 text-right font-medium">Recall</th>
-                    <th class="px-3 py-2 text-right font-medium">정밀도</th>
-                    <th class="px-3 py-2 text-right font-medium">반응성</th>
-                    <th class="px-3 py-2 text-right font-medium">오탐률</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 text-[#222]">
-                  <tr>
-                    <td class="px-3 py-2">전체 · 시간별</td>
-                    <td class="px-3 py-2 text-right tabular-nums">62.50%</td>
-                    <td class="px-3 py-2 text-right tabular-nums">7.99%</td>
-                    <td class="px-3 py-2 text-right tabular-nums">12.15%</td>
-                    <td class="px-3 py-2 text-right tabular-nums">3.45%</td>
-                  </tr>
-                  <tr>
-                    <td class="px-3 py-2">플랫폼별 · 시간별</td>
-                    <td class="px-3 py-2 text-right tabular-nums">37.50%</td>
-                    <td class="px-3 py-2 text-right tabular-nums">20.37%</td>
-                    <td class="px-3 py-2 text-right tabular-nums">29.63%</td>
-                    <td class="px-3 py-2 text-right tabular-nums">0.56%</td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="rounded-lg overflow-hidden border border-slate-200">
+              <img src="../assets/img/project2_1.png" alt="얼럿 품질 평가 지표 — Recall · 정밀도 · 반응성 · 오탐률" class="w-full block" />
             </div>
-            <p class="fig-caption">fig.03 — 얼럿 평가 예시: 같은 지표를 보는 두 얼럿 (2025.01 – 11)</p>
+            <p class="fig-caption">fig.03 — 얼럿 품질 4지표 평가 결과</p>
           </figure>
         </div>
       </section>
@@ -727,9 +683,9 @@ flowchart LR
         <p class="chapter__num">CH.03</p>
         <h3 class="chapter__title">앱 배포 이력 추적 → 변경 사항 파악 → 사전 대응</h3>
         <ul class="mt-5 space-y-3 text-base text-[#222] leading-relaxed">
-          <li>· 배포 · 패치 공지 메일을 AI 에이전트가 정리해 팀 캘린더에 자동 등록하는 <strong>배포 기록 체계</strong> 구축 → 캘린더 · 주간 지표 등 반복 업무 시간 약 <strong>50%</strong> 절감 (자체 추정)</li>
+          <li>· AI 에이전트로 배포 · 패치 내역을 팀 캘린더에 자동 기록 → 반복 업무 시간 약 <strong>50%</strong> 절감</li>
           <li>· 강제 업데이트 · 상점 개편 · 광고 도입 등 변경 <strong>20건</strong> 배포 전후 영향 추적</li>
-          <li>· 배포 직후 이상 탐지 알림 개발 (후속 작업, 2026.09 운영): 스토어 배포 버전과 라이브 접속 버전 비율 차이 매시 판정 → 과거 배포 사고 재현 시 <strong>배포 3시간 15분 후 탐지</strong> (당시 인지 8시간), 과거 릴리즈 596건 오발화 0건</li>
+          <li>· 배포 직후 이상 탐지 알림 개발 → 과거 배포 사고 재현 시 사람보다 <strong>4시간 45분</strong> 빠르게 탐지, 과거 릴리즈 <strong>596건</strong> 오탐 0건</li>
         </ul>
       </section>
 
@@ -750,39 +706,33 @@ flowchart LR
             <tbody class="divide-y divide-slate-100 text-[#222] align-top">
               <tr>
                 <td class="px-3 py-2.5 whitespace-nowrap font-mono text-xs text-slate-500">2026.11.06</td>
-                <td class="px-3 py-2.5">플랫폼 DB 이관 누락 → 당일 매출 데이터 일부 유실</td>
-                <td class="px-3 py-2.5">얼럿 값 약 20% 저하 → 역산</td>
-                <td class="px-3 py-2.5">플랫폼팀 재백업 요청, 적재 우선 재처리 순서 정리</td>
+                <td class="px-3 py-2.5">플랫폼 DB 이관 중 매출 데이터 일부 유실</td>
+                <td class="px-3 py-2.5">매출 지표 이상 직접 발견</td>
+                <td class="px-3 py-2.5">원인 역추적 · 재백업 요청</td>
               </tr>
               <tr>
                 <td class="px-3 py-2.5 whitespace-nowrap font-mono text-xs text-slate-500">2026.11.02</td>
-                <td class="px-3 py-2.5">페이스북 '최근 플레이' 경로 유입 -95%</td>
-                <td class="px-3 py-2.5">VIP 방문율 얼럿 → 원인 분석</td>
-                <td class="px-3 py-2.5">웹 일 로그인 영향(-7.24%) 산정, 복귀 메일 대상 추출</td>
-              </tr>
-              <tr>
-                <td class="px-3 py-2.5 whitespace-nowrap font-mono text-xs text-slate-500">2026.10.20</td>
-                <td class="px-3 py-2.5">콘텐츠 오류로 모바일 플레이 약 9시간 차단</td>
-                <td class="px-3 py-2.5">개발 측 '기능 정상' 판단 후 CS 문의로 영향 첫 공유</td>
-                <td class="px-3 py-2.5">이중차분 피해 규모 산정 (95% 신뢰구간)</td>
+                <td class="px-3 py-2.5">페이스북 유입 경로 급감</td>
+                <td class="px-3 py-2.5">VIP 방문율 얼럿</td>
+                <td class="px-3 py-2.5">원인 분석 · 영향 산정 · 복귀 대상 추출</td>
               </tr>
               <tr>
                 <td class="px-3 py-2.5 whitespace-nowrap font-mono text-xs text-slate-500">2026.09.08</td>
-                <td class="px-3 py-2.5">시즌 교체 시 와일드카드 2중 지급</td>
-                <td class="px-3 py-2.5">지급량 얼럿(+100.8%) → 분석</td>
-                <td class="px-3 py-2.5">3월 이후 시즌 교체 6회 모두 재발 확인, 개발팀 전달</td>
+                <td class="px-3 py-2.5">시즌 교체 시 아이템 2중 지급</td>
+                <td class="px-3 py-2.5">지급량 얼럿</td>
+                <td class="px-3 py-2.5">반복 발생 패턴 규명 · 개발팀 전달</td>
               </tr>
               <tr>
                 <td class="px-3 py-2.5 whitespace-nowrap font-mono text-xs text-slate-500">2026.04.06</td>
-                <td class="px-3 py-2.5">패치 배포 중 서버 부하 → 접속자 급감</td>
+                <td class="px-3 py-2.5">패치 배포 중 접속자 급감</td>
                 <td class="px-3 py-2.5">접속자 얼럿</td>
-                <td class="px-3 py-2.5">발화 3분 뒤 라이브 이슈 채널 공유, 개발팀 모바일 즉시 롤백</td>
+                <td class="px-3 py-2.5">3분 내 라이브 채널 공유 → 즉시 롤백</td>
               </tr>
               <tr>
                 <td class="px-3 py-2.5 whitespace-nowrap font-mono text-xs text-slate-500">2025.09.15</td>
-                <td class="px-3 py-2.5">슬롯 입장 후 첫 스핀 베팅 서버 코인 미반영</td>
-                <td class="px-3 py-2.5">직접 발견, 라이브 이슈 채널 제기</td>
-                <td class="px-3 py-2.5">코어팀 원인 3가지 규명</td>
+                <td class="px-3 py-2.5">첫 스핀 베팅 서버 코인 미반영</td>
+                <td class="px-3 py-2.5">직접 발견</td>
+                <td class="px-3 py-2.5">이슈 제기 → 원인 규명 · 수정</td>
               </tr>
             </tbody>
           </table>
@@ -799,12 +749,12 @@ flowchart LR
         <div>
           <p class="text-xs font-bold tracking-[0.3em] text-emerald-700 uppercase">PROJECT</p>
           <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-900">재화 <span class="text-emerald-700">인플레이션</span> 1 · 2차 운영 지원</h2>
-          <p class="mt-2 text-sm text-slate-500">1차 2025.03 – 04 · 분석 참여 &nbsp;/&nbsp; 2차 2026.10 – 11 · GS 액션 플랜 작성 · 효과 판정</p>
+          <p class="mt-2 text-sm text-slate-500">1차 2025.03 – 04 · 2차 2026.10 – 11</p>
         </div>
       </div>
       <div class="mt-5 inline-flex items-center flex-wrap gap-x-2 rounded-lg bg-emerald-50 px-4 py-2.5 text-sm">
-        <span class="font-semibold text-slate-900">2차 매출 첫 주 +24.8% · 2주 +12.8%</span>
-        <span class="text-[#222]">(오픈 전 같은 요일 8주 평균 대비)</span>
+        <span class="font-semibold text-slate-900">2차 매출 첫 주 +24.8%</span>
+        <span class="text-[#222]">· 2주 <strong class="text-slate-900">+12.8%</strong></span>
       </div>
 
       <section class="chapter">
@@ -812,15 +762,15 @@ flowchart LR
         <h3 class="chapter__title">1차 · 베팅 수준 기반 코인 지급량 분석</h3>
         <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
           <ul class="space-y-3 text-base text-[#222] leading-relaxed">
-            <li>· 구매 후 24시간 베팅 수준을 가격대별로 분석 → 상품 가격과 베팅 수준의 비례 관계 확인</li>
+            <li>· 구매 후 24시간 베팅 수준 분석 → 상품 가격과 베팅 수준의 비례 관계 확인</li>
             <li>· 회귀모형으로 인플레이션 후 코인 소비 추세 예측 · 시각화</li>
-            <li>· $99 이상 고액 상품 코인 지급량 <strong class="text-slate-900">약 20% 추가 상향</strong>에 분석 반영 (분석 설계는 팀장 주도, 분석 · 시각화 담당)</li>
+            <li>· 고액 상품 코인 지급량 <strong class="text-slate-900">약 20% 추가 상향</strong>에 기여</li>
           </ul>
           <figure>
             <div class="rounded-lg overflow-hidden border border-slate-200">
               <img src="../assets/img/project1_decision_betting.png" alt="가격대별 결제 코인과 최빈 베팅 금액" class="w-full block" />
             </div>
-            <p class="fig-caption">fig.01 — 가격대별 결제 코인 · 최빈 베팅 금액 (1차 분석)</p>
+            <p class="fig-caption">fig.01 — 가격대별 결제 코인 · 최빈 베팅 금액</p>
           </figure>
         </div>
       </section>
@@ -829,9 +779,9 @@ flowchart LR
         <p class="chapter__num">CH.02</p>
         <h3 class="chapter__title">2차 · 액션 플랜 수립 · 오픈 점검</h3>
         <ul class="mt-5 space-y-3 text-base text-[#222] leading-relaxed">
-          <li>· GS팀 2차 인플레이션 액션 플랜 작성: 변경 내용 · 점검 항목 · 매출 판정 기준 · 미달 시 대응 시나리오</li>
-          <li>· 모바일 · 통합 상품 <strong>2,705개</strong> 코인 지급량 변경 전수 대조 → 배수 이상치 0건</li>
-          <li>· 코인 금액을 쓰는 얼럿 · 마트 <strong>60여 개</strong> 영향 점검, 오작동이 예상된 할인율 얼럿 오픈 전 수정</li>
+          <li>· GS팀 2차 인플레이션 액션 플랜 수립</li>
+          <li>· 상품 <strong>2,705개</strong> 코인 지급량 변경 전수 점검 → 이상 0건</li>
+          <li>· 영향받는 얼럿 · 마트 <strong>60여 개</strong> 점검, 할인율 얼럿 사전 수정</li>
         </ul>
       </section>
 
@@ -840,35 +790,32 @@ flowchart LR
         <h3 class="chapter__title">2차 · 매출 효과 판정</h3>
         <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
           <ul class="space-y-3 text-base text-[#222] leading-relaxed">
-            <li>· 1차 때 없던 효과 판정 기준 설계: 같은 요일 8주 평균 대비 매출 변화율, 하한선(기대 효과의 절반) · 상한선(미실행 예측 90% 구간)</li>
-            <li>· 기준 미달 시 대응 시나리오 수립: 복귀 결제 부족 → 저가 상품 배율 확대 / 고가 다운셀 → $99 배수 조정 · 업셀 오퍼</li>
-            <li>· 결과: 첫 주 매출 <strong class="text-slate-900">+24.8%</strong>로 두 기준 모두 상회, 2주 누적 <strong class="text-slate-900">+12.8%</strong></li>
+            <li>· 예상 효과 하한 · 미실행 예측 상한, 두 가지 판정 기준 설계</li>
+            <li>· 기준 미달 시 세그먼트별 대응 시나리오 수립</li>
+            <li>· 첫 주 매출 <strong class="text-slate-900">+24.8%</strong>로 두 기준 모두 상회</li>
           </ul>
           <figure>
             <div class="overflow-x-auto rounded-lg border border-slate-200">
               <table class="w-full text-sm">
                 <thead class="bg-slate-50 text-xs text-slate-500">
                   <tr>
-                    <th class="px-3 py-2 text-left font-medium">매출 변화율</th>
-                    <th class="px-3 py-2 text-right font-medium">1차 (2025.04)</th>
-                    <th class="px-3 py-2 text-right font-medium">2차 (2026.10)</th>
+                    <th class="px-3 py-2 text-left font-medium">첫 주 매출 변화율</th>
+                    <th class="px-3 py-2 text-right font-medium">값</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 text-[#222]">
                   <tr>
-                    <td class="px-3 py-2">첫 주</td>
+                    <td class="px-3 py-2">1차 (2025.04)</td>
                     <td class="px-3 py-2 text-right tabular-nums">+17.8%</td>
-                    <td class="px-3 py-2 text-right tabular-nums font-semibold text-slate-900">+24.8%</td>
                   </tr>
                   <tr>
-                    <td class="px-3 py-2">2주</td>
-                    <td class="px-3 py-2 text-right tabular-nums">+14.2%</td>
-                    <td class="px-3 py-2 text-right tabular-nums font-semibold text-slate-900">+12.8%</td>
+                    <td class="px-3 py-2">2차 (2026.10)</td>
+                    <td class="px-3 py-2 text-right tabular-nums font-semibold text-slate-900">+24.8%</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <p class="fig-caption">fig.02 — 오픈 전 같은 요일 8주 평균 대비 매출 변화율 (내부 계정 제외)</p>
+            <p class="fig-caption">fig.02 — 오픈 전 같은 요일 8주 평균 대비</p>
           </figure>
         </div>
       </section>
@@ -883,12 +830,12 @@ flowchart LR
         <div>
           <p class="text-xs font-bold tracking-[0.3em] text-violet-700 uppercase">PROJECT</p>
           <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-900">데이터 <span class="text-violet-700">정합성 관리</span> · 분석 인프라 마이그레이션</h2>
-          <p class="mt-2 text-sm text-slate-500">미지급 2025.01 – 02 · 코인 정합성 2025.07 · 인수 게임사 2025.09 – 현재</p>
+          <p class="mt-2 text-sm text-slate-500">2025.01 – 현재</p>
         </div>
       </div>
       <div class="mt-5 inline-flex items-center flex-wrap gap-x-2 rounded-lg bg-violet-50 px-4 py-2.5 text-sm">
-        <span class="font-semibold text-slate-900">안드 결제 미지급 건수 -99% · 금액 -98%</span>
-        <span class="text-[#222]">· 코인 정합성 오차율 <strong class="text-slate-900">-76.8%p</strong> · 인수 게임사 분석 데이터 이관</span>
+        <span class="font-semibold text-slate-900">안드 결제 미지급 -99%</span>
+        <span class="text-[#222]">· 코인 정합성 오차율 <strong class="text-slate-900">-76.8%p</strong> · 일 1.7억 행 규모 데이터 이관</span>
       </div>
 
       <section class="chapter">
@@ -896,10 +843,10 @@ flowchart LR
         <h3 class="chapter__title">안드로이드 상품 구매 시 재화 미지급 추적</h3>
         <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
           <ul class="space-y-3 text-base text-[#222] leading-relaxed">
-            <li>· UE팀 급증 문의를 데이터 이슈로 정의 → 구매 로그 퍼널 분석으로 미지급 유형 분류</li>
-            <li>· API가 없는 구글 결제 영수증을 Play Console 크롤링으로 수집 → 결제 테이블과 대조해 미지급 건수 정량화</li>
-            <li>· 일 단위 미지급 대시보드로 개발팀 수정 배포 효과 추적 → 주간 <strong class="text-slate-900">462 → 5건 (-99%)</strong>, <strong class="text-slate-900">$16,000 → $300 (-98%)</strong></li>
-            <li>· 재발 감지용 구매 칩 미지급 증가 얼럿 추가</li>
+            <li>· 실시간 급증 문의를 데이터 이슈로 정의, 구매 로그 퍼널 분석으로 미지급 유형 분류</li>
+            <li>· Play Console 영수증 크롤링 → 결제 테이블 대조로 미지급 건수 정량화</li>
+            <li>· 개발팀 수정 배포 효과 추적 → 주간 미지급 <strong class="text-slate-900">462 → 5건 (-99%)</strong>, <strong class="text-slate-900">$16,000 → $300 (-98%)</strong></li>
+            <li>· 재발 감지 얼럿 추가</li>
           </ul>
           <figure>
             <div class="rounded-lg overflow-hidden border border-slate-200">
@@ -915,9 +862,9 @@ flowchart LR
         <h3 class="chapter__title">서버 코인 및 유저 트랜잭션 코인 트레킹</h3>
         <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
           <ul class="space-y-3 text-base text-[#222] leading-relaxed">
-            <li>· 통계 페이지 코인 정합성 오차율 <strong class="text-slate-900">88.90% → 12.10% (-76.8%p)</strong> 개선 (2025.07)</li>
-            <li>· 오차 원인 2가지 규명 · 해결: 중복 useridx 유저 <strong>1,155명</strong> 정리(-59.18%p), 유저 코인 미반영 비디오포커 기록 제외(-17.62%p)</li>
-            <li>· 노이즈 많던 대시보드를 이상치 탐지 도구로 전환 → 비정상 코인 변화 유저 특정, 코인 정합성 얼럿 상시 운영</li>
+            <li>· 통계 페이지 코인 정합성 오차율 <strong class="text-slate-900">88.90% → 12.10%</strong></li>
+            <li>· 중복 useridx 유저 <strong>1,155명</strong> 정리 · 비디오포커 기록 보정으로 오차 원인 해소</li>
+            <li>· 대시보드를 이상치 탐지 도구로 전환, 코인 정합성 얼럿 상시 운영</li>
           </ul>
           <figure>
             <div class="rounded-lg overflow-hidden border border-slate-200">
@@ -933,10 +880,10 @@ flowchart LR
         <h3 class="chapter__title">인수 게임사 분석 데이터 마이그레이션</h3>
         <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
           <ul class="space-y-3 text-base text-[#222] leading-relaxed">
-            <li>· 인수 게임사 DWH 전환(Redshift → GaussDB)에 맞춰 분석 데이터 이관 설계</li>
-            <li>· 원천 구조 분석 → 이관 테이블 <strong>7종</strong> 정의 · 명세화 (원천 원장 <strong class="text-slate-900">일 약 1.7억 행</strong>)</li>
-            <li>· 스핀 단위 키가 없는 원장에서 베팅 · 당첨을 연결하는 게임로그 집계 로직 설계 → 집계 누락 당첨금 <strong class="text-slate-900">26.72% → 2.93%</strong></li>
-            <li>· 슬롯 데이터 흐름 <strong>6계층 42개 객체</strong> 문서화 → 분석 레퍼런스로 공유</li>
+            <li>· 인수 게임사 DWH 전환에 맞춰 분석 데이터 이관 설계</li>
+            <li>· 일 약 <strong class="text-slate-900">1.7억 행</strong> 규모 원천 분석 → 이관 테이블 <strong>7종</strong> 정의 · 명세화</li>
+            <li>· 게임로그 집계 로직 설계 → 집계 누락 당첨금 <strong class="text-slate-900">26.72% → 2.93%</strong></li>
+            <li>· 슬롯 데이터 흐름 <strong>6계층 42개 객체</strong> 문서화</li>
           </ul>
           <figure>
             <div class="overflow-x-auto rounded-lg border border-slate-200">
@@ -967,9 +914,9 @@ flowchart LR
         <p class="chapter__num">CH.04</p>
         <h3 class="chapter__title">인수 게임사 이상 탐지 확장</h3>
         <ul class="mt-5 space-y-3 text-base text-[#222] leading-relaxed">
-          <li>· 인수 게임사 모니터링 얼럿 신설 (2025.09): VIP · VVIP 방문, 매출 · PU · ARPPU 이상 감지</li>
-          <li>· 자사 게임과 같은 형태의 이상탐지 마트 <strong>3종</strong> 구축 (2026.08): 유저별 결제 스탯 · 매출 · PU · ARPPU · 슬롯 머니인 · 스핀</li>
-          <li>· 인수 게임사도 자사 게임과 같은 기준으로 매일 이상 여부 판정</li>
+          <li>· VIP 방문 · 매출 · PU · ARPPU 이상 감지 얼럿 신설</li>
+          <li>· 자사 게임과 같은 형태의 이상탐지 마트 <strong>3종</strong> 구축</li>
+          <li>· 인수 게임사도 자사 게임과 같은 기준으로 매일 이상 판정</li>
         </ul>
       </section>
     </div>
@@ -983,12 +930,12 @@ flowchart LR
         <div>
           <p class="text-xs font-bold tracking-[0.3em] text-amber-700 uppercase">PROJECT</p>
           <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-900">매출 모니터링 · <span class="text-amber-700">AB 테스트</span> 운영</h2>
-          <p class="mt-2 text-sm text-slate-500">2025 – 현재 · 매출 예측 · 주간 모니터링 보고 · AB 대상자 추출 · 대시보드</p>
+          <p class="mt-2 text-sm text-slate-500">2025 – 현재</p>
         </div>
       </div>
       <div class="mt-5 inline-flex items-center flex-wrap gap-x-2 rounded-lg bg-amber-50 px-4 py-2.5 text-sm">
         <span class="font-semibold text-slate-900">매출 증감 예측 정확도 76% → 85.71%</span>
-        <span class="text-[#222]">· AB 대상자 추출 <strong class="text-slate-900">28건</strong> 오류 0건 · 운영 의사결정 <strong class="text-slate-900">6건</strong> 지원</span>
+        <span class="text-[#222]">· AB 대상자 추출 <strong class="text-slate-900">28건</strong> 오류 0건</span>
       </div>
 
       <section class="chapter">
@@ -996,10 +943,10 @@ flowchart LR
         <h3 class="chapter__title">주 단위 매출 증감 예측</h3>
         <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
           <ul class="space-y-3 text-base text-[#222] leading-relaxed">
-            <li>· 장기 매출 모델을 4주 단기 · 세그먼트별 증감 예측 모델로 전환</li>
-            <li>· 첫 4주(2025.05 – 06) 증감 정확도 <strong>76%</strong>, 매출 감소 구간 Recall <strong>93.75%</strong></li>
-            <li>· 예측 단위 28일 전환 → 2025 하반기 증감 정확도 <strong class="text-slate-900">85.71%</strong> (이슈 주간 제외), 예측 오차율 <strong class="text-slate-900">3.6% → 0.7%</strong></li>
-            <li>· 예측 이탈 시 AB 영향 → 이슈 발생 → 코어 지표 순 점검 프로세스 구축</li>
+            <li>· 장기 매출 모델을 4주 단기 · 세그먼트별 증감 예측으로 전환</li>
+            <li>· 매출 감소 구간 Recall <strong>93.75%</strong></li>
+            <li>· 증감 정확도 <strong class="text-slate-900">76% → 85.71%</strong>, 예측 오차율 <strong class="text-slate-900">3.6% → 0.7%</strong></li>
+            <li>· 예측 이탈 시 원인 점검 프로세스 구축</li>
           </ul>
           <figure>
             <div class="rounded-lg overflow-hidden border border-slate-200">
@@ -1015,14 +962,9 @@ flowchart LR
         <h3 class="chapter__title">주 단위 게임 모니터링 보고</h3>
         <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
           <ul class="space-y-3 text-base text-[#222] leading-relaxed">
-            <li>· 28일 결제력 기반 세그먼트별 지표를 이전 4주 대비 변화율로 스코어링해 주간 보고</li>
-            <li>· 고결제 세그먼트일수록 기념일 이벤트보다 스핀 수 · 올인 등 게임 내 지표에 민감함을 발견</li>
-            <li>· 운영 의사결정 <strong>6건</strong> 지원
-              <ul class="mt-2 space-y-1 text-sm text-slate-600">
-                <li>2025 하반기: 로비 큐레이션 그룹 추가 · 신규 슬롯 추가 출시 정량 기준 · 큐레이션 모니터링 제안</li>
-                <li>2026 상반기: 팬 페이지 접근 제한 이탈 유저 복귀 대응 · 매출 손해 슬롯 로비 노출 억제 · 외부 PG · 온캔버스 정리 방향</li>
-              </ul>
-            </li>
+            <li>· 28일 결제력 기반 세그먼트별 지표 변화 주간 보고</li>
+            <li>· 고결제 유저는 이벤트보다 게임 내 지표 변화에 민감함을 발견</li>
+            <li>· 로비 큐레이션 · 신규 슬롯 출시 기준 등 운영 의사결정 <strong>6건</strong> 지원</li>
           </ul>
           <figure>
             <div class="rounded-lg overflow-hidden border border-slate-200">
@@ -1037,10 +979,10 @@ flowchart LR
         <p class="chapter__num">CH.03</p>
         <h3 class="chapter__title">AB 테스트 대상자 추출 · 트래킹</h3>
         <ul class="mt-5 space-y-3 text-base text-[#222] leading-relaxed">
-          <li>· 수작업이던 대상자 추출 자동화, 디자인본부 → GS → 플랫폼팀 절차 일원화 → <strong class="text-slate-900">28건</strong> 추출 오류 0건 (2025 하반기 17 · 2026 상반기 11)</li>
-          <li>· 결제액 차이가 큰 유저끼리 짝지어지는 문제 개선 → 짝 간 실험 전 결제액 차이 <strong class="text-slate-900">$59 → $11</strong></li>
-          <li>· 대상자 누락 원인 수정 → 평균 약 <strong>6,000명</strong> 추가 확보, 추출 시간 <strong>20 ~ 40분 → 약 5분</strong></li>
-          <li>· AB 자동 트래킹 대시보드 구축 (2026.10): 실험별 수작업 Redash 복제 대체, 실험 시작 이후 차이 · 통계적 유의성 중심 표시</li>
+          <li>· 대상자 추출 자동화 · 절차 일원화 → <strong class="text-slate-900">28건</strong> 추출 오류 0건</li>
+          <li>· 페어 간 실험 전 결제액 차이 <strong class="text-slate-900">$59 → $11</strong></li>
+          <li>· 대상자 평균 약 <strong>6,000명</strong> 추가 확보, 추출 시간 <strong>20~40분 → 약 5분</strong></li>
+          <li>· AB 자동 트래킹 대시보드 구축</li>
         </ul>
       </section>
 

@@ -196,7 +196,7 @@
           <li><a href="#about" class="flex px-0 py-2 text-sm text-gray-600 hover:text-gray-900 lg:px-3">소개</a></li>
           <li><a href="#projects" class="flex px-0 py-2 text-sm text-gray-600 hover:text-gray-900 lg:px-3">프로젝트</a></li>
           <li><a href="#skills" class="flex px-0 py-2 text-sm text-gray-600 hover:text-gray-900 lg:px-3">핵심 역량</a></li>
-          <li><a href="#practice" class="flex px-0 py-2 text-sm text-gray-600 hover:text-gray-900 lg:px-3">AI</a></li>
+          <li><a href="#growup" class="flex px-0 py-2 text-sm text-gray-600 hover:text-gray-900 lg:px-3">Grow Up</a></li>
           <li><a href="../resume.html" target="_blank" class="flex px-0 py-2 text-sm text-gray-600 hover:text-gray-900 lg:px-3">이력서 ↗</a></li>
           <li><a href="#contact" class="flex px-0 py-2 text-sm text-gray-600 hover:text-gray-900 lg:px-3">연락</a></li>
         </ul>
@@ -407,57 +407,84 @@
       </div>
     </section>
 
-    <!-- ===== AI PRACTICE (P2: large outlined numbers) ===== -->
-    <section id="practice" class="mt-18 md:mt-24">
-      <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900">AI Engineering Practice</h2>
-      <p class="mt-3 text-[#222] break-keep">AI 에이전트로 일하는 방식 · 조사 · 검증 · 자동화 · 자산화</p>
+    <!-- ===== GROW UP (넥슨 포트폴리오 PDF 7~15쪽) ===== -->
+    <section id="growup" class="mt-18 md:mt-24">
+      <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900">Grow Up</h2>
+      <p class="mt-3 text-[#222] break-keep">경쟁을 즐기고, 떠오른 아이디어는 직접 구현해 보는 습관</p>
       <div class="mt-8 grid gap-5 md:grid-cols-2">
 
-        <article class="rounded-2xl border border-slate-200 bg-white p-6">
-          <p class="text-xs font-bold tracking-[0.2em] text-sky-700">01 · INVESTIGATE</p>
-          <h3 class="mt-2 text-xl font-semibold text-slate-900">얼럿 원인 조사 에이전트</h3>
+        <article class="rounded-2xl border border-slate-200 bg-white p-6 flex flex-col">
+          <p class="text-xs font-bold tracking-[0.2em] text-sky-700">01 · NLP</p>
+          <h3 class="mt-2 text-xl font-semibold text-slate-900">C++ 코드 간 유사성 판단</h3>
+          <p class="mt-1 text-sm text-slate-500 break-keep">DACON 코드 유사성 판단 시즌2 AI 경진대회 · 2024.03 – 04 · 2인 팀</p>
           <ul class="mt-4 space-y-2 text-base text-[#222] relative z-10 break-keep">
-            <li>- 얼럿 발생 시 에이전트가 데이터 조회 · 원인 분류 → Slack 스레드에 판정 · 근거 회신</li>
-            <li>- 일단위 얼럿 <strong>15종</strong> 대상, 2026.10 – 11 <strong>59건</strong> 판정, 발생 후 회신 중앙값 약 <strong>13분</strong></li>
-            <li>- 스레드 추가 질문 <strong>21건</strong> 대화형 답변</li>
+            <li>- 리더보드 <strong>5위</strong> 수상</li>
+            <li>- 훈련 데이터 360만 행 중 90% 이상이 512 토큰 초과 → 주석 · 일부 전처리기 구문 제거로 입력 길이 최소화</li>
+            <li>- 약 1억 2,000만 행 중 샘플링 방법별 Public Score 비교 → 층화 랜덤 샘플링 <strong>97.74</strong> · BM25plus 97.52</li>
+            <li>- GraphCodeBERT · CodeBERT 모델 비교, 파인튜닝 · 앙상블 구현</li>
           </ul>
+          <div class="mt-5 grid gap-4 sm:grid-cols-[1fr_1.2fr] items-start relative z-10">
+            <figure>
+              <div class="rounded-lg overflow-hidden border border-slate-200">
+                <img src="../assets/img/growup-code-clean.png" alt="C++ 코드에서 주석 · 전처리기 구문을 제거하는 예시" loading="lazy" class="w-full block" />
+              </div>
+              <p class="fig-caption">fig.01 — 주석 · 전처리기 구문 제거</p>
+            </figure>
+            <figure>
+              <div class="rounded-lg overflow-hidden border border-slate-200">
+                <img src="../assets/img/growup-sampling.png" alt="샘플링 방법별 Public Score 표와 층화 추출 도식" loading="lazy" class="w-full block" />
+              </div>
+              <p class="fig-caption">fig.02 — 샘플링 방법별 Public Score</p>
+            </figure>
+          </div>
+          <div class="mt-auto pt-5 flex flex-wrap gap-1.5 relative z-10">
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Python</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">PyTorch</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Transformers</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">scikit-learn</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">pandas</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Colab</span>
+          </div>
+          <div class="mt-4 flex flex-wrap gap-x-4 gap-y-1 relative z-10">
+            <a href="https://dacon.io/competitions/official/236228/codeshare/9931?page=1&amp;dtype=recent" target="_blank" rel="noopener" class="text-xs font-medium text-sky-700 hover:text-sky-900">대회 코드 공유 ↗</a>
+            <a href="https://github.com/chahanyeong/cpp-code-similarity" target="_blank" rel="noopener" class="text-xs font-medium text-sky-700 hover:text-sky-900">GitHub ↗</a>
+          </div>
         </article>
 
-        <article class="rounded-2xl border border-slate-200 bg-white p-6">
-          <p class="text-xs font-bold tracking-[0.2em] text-emerald-700">02 · CROSS-CHECK</p>
-          <h3 class="mt-2 text-xl font-semibold text-slate-900">설계 우선 · 교차 검토</h3>
+        <article class="rounded-2xl border border-slate-200 bg-white p-6 flex flex-col">
+          <p class="text-xs font-bold tracking-[0.2em] text-emerald-700">02 · CV</p>
+          <h3 class="mt-2 text-xl font-semibold text-slate-900">캐릭터 추적 알고리즘 구현</h3>
+          <p class="mt-1 text-sm text-slate-500 break-keep">메이플스토리 · 2024.03 – 04 · 개인 프로젝트</p>
           <ul class="mt-4 space-y-2 text-base text-[#222] relative z-10 break-keep">
-            <li>- 주요 작업은 설계 → 구현 계획 → 구현 → 리뷰 순서, 2026.04 – 11 설계 문서 <strong>58건</strong> · 구현 계획 <strong>64건</strong></li>
-            <li>- 설계 확정 전 별도 에이전트 반대 검토 + GPT(Codex) 교차 리뷰로 단일 모델 편향 완화</li>
+            <li>- YOLOv8 파인튜닝 + Re-ID · BoT-SORT로 보스 레이드 중인 내 캐릭터 추적</li>
+            <li>- Roboflow로 대표 모션 6가지 이미지 <strong>193장</strong> 라벨링 · 학습</li>
+            <li>- 데미지 스킨 · 펫 · 구조물에 가려지는 장면은 이미지 Augmentation 노이즈로 학습</li>
           </ul>
-        </article>
-
-        <article class="rounded-2xl border border-slate-200 bg-white p-6">
-          <p class="text-xs font-bold tracking-[0.2em] text-violet-700">03 · AUTOMATE</p>
-          <h3 class="mt-2 text-xl font-semibold text-slate-900">반복 업무 자동화</h3>
-          <ul class="mt-4 space-y-2 text-base text-[#222] relative z-10 break-keep">
-            <li>- 배포 · 패치 공지 메일 → 변경 항목 정리 → 담당자 승인 → Google Calendar 등록</li>
-            <li>- 기획 · 패치 문서 스캔 → 변경 사항 · 예상 영향도 정리, 2026.06 – 10 배포 <strong>20건</strong> 추적</li>
-            <li>- 캘린더 관리 · 주간 지표 작성 등 반복 업무 시간 약 <strong>50% 절감</strong></li>
-          </ul>
-          <figure class="mt-4 rounded-lg overflow-hidden border border-slate-200 relative z-10">
-            <img src="../assets/img/auto-calendar-preview.png" alt="앱 일정 캘린더 에이전트 — Google Calendar 월간 뷰" loading="lazy" class="w-full" />
-          </figure>
-        </article>
-
-        <article class="rounded-2xl border border-slate-200 bg-white p-6">
-          <p class="text-xs font-bold tracking-[0.2em] text-amber-700">04 · KNOWLEDGE</p>
-          <h3 class="mt-2 text-xl font-semibold text-slate-900">도메인 지식 자산화</h3>
-          <ul class="mt-4 space-y-2 text-base text-[#222] relative z-10 break-keep">
-            <li>- 테이블 명세 · 지표 정의 · 이슈 사례를 에이전트 지식 노트로 축적, 2026.11 기준 <strong>163건</strong> → 새 작업마다 자동 참조</li>
-            <li>- 주간 보고 기초 · 병렬 분석은 에이전트가 1차 → 분석가가 2차 검증 · 심화</li>
-            <li>- 분석 결과물 자산화 → 같은 분석은 에이전트에게 재할당</li>
-            <li>- 산출 결과물 공유 (예시: Mobile CCU 이상치 분석)</li>
-          </ul>
-          <figure class="mt-4 rounded-lg overflow-hidden border border-slate-200 relative z-10">
-            <img src="../assets/img/sample-mobile-ccu.png" alt="Mobile CCU 이상치 분석 리포트" loading="lazy" class="w-full" />
-          </figure>
-          <a href="../samples/mobile-ccu-anomaly.html" target="_blank" class="mt-4 inline-block text-xs font-medium text-sky-700 hover:text-sky-900 relative z-10">인터랙티브 리포트 열기 ↗</a>
+          <div class="mt-5 grid gap-4 sm:grid-cols-[1.3fr_1fr] items-start relative z-10">
+            <figure>
+              <div class="rounded-lg overflow-hidden border border-slate-200">
+                <img src="../assets/img/growup-tracking.jpg" alt="보스 레이드 중 캐릭터를 추적하는 화면" loading="lazy" class="w-full block" />
+              </div>
+              <p class="fig-caption">fig.03 — 보스 레이드 중 캐릭터 추적</p>
+            </figure>
+            <figure>
+              <div class="rounded-lg overflow-hidden border border-slate-200">
+                <img src="../assets/img/growup-motions.jpg" alt="추적 대상 캐릭터의 대표 모션 6가지 라벨링" loading="lazy" class="w-full block" />
+              </div>
+              <p class="fig-caption">fig.04 — 대표 모션 6가지 라벨링</p>
+            </figure>
+          </div>
+          <div class="mt-auto pt-5 flex flex-wrap gap-1.5 relative z-10">
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Python</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">PyTorch</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">YOLOv8</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">BoxMOT</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">OpenCV</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Roboflow</span>
+          </div>
+          <div class="mt-4 flex flex-wrap gap-x-4 gap-y-1 relative z-10">
+            <a href="https://github.com/chahanyeong/Maplestory-mycharacter_Tracking/tree/main" target="_blank" rel="noopener" class="text-xs font-medium text-sky-700 hover:text-sky-900">GitHub ↗</a>
+          </div>
         </article>
 
       </div>

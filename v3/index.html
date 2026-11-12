@@ -407,74 +407,76 @@
       </div>
     </section>
 
-    <!-- ===== GROW UP (넥슨 포트폴리오 PDF 7~15쪽) ===== -->
+    <!-- ===== GROW UP (넥슨 인랩 포트폴리오 PDF · 카드 + 상세 모달 g1~g4) ===== -->
     <section id="growup" class="mt-18 md:mt-24">
-      <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900">Grow Up</h2>
-      <p class="mt-3 text-[#222] break-keep">경쟁을 즐기고, 떠오른 아이디어는 직접 구현해 보는 습관</p>
+      <div class="flex items-end justify-between gap-4">
+        <div>
+          <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900">Grow Up</h2>
+          <p class="mt-3 text-[#222] break-keep">경쟁을 즐기고, 떠오른 아이디어는 직접 구현 · 카드 클릭 시 상세 과정 · 이미지</p>
+        </div>
+      </div>
       <div class="mt-8 grid gap-5 md:grid-cols-2">
 
-        <article class="rounded-2xl border border-slate-200 bg-white p-6 flex flex-col">
-          <p class="text-xs font-bold tracking-[0.2em] text-sky-700">01 · NLP</p>
-          <h3 class="mt-2 text-xl font-semibold text-slate-900">C++ 코드 간 유사성 판단</h3>
-          <p class="mt-1 text-sm text-slate-500 break-keep">DACON 코드 유사성 판단 시즌2 AI 경진대회 · 2024.03 – 04 · 2인 팀</p>
-          <ul class="mt-4 space-y-2 text-base text-[#222] relative z-10 break-keep">
-            <li>- 리더보드 <strong>5위</strong> 수상</li>
-            <li>- 훈련 데이터 360만 행 중 90% 이상이 512 토큰 초과 → 주석 · 일부 전처리기 구문 제거로 입력 길이 최소화</li>
-            <li>- 약 1억 2,000만 행 중 샘플링 방법별 Public Score 비교 → 층화 랜덤 샘플링 <strong>97.74</strong> · BM25plus 97.52</li>
-            <li>- GraphCodeBERT · CodeBERT 모델 비교, 파인튜닝 · 앙상블 구현</li>
+        <article onclick="openModal('g1')" class="proj-card proj-card--sky cursor-pointer h-full rounded-2xl border border-slate-200 bg-white p-6 flex flex-col">
+          <h3 class="text-xl font-semibold text-slate-900 leading-snug">해표면 물질 궤적 모의 · 예측</h3>
+          <ul class="mt-4 space-y-2 text-base text-[#222] flex-grow break-keep">
+            <li>· 2023.09 – 11 해양과학 빅데이터 경진대회 · 3인 팀</li>
+            <li>· DTW · Ward 연결법으로 뜰개 궤적 <strong>31개</strong>를 <strong>3개 군집</strong>으로 분류</li>
+            <li>· 격자 기상 데이터 Bilinear 보간, XGBoost 궤적 예측 구현</li>
           </ul>
-          <div class="mt-5 grid gap-4 sm:grid-cols-[1fr_1.2fr] items-start relative z-10">
-            <figure>
-              <div class="rounded-lg overflow-hidden border border-slate-200">
-                <img src="../assets/img/growup-code-clean.png" alt="C++ 코드에서 주석 · 전처리기 구문을 제거하는 예시" loading="lazy" class="w-full block" />
-              </div>
-              <p class="fig-caption">fig.01 — 주석 · 전처리기 구문 제거</p>
-            </figure>
-            <figure>
-              <div class="rounded-lg overflow-hidden border border-slate-200">
-                <img src="../assets/img/growup-sampling.png" alt="샘플링 방법별 Public Score 표와 층화 추출 도식" loading="lazy" class="w-full block" />
-              </div>
-              <p class="fig-caption">fig.02 — 샘플링 방법별 Public Score</p>
-            </figure>
+          <div class="mt-5 flex flex-wrap gap-1.5">
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Python</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">XGBoost</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">scikit-learn</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">TensorFlow</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">xarray</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Cartopy</span>
           </div>
-          <div class="mt-auto pt-5 flex flex-wrap gap-1.5 relative z-10">
+          <div class="mt-4 text-xs font-medium text-sky-700">자세히 보기 →</div>
+        </article>
+
+        <article onclick="openModal('g2')" class="proj-card proj-card--emerald cursor-pointer h-full rounded-2xl border border-slate-200 bg-white p-6 flex flex-col">
+          <h3 class="text-xl font-semibold text-slate-900 leading-snug">딥페이크 영상 판별 모델 개발</h3>
+          <ul class="mt-4 space-y-2 text-base text-[#222] flex-grow break-keep">
+            <li>· 2023.11 – 12 국방 AI 경진대회 · 4인 팀, <strong>후원기업상 · 6위</strong></li>
+            <li>· Real · Fake 프레임 길이 차이 → Data balancing, 분류 정확도 <strong>1.3배</strong></li>
+            <li>· MTCNN 얼굴 확대 파인튜닝, 30프레임 정확도 <strong>97.27%</strong></li>
+          </ul>
+          <div class="mt-5 flex flex-wrap gap-1.5">
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Python</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">TensorFlow</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Keras</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">MTCNN</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">OpenCV</span>
+          </div>
+          <div class="mt-4 text-xs font-medium text-emerald-700">자세히 보기 →</div>
+        </article>
+
+        <article onclick="openModal('g3')" class="proj-card proj-card--violet cursor-pointer h-full rounded-2xl border border-slate-200 bg-white p-6 flex flex-col">
+          <h3 class="text-xl font-semibold text-slate-900 leading-snug">C++ 코드 간 유사성 판단</h3>
+          <ul class="mt-4 space-y-2 text-base text-[#222] flex-grow break-keep">
+            <li>· 2024.03 – 04 DACON 코드 유사성 판단 시즌2 · 2인 팀, <strong>리더보드 5위</strong></li>
+            <li>· 주석 · 전처리기 구문 제거로 512 토큰 한도 대응</li>
+            <li>· 샘플링 방법별 비교, Public Score <strong>97.74</strong></li>
+          </ul>
+          <div class="mt-5 flex flex-wrap gap-1.5">
             <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Python</span>
             <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">PyTorch</span>
             <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Transformers</span>
             <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">scikit-learn</span>
             <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">pandas</span>
-            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Colab</span>
           </div>
-          <div class="mt-4 flex flex-wrap gap-x-4 gap-y-1 relative z-10">
-            <a href="https://dacon.io/competitions/official/236228/codeshare/9931?page=1&amp;dtype=recent" target="_blank" rel="noopener" class="text-xs font-medium text-sky-700 hover:text-sky-900">대회 코드 공유 ↗</a>
-            <a href="https://github.com/chahanyeong/cpp-code-similarity" target="_blank" rel="noopener" class="text-xs font-medium text-sky-700 hover:text-sky-900">GitHub ↗</a>
-          </div>
+          <div class="mt-4 text-xs font-medium text-violet-700">자세히 보기 →</div>
         </article>
 
-        <article class="rounded-2xl border border-slate-200 bg-white p-6 flex flex-col">
-          <p class="text-xs font-bold tracking-[0.2em] text-emerald-700">02 · CV</p>
-          <h3 class="mt-2 text-xl font-semibold text-slate-900">캐릭터 추적 알고리즘 구현</h3>
-          <p class="mt-1 text-sm text-slate-500 break-keep">메이플스토리 · 2024.03 – 04 · 개인 프로젝트</p>
-          <ul class="mt-4 space-y-2 text-base text-[#222] relative z-10 break-keep">
-            <li>- YOLOv8 파인튜닝 + Re-ID · BoT-SORT로 보스 레이드 중인 내 캐릭터 추적</li>
-            <li>- Roboflow로 대표 모션 6가지 이미지 <strong>193장</strong> 라벨링 · 학습</li>
-            <li>- 데미지 스킨 · 펫 · 구조물에 가려지는 장면은 이미지 Augmentation 노이즈로 학습</li>
+        <article onclick="openModal('g4')" class="proj-card proj-card--amber cursor-pointer h-full rounded-2xl border border-slate-200 bg-white p-6 flex flex-col">
+          <h3 class="text-xl font-semibold text-slate-900 leading-snug">메이플스토리 캐릭터 추적 알고리즘</h3>
+          <ul class="mt-4 space-y-2 text-base text-[#222] flex-grow break-keep">
+            <li>· 2024.03 – 04 개인 프로젝트</li>
+            <li>· 모션 6가지 이미지 <strong>193장</strong> 라벨링 · Augmentation → YOLOv8 파인튜닝</li>
+            <li>· Re-ID · BoT-SORT로 보스 레이드 중인 내 캐릭터 추적</li>
           </ul>
-          <div class="mt-5 grid gap-4 sm:grid-cols-[1.3fr_1fr] items-start relative z-10">
-            <figure>
-              <div class="rounded-lg overflow-hidden border border-slate-200">
-                <img src="../assets/img/growup-tracking.jpg" alt="보스 레이드 중 캐릭터를 추적하는 화면" loading="lazy" class="w-full block" />
-              </div>
-              <p class="fig-caption">fig.03 — 보스 레이드 중 캐릭터 추적</p>
-            </figure>
-            <figure>
-              <div class="rounded-lg overflow-hidden border border-slate-200">
-                <img src="../assets/img/growup-motions.jpg" alt="추적 대상 캐릭터의 대표 모션 6가지 라벨링" loading="lazy" class="w-full block" />
-              </div>
-              <p class="fig-caption">fig.04 — 대표 모션 6가지 라벨링</p>
-            </figure>
-          </div>
-          <div class="mt-auto pt-5 flex flex-wrap gap-1.5 relative z-10">
+          <div class="mt-5 flex flex-wrap gap-1.5">
             <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Python</span>
             <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">PyTorch</span>
             <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">YOLOv8</span>
@@ -482,9 +484,7 @@
             <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">OpenCV</span>
             <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Roboflow</span>
           </div>
-          <div class="mt-4 flex flex-wrap gap-x-4 gap-y-1 relative z-10">
-            <a href="https://github.com/chahanyeong/Maplestory-mycharacter_Tracking/tree/main" target="_blank" rel="noopener" class="text-xs font-medium text-sky-700 hover:text-sky-900">GitHub ↗</a>
-          </div>
+          <div class="mt-4 text-xs font-medium text-amber-700">자세히 보기 →</div>
         </article>
 
       </div>
@@ -1081,6 +1081,310 @@ flowchart LR
         </div>
       </section>
     </div>
+
+    <!-- ===== GROW UP MODALS (g1~g4, build_growup_projects.py 생성) ===== -->
+    <div id="content-g1">
+      <div class="flex items-start gap-5">
+        <div class="flex-shrink-0 h-16 w-16 flex items-center justify-center rounded-2xl bg-sky-50 border border-sky-100">
+          <span class="text-3xl font-bold tracking-tight text-sky-700">01</span>
+        </div>
+        <div>
+          <p class="text-xs font-bold tracking-[0.3em] text-sky-700 uppercase">GROW UP</p>
+          <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-900 break-keep">해표면 물질 <span class="text-sky-700">궤적 모의</span> · 예측</h2>
+          <p class="mt-2 text-sm text-slate-500">2023.09 – 11 · 제3회 해양과학 빅데이터 경진대회 · 3인 팀</p>
+        </div>
+      </div>
+      <div class="mt-5 inline-flex items-center flex-wrap gap-x-2 rounded-lg bg-sky-50 px-4 py-2.5 text-sm">
+        <span class="font-semibold text-slate-900">뜰개 궤적 31개 → 3개 군집 분류 · 궤적 모의</span>
+        <span class="text-[#222]">· XGBoost 궤적 예측 알고리즘 구현</span>
+      </div>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.01</p>
+        <h3 class="chapter__title">대회 · 담당 역할</h3>
+        <div class="mt-5 space-y-5">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed break-keep">
+            <li>· 해표면 물질(뜰개)의 이동 궤적을 모의 · 예측하는 해양과학 빅데이터 경진대회</li>
+            <li>· DTW · Ward 연결법으로 뜰개 궤적 Clustering <span class="text-slate-500">· 기여도 80%</span></li>
+            <li>· 궤적 예측에 쓸 회귀 모델 비교 <span class="text-slate-500">· 기여도 70%</span></li>
+            <li>· XGBoost 궤적 예측 알고리즘 구현 <span class="text-slate-500">· 기여도 100%</span></li>
+          </ul>
+
+        </div>
+      </section>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.02</p>
+        <h3 class="chapter__title">궤적 군집화 · 모의</h3>
+        <div class="mt-5 space-y-5">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed break-keep">
+            <li>· DTW 거리 · Ward 연결법으로 뜰개 궤적 <strong class="text-slate-900">31개</strong>를 <strong class="text-slate-900">3개 군집</strong>으로 분류</li>
+            <li>· 군집별 주요 경로: 쓰가루 해협 · 오키 제도 · 라페루즈 해협</li>
+            <li>· 군집별 궤적 특성을 반영해 궤적 모의</li>
+          </ul>
+          <figure>
+            <div class="grid gap-3 sm:grid-cols-2 items-center"><div class="rounded-lg overflow-hidden border border-slate-200"><img src="../assets/img/gu-ocean-clusters-a.jpg" alt="군집 A 뜰개 궤적 — 쓰가루 해협" loading="lazy" class="w-full block" /></div><div class="rounded-lg overflow-hidden border border-slate-200"><img src="../assets/img/gu-ocean-clusters-bc.jpg" alt="군집 B·C 뜰개 궤적 — 오키 제도 · 라페루즈 해협" loading="lazy" class="w-full block" /></div></div>
+            <p class="fig-caption">fig.01 — 군집별 뜰개 궤적 · A 쓰가루 해협 · B 오키 제도 · C 라페루즈 해협</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.03</p>
+        <h3 class="chapter__title">기상 데이터 보간 · 궤적 예측</h3>
+        <div class="mt-5 space-y-5">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed break-keep">
+            <li>· 격자 형식 기상 데이터에 Bilinear Interpolation 적용 → 원하는 경도 · 위도의 기상값 생성</li>
+            <li>· Copernicus Marine Service · CDS API로 해양 · 기상 데이터 활용</li>
+            <li>· 회귀 모델 비교 후 XGBoost로 궤적 예측 알고리즘 구현</li>
+          </ul>
+          <figure>
+            <div class="grid gap-3 sm:grid-cols-2 items-center"><div class="rounded-lg overflow-hidden border border-slate-200"><img src="../assets/img/gu-ocean-grid.jpg" alt="격자 기상 데이터 보간 도식" loading="lazy" class="w-full block" /></div><div class="rounded-lg overflow-hidden border border-slate-200"><img src="../assets/img/gu-ocean-formula.png" alt="Bilinear Interpolation 식" loading="lazy" class="w-full block" /></div></div>
+            <p class="fig-caption">fig.02 — 격자 기상 데이터 Bilinear Interpolation</p>
+          </figure>
+        </div>
+      </section>
+
+      <div class="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-slate-200 pt-5 text-sm">
+        <span class="text-slate-500 break-keep">Python 3.11 · Jupyter Notebook · TensorFlow · scikit-learn · XGBoost · Cartopy · seaborn · xarray · Copernicus Marine Service · CDS API</span>
+        <a href="https://github.com/chahanyeong/Predicting-the-movement-path-of-surface-water-substances/tree/main" target="_blank" rel="noopener" class="font-medium text-sky-700 hover:text-slate-900">GitHub ↗</a>
+        <a href="https://oceantrio.notion.site/PPT-7a90f262507a425787549d1cc5823044" target="_blank" rel="noopener" class="font-medium text-sky-700 hover:text-slate-900">발표 자료 ↗</a>
+      </div>
+    </div>
+
+    <div id="content-g2">
+      <div class="flex items-start gap-5">
+        <div class="flex-shrink-0 h-16 w-16 flex items-center justify-center rounded-2xl bg-emerald-50 border border-emerald-100">
+          <span class="text-3xl font-bold tracking-tight text-emerald-700">02</span>
+        </div>
+        <div>
+          <p class="text-xs font-bold tracking-[0.3em] text-emerald-700 uppercase">GROW UP</p>
+          <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-900 break-keep">딥페이크 <span class="text-emerald-700">영상 판별</span> 모델 개발</h2>
+          <p class="mt-2 text-sm text-slate-500">2023.11 – 12 · 2023 국방 AI 경진대회 · 4인 팀</p>
+        </div>
+      </div>
+      <div class="mt-5 inline-flex items-center flex-wrap gap-x-2 rounded-lg bg-emerald-50 px-4 py-2.5 text-sm">
+        <span class="font-semibold text-slate-900">일반인 부문 후원기업상 · 6위</span>
+        <span class="text-[#222]">· 30프레임 기준 분류 정확도 97.27%</span>
+      </div>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.01</p>
+        <h3 class="chapter__title">대회 · 담당 역할</h3>
+        <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed break-keep">
+            <li>· 딥페이크 영상의 Real · Fake 판별 모델 개발</li>
+            <li>· 영상 데이터 전처리 · EDA <span class="text-slate-500">· 기여도 90%</span></li>
+            <li>· Xception · EfficientNet 모델 성능 비교 <span class="text-slate-500">· 기여도 90%</span></li>
+            <li>· 딥페이크 영상 판별 프로세스 구현 <span class="text-slate-500">· 기여도 95%</span></li>
+          </ul>
+          <figure>
+            <div class="rounded-lg overflow-hidden border border-slate-200"><img src="../assets/img/gu-deepfake-award.jpg" alt="2023 국방 AI 경진대회 시상 사진" loading="lazy" class="w-full block" /></div>
+            <p class="fig-caption">fig.01 — 2023 국방 AI 경진대회 시상</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.02</p>
+        <h3 class="chapter__title">프레임 길이 차이 발견 → Data balancing</h3>
+        <div class="mt-5 space-y-5">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed break-keep">
+            <li>· Real · Fake 영상의 평균 프레임 길이가 약 4배 차이 나는 것을 확인</li>
+            <li>· 이 차이를 계기로 Data balancing → 분류 정확도 <strong class="text-slate-900">1.3배</strong> 향상</li>
+          </ul>
+          <figure>
+            <div class="rounded-lg overflow-hidden border border-slate-200"><img src="../assets/img/gu-deepfake-frames.png" alt="Real · Fake 영상 프레임 수 히스토그램" loading="lazy" class="w-full block" /></div>
+            <p class="fig-caption">fig.02 — Real · Fake 영상 프레임 수 분포</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.03</p>
+        <h3 class="chapter__title">얼굴 영역 확대 · 파인튜닝</h3>
+        <div class="mt-5 space-y-5">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed break-keep">
+            <li>· Fake 영상 대부분이 Face Swap · Facial Expression 등 얼굴 위주 변형임을 확인</li>
+            <li>· MTCNN으로 얼굴 영역을 확대한 뒤 Fine-Tuning</li>
+          </ul>
+          <figure>
+            <div class="rounded-lg overflow-hidden border border-slate-200"><img src="../assets/img/gu-deepfake-mtcnn.jpg" alt="MTCNN으로 얼굴 영역을 찾아 확대한 예시" loading="lazy" class="w-full block" /></div>
+            <p class="fig-caption">fig.03 — MTCNN 얼굴 영역 추출 · 확대</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.04</p>
+        <h3 class="chapter__title">판별 프레임 수 최적화</h3>
+        <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed break-keep">
+            <li>· 판별에 쓰는 프레임 수를 바꿔 가며 모델 평가 → 프레임이 많을수록 정확도 상승</li>
+            <li>· 10프레임 93.2% → 30프레임 <strong class="text-slate-900">97.27%</strong></li>
+            <li>· 정확도와 함께 모델 훈련 · 코드 시간 복잡도 최적화</li>
+          </ul>
+          <figure>
+            <div class="rounded-lg overflow-hidden border border-slate-200"><img src="../assets/img/gu-deepfake-acc.png" alt="프레임 수별 분류 정확도 그래프" loading="lazy" class="w-full block" /></div>
+            <p class="fig-caption">fig.04 — 프레임 수별 분류 정확도</p>
+          </figure>
+        </div>
+      </section>
+
+      <div class="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-slate-200 pt-5 text-sm">
+        <span class="text-slate-500 break-keep">Python 3.8 · Elice Cloud · Jupyter Notebook · TensorFlow · Keras · OpenCV · facenet-pytorch(MTCNN) · scikit-learn · A100 4대</span>
+        <a href="https://github.com/chahanyeong/Detection-deepfake-video" target="_blank" rel="noopener" class="font-medium text-emerald-700 hover:text-slate-900">GitHub ↗</a>
+        <a href="https://maicon.kr/%eb%9f%b0%ed%83%80%ec%9e%84%ec%97%90%eb%9f%ac/" target="_blank" rel="noopener" class="font-medium text-emerald-700 hover:text-slate-900">대회 페이지 ↗</a>
+      </div>
+    </div>
+
+    <div id="content-g3">
+      <div class="flex items-start gap-5">
+        <div class="flex-shrink-0 h-16 w-16 flex items-center justify-center rounded-2xl bg-violet-50 border border-violet-100">
+          <span class="text-3xl font-bold tracking-tight text-violet-700">03</span>
+        </div>
+        <div>
+          <p class="text-xs font-bold tracking-[0.3em] text-violet-700 uppercase">GROW UP</p>
+          <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-900 break-keep">C++ 코드 간 <span class="text-violet-700">유사성 판단</span></h2>
+          <p class="mt-2 text-sm text-slate-500">2024.03 – 04 · DACON 코드 유사성 판단 시즌2 AI 경진대회 · 2인 팀</p>
+        </div>
+      </div>
+      <div class="mt-5 inline-flex items-center flex-wrap gap-x-2 rounded-lg bg-violet-50 px-4 py-2.5 text-sm">
+        <span class="font-semibold text-slate-900">리더보드 5위 수상</span>
+        <span class="text-[#222]">· 샘플링 방법별 비교 · Public Score 97.74</span>
+      </div>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.01</p>
+        <h3 class="chapter__title">대회 · 담당 역할</h3>
+        <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed break-keep">
+            <li>· 두 C++ 코드 간 유사성을 판단하는 AI 경진대회</li>
+            <li>· C++ 코드 Cleaning <span class="text-slate-500">· 기여도 90%</span></li>
+            <li>· 훈련 데이터 구축 · 샘플링 <span class="text-slate-500">· 기여도 100%</span></li>
+            <li>· 유사도 판단 모델 비교 <span class="text-slate-500">· 기여도 100%</span></li>
+            <li>· 모델 파인튜닝 · 앙상블 프로세스 구현 <span class="text-slate-500">· 기여도 95%</span></li>
+          </ul>
+          <figure>
+            <div class="rounded-lg overflow-hidden border border-slate-200"><img src="../assets/img/gu-cpp-dacon.jpg" alt="DACON 코드 유사성 판단 시즌2 대회 페이지" loading="lazy" class="w-full block" /></div>
+            <p class="fig-caption">fig.01 — DACON 코드 유사성 판단 시즌2</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.02</p>
+        <h3 class="chapter__title">코드 정제로 입력 길이 최소화</h3>
+        <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed break-keep">
+            <li>· GraphCodeBERT · CodeBERT 입력 한도 512 토큰, 훈련 데이터 360만 행 중 90% 이상이 초과</li>
+            <li>· 주석 · 일부 전처리기 구문을 제거해 핵심 코드만 입력</li>
+          </ul>
+          <figure>
+            <div class="rounded-lg overflow-hidden border border-slate-200"><img src="../assets/img/gu-cpp-code.png" alt="주석 · 전처리기 구문 제거 대상이 표시된 C++ 코드" loading="lazy" class="w-full block" /></div>
+            <p class="fig-caption">fig.02 — 주석 · 전처리기 구문 제거 대상</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.03</p>
+        <h3 class="chapter__title">훈련 데이터 샘플링</h3>
+        <div class="mt-5 space-y-5">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed break-keep">
+            <li>· 구축 가능한 약 1억 2,000만 행 중 기간 안에 학습 가능한 양은 일부</li>
+            <li>· BM25plus · 층화 랜덤 샘플링 등 방법별 Public Score 비교 → <strong class="text-slate-900">97.74</strong></li>
+            <li>· 파인튜닝 · 앙상블로 최종 모델 구성</li>
+          </ul>
+          <figure>
+            <div class="grid gap-3 sm:grid-cols-2 items-center"><div class="rounded-lg overflow-hidden border border-slate-200"><img src="../assets/img/gu-cpp-sampling.png" alt="샘플링 방법별 Public Score 표와 층화 추출 도식" loading="lazy" class="w-full block" /></div><div class="rounded-lg overflow-hidden border border-slate-200"><img src="../assets/img/gu-cpp-bm25.png" alt="BM25plus 점수식" loading="lazy" class="w-full block" /></div></div>
+            <p class="fig-caption">fig.03 — 샘플링 방법별 Public Score · BM25plus 점수식</p>
+          </figure>
+        </div>
+      </section>
+
+      <div class="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-slate-200 pt-5 text-sm">
+        <span class="text-slate-500 break-keep">Python 3.10 · Colab Pro+ (A100) · PyTorch · Transformers · scikit-learn · pandas</span>
+        <a href="https://dacon.io/competitions/official/236228/codeshare/9931?page=1&amp;dtype=recent" target="_blank" rel="noopener" class="font-medium text-violet-700 hover:text-slate-900">대회 코드 공유 ↗</a>
+        <a href="https://github.com/chahanyeong/cpp-code-similarity" target="_blank" rel="noopener" class="font-medium text-violet-700 hover:text-slate-900">GitHub ↗</a>
+      </div>
+    </div>
+
+    <div id="content-g4">
+      <div class="flex items-start gap-5">
+        <div class="flex-shrink-0 h-16 w-16 flex items-center justify-center rounded-2xl bg-amber-50 border border-amber-100">
+          <span class="text-3xl font-bold tracking-tight text-amber-700">04</span>
+        </div>
+        <div>
+          <p class="text-xs font-bold tracking-[0.3em] text-amber-700 uppercase">GROW UP</p>
+          <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-900 break-keep">메이플스토리 <span class="text-amber-700">캐릭터 추적</span> 알고리즘</h2>
+          <p class="mt-2 text-sm text-slate-500">2024.03 – 04 · 개인 프로젝트</p>
+        </div>
+      </div>
+      <div class="mt-5 inline-flex items-center flex-wrap gap-x-2 rounded-lg bg-amber-50 px-4 py-2.5 text-sm">
+        <span class="font-semibold text-slate-900">YOLOv8 + Re-ID · BoT-SORT로 보스 레이드 중 캐릭터 추적</span>
+        <span class="text-[#222]">· 이미지 193장 직접 구축 · 파인튜닝</span>
+      </div>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.01</p>
+        <h3 class="chapter__title">추적 결과</h3>
+        <div class="mt-5 space-y-5">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed break-keep">
+            <li>· 파인튜닝한 YOLOv8 + Re-ID + BoT-SORT로 보스 레이드 중인 내 캐릭터 추적</li>
+          </ul>
+          <figure>
+            <div class="rounded-lg overflow-hidden border border-slate-200"><img src="../assets/img/gu-maple-tracking.jpg" alt="보스 레이드 중 캐릭터를 추적하는 화면" loading="lazy" class="w-full block" /></div>
+            <p class="fig-caption">fig.01 — 보스 레이드 중 캐릭터 추적</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.02</p>
+        <h3 class="chapter__title">데이터 구축</h3>
+        <div class="mt-5 space-y-5">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed break-keep">
+            <li>· 추적 대상 캐릭터의 대표 모션 6가지(스탠딩 · 엎드리기 · 점프 · 공격 · 블링크 · 다크사이트) 이미지 수집 · 업로드</li>
+            <li>· Roboflow로 이름 · 바운딩 박스 라벨링</li>
+            <li>· 데미지 스킨 · 펫 · 구조물에 가려지는 장면 대비 이미지 Augmentation으로 노이즈 학습</li>
+          </ul>
+          <figure>
+            <div class="rounded-lg overflow-hidden border border-slate-200"><img src="../assets/img/gu-maple-motions.jpg" alt="대표 모션 6가지 이미지와 Roboflow 업로드 화면" loading="lazy" class="w-full block" /></div>
+            <p class="fig-caption">fig.02 — 대표 모션 6가지 · Roboflow 업로드</p>
+          </figure>
+          <figure>
+            <div class="rounded-lg overflow-hidden border border-slate-200"><img src="../assets/img/gu-maple-labeling.jpg" alt="Roboflow 이름 · 바운딩 박스 라벨링 화면" loading="lazy" class="w-full block" /></div>
+            <p class="fig-caption">fig.03 — 이름 · 바운딩 박스 라벨링</p>
+          </figure>
+          <figure>
+            <div class="grid gap-3 sm:grid-cols-[1.35fr_1fr] items-center"><div class="rounded-lg overflow-hidden border border-slate-200"><img src="../assets/img/gu-maple-occlusion.jpg" alt="데미지 스킨 · 펫 · 구조물에 가려진 캐릭터 사례" loading="lazy" class="w-full block" /></div><div class="rounded-lg overflow-hidden border border-slate-200"><img src="../assets/img/gu-maple-augment.png" alt="Roboflow Augmentation 설정 화면" loading="lazy" class="w-full block" /></div></div>
+            <p class="fig-caption">fig.04 — 가려짐 사례 · Augmentation 설정</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.03</p>
+        <h3 class="chapter__title">YOLOv8 파인튜닝</h3>
+        <div class="mt-5 space-y-5">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed break-keep">
+            <li>· 총 <strong class="text-slate-900">193장</strong>으로 YOLOv8 파인튜닝 · 평가</li>
+            <li>· 학습 · 검증 loss와 precision · recall · mAP 추이로 학습 상태 확인</li>
+          </ul>
+          <figure>
+            <div class="rounded-lg overflow-hidden border border-slate-200"><img src="../assets/img/gu-maple-training.jpg" alt="YOLOv8 학습 · 검증 loss와 지표 그래프" loading="lazy" class="w-full block" /></div>
+            <p class="fig-caption">fig.05 — YOLOv8 학습 곡선</p>
+          </figure>
+        </div>
+      </section>
+
+      <div class="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-slate-200 pt-5 text-sm">
+        <span class="text-slate-500 break-keep">Python 3.10 · Colab Pro+ (V100) · PyTorch · Ultralytics YOLOv8 · BoxMOT · OpenCV · Roboflow</span>
+        <a href="https://github.com/chahanyeong/Maplestory-mycharacter_Tracking/tree/main" target="_blank" rel="noopener" class="font-medium text-amber-700 hover:text-slate-900">GitHub ↗</a>
+      </div>
+    </div>
+    <!-- ===== /GROW UP MODALS ===== -->
 
 
   </div>

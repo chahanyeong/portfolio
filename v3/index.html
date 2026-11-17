@@ -258,15 +258,17 @@
       <div class="mt-8 grid gap-5 md:grid-cols-2">
 
         <article onclick="openModal('p1')" class="proj-card proj-card--sky cursor-pointer h-full rounded-2xl border border-slate-200 bg-white p-6 flex flex-col">
-          <h3 class="text-xl font-semibold text-slate-900 leading-snug">앱 헬스케어 시스템 구축</h3>
-          <ul class="mt-4 space-y-2 text-base text-[#222] flex-grow">
-            <li>· 2025 하반기 크론탭 얼럿 <strong>42개 Dagster + Bitbucket CI/CD 이관</strong>, 5개 게임 · 본부 공유 서버로 확장</li>
-            <li>· 얼럿 44개 리뷰, 15개 <strong>Recall · 정밀도 · 반응성 · 오탐률</strong> 정량 평가 · 반기 개선 사이클</li>
-            <li>· 2026 상반기 얼럿으로 이슈 <strong class="text-slate-900">8건 조기 식별</strong>, 이슈 조치 소요시간 <strong class="text-slate-900">-60%</strong></li>
+          <h3 class="text-xl font-semibold text-slate-900 leading-snug">앱 헬스케어 시스템 운영</h3>
+          <ul class="mt-4 space-y-2 text-base text-[#222] flex-grow break-keep">
+            <li>· 주 단위 매출 예측 전환으로 증감 정확도 2025 상반기 76% → 하반기 <strong>85.71%</strong></li>
+            <li>· 배포 이력 추적 → 영향도 분석 → 사전 대응 프로세스 구축으로 이슈 <strong>20건</strong> 추가 식별</li>
+            <li>· Dagster + Bitbucket CI/CD 얼럿 서버 인프라 <strong>직접 구축</strong>, 2025 하반기 크론탭 얼럿 42개 이관 · 본부 공유 서버로 확장</li>
+            <li>· 분 단위 이상탐지 얼럿 운영 · 평가로 2026 상반기 이슈 <strong class="text-slate-900">8건 조기 식별</strong>, 이슈 조치 소요시간 <strong class="text-slate-900">-60%</strong></li>
           </ul>
           <div class="mt-5 flex flex-wrap gap-1.5">
             <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Python</span>
             <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">SQL</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Prophet</span>
             <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Dagster</span>
             <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Docker</span>
             <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Redshift</span>
@@ -316,20 +318,19 @@
         </article>
 
         <article onclick="openModal('p4')" class="proj-card proj-card--amber cursor-pointer h-full rounded-2xl border border-slate-200 bg-white p-6 flex flex-col">
-          <h3 class="text-xl font-semibold text-slate-900 leading-snug">매출 모니터링 · AB 테스트 운영</h3>
-          <ul class="mt-4 space-y-2 text-base text-[#222] flex-grow">
-            <li>· 4주 단기 · 세그먼트별 매출 예측, 증감 정확도 2025 상반기 <strong class="text-slate-900">76%</strong> → 하반기 <strong class="text-slate-900">85.71%</strong></li>
-            <li>· 2025 하반기 ~ 2026 상반기 주간 모니터링 보고로 운영 의사결정 <strong>6건</strong> 지원</li>
-            <li>· 2025 하반기 ~ 2026 상반기 AB 대상자 추출 <strong class="text-slate-900">28건 오류 0건</strong>, 추출 시간 20~40분 → 약 5분</li>
+          <h3 class="text-xl font-semibold text-slate-900 leading-snug">AB 테스트 · 운영 대시보드</h3>
+          <ul class="mt-4 space-y-2 text-base text-[#222] flex-grow break-keep">
+            <li>· AB 테스트 자동 트래킹 대시보드 구축 · 재설계로 2026 실험 <strong>33건</strong> 자동 추적</li>
+            <li>· 실험 등록 → 지표 집계 → 판정을 한 화면에, 유의한 결과만 색으로 표시</li>
+            <li>· AB 대상자 추출 자동화로 2025 하반기 ~ 2026 상반기 <strong class="text-slate-900">28건 오류 0건</strong>, 추출 시간 20~40분 → 약 5분</li>
           </ul>
           <div class="mt-5 flex flex-wrap gap-1.5">
             <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Python</span>
-            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Prophet</span>
-            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">SQL</span>
-            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Redshift</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">FastAPI</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Chart.js</span>
             <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">PostgreSQL</span>
             <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Dagster</span>
-            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Chart.js</span>
+            <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">Docker</span>
             <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs text-[#222]">HTML</span>
           </div>
           <div class="mt-4 text-xs font-medium text-sky-700">라이브 데모 보기 →</div>
@@ -573,7 +574,7 @@
         </div>
         <div>
           <p class="text-xs font-bold tracking-[0.3em] text-sky-700 uppercase">PROJECT</p>
-          <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-900">앱 <span class="text-sky-700">헬스케어 시스템</span> 구축</h2>
+          <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-900">앱 <span class="text-sky-700">헬스케어 시스템</span> 운영</h2>
           <p class="mt-2 text-sm text-slate-500">2025.08 – 2026.07 · 기획 · 개발 · 운영</p>
         </div>
       </div>
@@ -582,10 +583,66 @@
         <span class="text-[#222]">· 2026 상반기 얼럿으로 이슈 <strong class="text-slate-900">8건</strong> 조기 식별</span>
       </div>
 
-      <!-- M2: Chapter 1 -->
       <section class="chapter">
         <p class="chapter__num">CH.01</p>
-        <h3 class="chapter__title">Dagster + Bitbucket으로 기존 서버를 보완하는 DevOps 인프라 개발</h3>
+        <h3 class="chapter__title">주 단위 매출 예측 — 증감 정확도 76% → 85.71%</h3>
+        <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed">
+            <li>· 장기 매출 모델을 4주 단기 · 세그먼트별 증감 예측으로 전환</li>
+            <li>· 2025.05 – 06 매출 감소 구간 Recall <strong>93.75%</strong></li>
+            <li>· 증감 정확도 2025 상반기 <strong class="text-slate-900">76%</strong> → 하반기 <strong class="text-slate-900">85.71%</strong>, 예측 오차율 <strong class="text-slate-900">3.6% → 0.7%</strong></li>
+            <li>· 예측 이탈 시 원인 점검 프로세스 구축</li>
+          </ul>
+          <figure>
+            <div class="rounded-lg overflow-hidden border border-slate-200">
+              <img src="../assets/img/project1_2.png" alt="주간 매출 예측과 신뢰구간" class="w-full block" />
+            </div>
+            <p class="fig-caption">fig.01 — 주차별 실측 vs 예측 매출 + 신뢰구간</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.02</p>
+        <h3 class="chapter__title">주간 모니터링 보고로 운영 의사결정 6건 지원</h3>
+        <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed">
+            <li>· 28일 결제력 기반 세그먼트별 지표 변화 주간 보고</li>
+            <li>· 고결제 유저는 이벤트보다 게임 내 지표 변화에 민감함을 발견</li>
+            <li>· 2025 하반기 ~ 2026 상반기 로비 큐레이션 · 신규 슬롯 출시 기준 등 운영 의사결정 <strong>6건</strong> 지원</li>
+          </ul>
+          <figure>
+            <div class="rounded-lg overflow-hidden border border-slate-200">
+              <img src="../assets/img/project1_1.png" alt="유저 세그먼트별 4주 대비 변화율" class="w-full block" />
+            </div>
+            <p class="fig-caption">fig.02 — 유저 세그먼트별 4주 대비 변화율 히트맵</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.03</p>
+        <h3 class="chapter__title">앱 상태를 판단할 헬스케어 지표 정의 · 관리</h3>
+        <ul class="mt-5 space-y-3 text-base text-[#222] leading-relaxed break-keep">
+          <li>· 결제 · 재화 · 접속 · 게임 플레이 영역별 헬스케어 지표 정의, 2026 상반기 데이터 기반으로 얼럿 지표별 이상 임계치 재정의</li>
+          <li>· 2026 상반기 Type별 일 단위 오퍼 얼럿 · 프리코인 얼럿 추가</li>
+          <li>· 2026.09 인수 게임사 결제 · 게임 지표 정의, 자사 게임과 같은 기준으로 대조</li>
+        </ul>
+      </section>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.04</p>
+        <h3 class="chapter__title">배포 영향도 사전 분석 프로세스 구축 — 이슈 20건 추가 식별</h3>
+        <ul class="mt-5 space-y-3 text-base text-[#222] leading-relaxed">
+          <li>· 2026 상반기 AI 에이전트로 배포 · 패치 내역을 팀 캘린더에 자동 기록 → 반복 업무 시간 약 <strong>50%</strong> 절감</li>
+          <li>· 강제 업데이트 · 상점 개편 · 광고 도입 등 배포 전 영향도 분석 · 배포 후 추적으로 이슈 <strong>20건</strong> 추가 식별</li>
+          <li>· 배포 직후 이상 탐지 알림 개발 → 과거 배포 사고 재현 시 사람보다 <strong>4시간 45분</strong> 빠르게 탐지, 과거 릴리즈 <strong>596건</strong> 오탐 0건</li>
+        </ul>
+      </section>
+
+      <section class="chapter">
+        <p class="chapter__num">CH.05</p>
+        <h3 class="chapter__title">얼럿 서버 인프라 직접 구축 — 크론탭 → Dagster + Bitbucket CI/CD</h3>
         <div class="mt-5 grid gap-5 md:grid-cols-2">
           <div class="rounded-lg border border-rose-100 bg-rose-50 p-5">
             <p class="text-xs font-semibold tracking-widest text-rose-600 uppercase">기존 운영의 한계</p>
@@ -608,6 +665,7 @@
 
         <div class="mt-6 grid gap-6 md:grid-cols-2 items-start">
           <ul class="space-y-3 text-base text-[#222] leading-relaxed">
+            <li>· 분 단위부터 일 단위까지 이상탐지 얼럿 제작 · 운영</li>
             <li>· 자사 <strong class="text-slate-900">5개 게임</strong> · 본부 공유 서버로 확장</li>
             <li>· 2026.11 기준 운영 스케줄 <strong class="text-slate-900">114개</strong> · 센서 <strong class="text-slate-900">10개</strong>, 운영 레포 커밋 <strong class="text-slate-900">55%</strong> 직접 작성</li>
             <li>· 얼럿 쿼리 실행 시간 <strong class="text-slate-900">186초 → 28초</strong> 단축</li>
@@ -616,12 +674,12 @@
             <div class="rounded-lg overflow-hidden border border-slate-200">
               <img src="../assets/img/alert-server-timeline.png" alt="Dagster 실행 타임라인 — 게임별 얼럿 잡 실행 기록" class="w-full block" />
             </div>
-            <p class="fig-caption">fig.01 — Dagster 얼럿 실행 타임라인</p>
+            <p class="fig-caption">fig.03 — Dagster 얼럿 실행 타임라인</p>
           </figure>
         </div>
 
         <div class="mt-6 rounded-lg border border-slate-200 bg-white p-5">
-          <p class="text-xs font-mono tracking-widest text-slate-500 mb-3">FIG.02 — 운영 흐름 비교</p>
+          <p class="text-xs font-mono tracking-widest text-slate-500 mb-3">FIG.04 — 운영 흐름 비교</p>
           <div class="ba-toggle" role="tablist" aria-label="Before/After 다이어그램 전환">
             <button type="button" class="ba-toggle__btn is-active" data-state="before" role="tab" aria-selected="true">기존 운영</button>
             <button type="button" class="ba-toggle__btn" data-state="after" role="tab" aria-selected="false">현재 운영</button>
@@ -677,10 +735,9 @@ flowchart LR
         </div>
       </section>
 
-      <!-- Chapter 2 -->
       <section class="chapter">
-        <p class="chapter__num">CH.02</p>
-        <h3 class="chapter__title">기존 얼럿 시스템의 불확실성을 측정가능한 체계로 재구성</h3>
+        <p class="chapter__num">CH.06</p>
+        <h3 class="chapter__title">얼럿이 실제 이슈를 잡는지 4개 지표로 평가 · 반기 개선</h3>
         <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
           <ul class="space-y-3 text-base text-[#222] leading-relaxed">
             <li>· 2025 하반기 자사 앱 운영 얼럿 <strong>44개</strong> 리뷰, 평가용 2025년 개발 이슈 <strong>75건</strong> 리스트업</li>
@@ -691,26 +748,17 @@ flowchart LR
             <div class="rounded-lg overflow-hidden border border-slate-200">
               <img src="../assets/img/project2_1.png" alt="얼럿 품질 평가 지표 — Recall · 정밀도 · 반응성 · 오탐률" class="w-full block" />
             </div>
-            <p class="fig-caption">fig.03 — 얼럿 품질 4지표 평가 결과</p>
+            <p class="fig-caption">fig.05 — 얼럿 품질 4지표 평가 결과</p>
           </figure>
         </div>
       </section>
 
-      <!-- Chapter 3 -->
       <section class="chapter">
-        <p class="chapter__num">CH.03</p>
-        <h3 class="chapter__title">앱 배포 이력 추적 → 변경 사항 파악 → 사전 대응</h3>
-        <ul class="mt-5 space-y-3 text-base text-[#222] leading-relaxed">
-          <li>· 2026 상반기 AI 에이전트로 배포 · 패치 내역을 팀 캘린더에 자동 기록 → 반복 업무 시간 약 <strong>50%</strong> 절감</li>
-          <li>· 강제 업데이트 · 상점 개편 · 광고 도입 등 변경 <strong>20건</strong> 배포 전후 영향 추적</li>
-          <li>· 배포 직후 이상 탐지 알림 개발 → 과거 배포 사고 재현 시 사람보다 <strong>4시간 45분</strong> 빠르게 탐지, 과거 릴리즈 <strong>596건</strong> 오탐 0건</li>
+        <p class="chapter__num">CH.07</p>
+        <h3 class="chapter__title">이슈 발생 시 지표별 매뉴얼 대응 · 유관 부서 연계</h3>
+        <ul class="mt-5 space-y-3 text-base text-[#222] leading-relaxed break-keep">
+          <li>· 이슈 발생 시 지표별 대응 매뉴얼로 원인 점검 → 유관 부서 공유 · 조치 연계</li>
         </ul>
-      </section>
-
-      <!-- Chapter 4 -->
-      <section class="chapter">
-        <p class="chapter__num">CH.04</p>
-        <h3 class="chapter__title">운영 중 주요 이슈 대응</h3>
         <div class="mt-5 overflow-x-auto rounded-lg border border-slate-200">
           <table class="w-full text-sm">
             <thead class="bg-slate-50 text-xs text-slate-500">
@@ -984,94 +1032,69 @@ flowchart LR
         </div>
         <div>
           <p class="text-xs font-bold tracking-[0.3em] text-amber-700 uppercase">PROJECT</p>
-          <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-900">매출 모니터링 · <span class="text-amber-700">AB 테스트</span> 운영</h2>
+          <h2 class="mt-1 text-3xl font-bold tracking-tight text-slate-900">AB 테스트 · 운영 <span class="text-amber-700">대시보드</span></h2>
           <p class="mt-2 text-sm text-slate-500">2025 – 현재</p>
         </div>
       </div>
       <div class="mt-5 inline-flex items-center flex-wrap gap-x-2 rounded-lg bg-amber-50 px-4 py-2.5 text-sm">
-        <span class="font-semibold text-slate-900">매출 증감 예측 정확도 76% → 85.71%</span>
+        <span class="font-semibold text-slate-900">2026 실험 33건 자동 트래킹 · 판정</span>
         <span class="text-[#222]">· AB 대상자 추출 <strong class="text-slate-900">28건</strong> 오류 0건</span>
       </div>
 
       <section class="chapter">
         <p class="chapter__num">CH.01</p>
-        <h3 class="chapter__title">주 단위 매출 증감 예측</h3>
+        <h3 class="chapter__title">실험 등록부터 판정까지 한 화면 — AB 테스트 자동 트래킹 대시보드</h3>
         <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
-          <ul class="space-y-3 text-base text-[#222] leading-relaxed">
-            <li>· 장기 매출 모델을 4주 단기 · 세그먼트별 증감 예측으로 전환</li>
-            <li>· 2025.05 – 06 매출 감소 구간 Recall <strong>93.75%</strong></li>
-            <li>· 증감 정확도 2025 상반기 <strong class="text-slate-900">76%</strong> → 하반기 <strong class="text-slate-900">85.71%</strong>, 예측 오차율 <strong class="text-slate-900">3.6% → 0.7%</strong></li>
-            <li>· 예측 이탈 시 원인 점검 프로세스 구축</li>
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed break-keep">
+            <li>· 2026.10 – 11 구축 · 재설계, 실험 등록 → 지표 집계 → 판정을 한 화면에</li>
+            <li>· 인앱 결제 · 광고 AB, 마킹형 · 규칙형 실험 모두 지원, 2026 실험 <strong class="text-slate-900">33건</strong> 자동 트래킹</li>
+            <li>· 판정 카드에 주 지표 차이 · 유의성을 한 줄로, 유의할 때만 초록 · 빨강으로 표시</li>
+            <li>· 누적 매출 · 일별 AU · 구매 전환율 · 유저당 매출 차트, 매출 유지율 표, 세그먼트별 세부 분석</li>
+            <li>· 용어 · 판정 규칙을 담은 가이드 탭, 규칙형 실험 등록 화면</li>
           </ul>
-          <figure>
-            <div class="rounded-lg overflow-hidden border border-slate-200">
-              <img src="../assets/img/project1_2.png" alt="주간 매출 예측과 신뢰구간" class="w-full block" />
-            </div>
-            <p class="fig-caption">fig.01 — 주차별 실측 vs 예측 매출 + 신뢰구간</p>
-          </figure>
+          <div>
+            <a href="../dashboards/ab-demo/index.html" target="_blank" class="block rounded-lg border border-slate-200 overflow-hidden hover:border-amber-400 transition">
+              <div class="dash-frame">
+                <iframe src="../dashboards/ab-demo/index.html" loading="lazy" title="AB 테스트 대시보드 데모" tabindex="-1"></iframe>
+              </div>
+              <div class="flex items-center justify-between px-4 py-3 text-sm font-medium text-amber-700">
+                <span>AB 테스트 대시보드 데모 열기</span>
+                <span>↗</span>
+              </div>
+            </a>
+            <p class="fig-caption">fig.01 — AB 테스트 대시보드 데모 · 예시 데이터</p>
+          </div>
         </div>
       </section>
 
       <section class="chapter">
         <p class="chapter__num">CH.02</p>
-        <h3 class="chapter__title">주 단위 게임 모니터링 보고</h3>
-        <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
-          <ul class="space-y-3 text-base text-[#222] leading-relaxed">
-            <li>· 28일 결제력 기반 세그먼트별 지표 변화 주간 보고</li>
-            <li>· 고결제 유저는 이벤트보다 게임 내 지표 변화에 민감함을 발견</li>
-            <li>· 2025 하반기 ~ 2026 상반기 로비 큐레이션 · 신규 슬롯 출시 기준 등 운영 의사결정 <strong>6건</strong> 지원</li>
-          </ul>
-          <figure>
-            <div class="rounded-lg overflow-hidden border border-slate-200">
-              <img src="../assets/img/project1_1.png" alt="유저 세그먼트별 4주 대비 변화율" class="w-full block" />
-            </div>
-            <p class="fig-caption">fig.02 — 유저 세그먼트별 4주 대비 변화율 히트맵</p>
-          </figure>
-        </div>
-      </section>
-
-      <section class="chapter">
-        <p class="chapter__num">CH.03</p>
-        <h3 class="chapter__title">AB 테스트 대상자 추출 · 트래킹</h3>
+        <h3 class="chapter__title">AB 대상자 추출 자동화 — 28건 오류 0건 · 추출 20~40분 → 약 5분</h3>
         <ul class="mt-5 space-y-3 text-base text-[#222] leading-relaxed">
           <li>· 대상자 추출 자동화 · 절차 일원화 → 2025 하반기 ~ 2026 상반기 <strong class="text-slate-900">28건</strong> 추출 오류 0건</li>
           <li>· 2026 상반기 페어 간 실험 전 결제액 차이 <strong class="text-slate-900">$59 → $11</strong></li>
           <li>· 2026 상반기 대상자 평균 약 <strong>6,000명</strong> 추가 확보, 추출 시간 <strong>20~40분 → 약 5분</strong></li>
-          <li>· 2026.10 AB 자동 트래킹 대시보드 구축</li>
         </ul>
       </section>
 
       <section class="chapter">
-        <p class="chapter__num">CH.04</p>
-        <h3 class="chapter__title">전사 모니터링 대시보드</h3>
-        <div class="mt-5 grid gap-5 md:grid-cols-2">
+        <p class="chapter__num">CH.03</p>
+        <h3 class="chapter__title">신규 슬롯 추가 출시를 판단하는 평가 대시보드</h3>
+        <div class="mt-5 grid gap-6 md:grid-cols-2 items-start">
+          <ul class="space-y-3 text-base text-[#222] leading-relaxed break-keep">
+            <li>· 신규 슬롯 매출 비중 · 리텐션을 최근 8주 슬롯과 비교 → 추가 출시 판단</li>
+          </ul>
           <div>
-            <p class="text-xs font-semibold tracking-widest text-slate-500 uppercase">AB Test 운영 대시보드</p>
-            <p class="mt-2 text-base text-[#222] leading-relaxed">진행 중 AB Test 핵심 KPI(누적매출 · AU · 결제 전환율 · ARPU) 한 화면 확인</p>
-            <a href="../dashboards/duc-ops.html#page-abtesting" target="_blank" class="mt-4 block rounded-lg border border-slate-200 overflow-hidden hover:border-sky-400 transition">
-              <div class="dash-frame">
-                <iframe src="../dashboards/duc-ops.html#page-abtesting" loading="lazy" title="AB Test 운영 대시보드 (목업)" tabindex="-1"></iframe>
-              </div>
-              <div class="flex items-center justify-between px-4 py-3 text-sm font-medium text-sky-700">
-                <span>AB Test 운영 대시보드 (목업)</span>
-                <span>↗</span>
-              </div>
-            </a>
-            <p class="fig-caption">fig.03 — AB Test 모니터링 화면</p>
-          </div>
-          <div>
-            <p class="text-xs font-semibold tracking-widest text-slate-500 uppercase">신규 슬롯 평가 대시보드</p>
-            <p class="mt-2 text-base text-[#222] leading-relaxed">신규 슬롯 매출 비중 · 리텐션을 최근 8주 슬롯과 비교 → 추가 출시 판단</p>
             <a href="../dashboards/duc-ops.html#page-slottracking" target="_blank" class="mt-4 block rounded-lg border border-slate-200 overflow-hidden hover:border-sky-400 transition">
-              <div class="dash-frame">
-                <iframe src="../dashboards/duc-ops.html#page-slottracking" loading="lazy" title="신규 슬롯 트레킹 대시보드 (목업)" tabindex="-1"></iframe>
-              </div>
-              <div class="flex items-center justify-between px-4 py-3 text-sm font-medium text-sky-700">
-                <span>신규 슬롯 트레킹 대시보드 (목업)</span>
-                <span>↗</span>
-              </div>
-            </a>
-            <p class="fig-caption">fig.04 — 신규 슬롯 트레킹 화면</p>
+                <div class="dash-frame">
+                  <iframe src="../dashboards/duc-ops.html#page-slottracking" loading="lazy" title="신규 슬롯 트레킹 대시보드 (목업)" tabindex="-1"></iframe>
+                </div>
+                <div class="flex items-center justify-between px-4 py-3 text-sm font-medium text-sky-700">
+                  <span>신규 슬롯 트레킹 대시보드 (목업)</span>
+                  <span>↗</span>
+                </div>
+              </a>
+              <p class="fig-caption">fig.02 — 신규 슬롯 트레킹 화면</p>
           </div>
         </div>
       </section>

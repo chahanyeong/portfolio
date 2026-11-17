@@ -1,0 +1,1259 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AB 테스트 대시보드 · 데모</title>
+  <meta name="robots" content="noindex,nofollow">
+  <script src="vendor/chart.umd.min.js"></script>
+  <style>
+    * { font-family: 'Pretendard', -apple-system, sans-serif; box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; background: #F8F9FB; }
+
+    
+    .shell { display: flex; height: 100vh; overflow: hidden; }
+
+    
+    .sidebar {
+      width: 260px; flex-shrink: 0;
+      background: #fff;
+      border-right: 1px solid #ECEEF2;
+      display: flex; flex-direction: column;
+    }
+    .sidebar-logo {
+      display: flex; align-items: center; gap: 11px;
+      padding: 22px 22px 18px;
+      border-bottom: 1px solid #F0F2F5;
+    }
+    .logo-icon {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: #4F46E5;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-name { font-size: 16px; font-weight: 700; color: #111; }
+    .nav-section-label {
+      font-size: 10px; font-weight: 600; color: #A0A8BC;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 20px 22px 8px;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 16px; margin: 1px 12px;
+      border-radius: 9px;
+      font-size: 14px; color: #6B7280;
+      cursor: pointer; text-decoration: none;
+      transition: background 0.1s, color 0.1s;
+    }
+    .nav-item:hover { background: #F5F5F7; color: #111; }
+    .nav-item.active { background: #EEF2FF; color: #4F46E5; font-weight: 500; }
+    .nav-badge {
+      margin-left: auto;
+      font-size: 10px; font-weight: 600;
+      background: #4F46E5; color: white;
+      border-radius: 20px; padding: 1px 7px;
+    }
+    .sidebar-user {
+      margin-top: auto;
+      padding: 16px 22px;
+      border-top: 1px solid #F0F2F5;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .user-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: #4F46E5;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: white;
+    }
+
+    
+    .main-area { flex: 1; display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
+
+    .topbar {
+      background: #fff;
+      border-bottom: 1px solid #ECEEF2;
+      padding: 0 28px;
+      height: 54px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .page-title { font-size: 16px; font-weight: 700; color: #111; }
+    .btn-outline {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 12px; color: #5E6278;
+      border: 1px solid #E0E2E8; border-radius: 8px;
+      padding: 6px 12px; background: white; cursor: pointer;
+    }
+    .btn-primary {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 12px; color: white; font-weight: 500;
+      border: none; border-radius: 8px;
+      padding: 6px 14px; background: #4F46E5; cursor: pointer;
+    }
+
+    
+    .content-scroll { flex: 1; overflow-y: auto; position: relative; }
+    .content-body { display: flex; min-height: 100%; }
+    .col-left { flex: 1; min-width: 0; padding: 22px 24px 22px 24px; display: flex; flex-direction: column; gap: 18px; }
+
+    
+    .col-right {
+      width: 340px; flex-shrink: 0;
+      padding: 26px 24px;
+      display: flex; flex-direction: column; gap: 16px;
+      border-left: 1px solid #ECEEF2;
+      background: #fff;
+      overflow-y: auto; overflow-x: hidden;
+      position: relative;
+    }
+    .col-right.collapsing {
+      transition: width 0.28s ease, padding 0.28s ease, opacity 0.2s ease;
+    }
+    .col-right.collapsed {
+      width: 0 !important; min-width: 0 !important;
+      padding: 26px 0; opacity: 0; pointer-events: none;
+      border-left-color: transparent;
+    }
+
+    
+    .resize-handle {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 5px;
+      cursor: col-resize;
+      z-index: 40;
+      transition: background 0.12s;
+    }
+    .resize-handle:hover,
+    .resize-handle.dragging { background: #4F46E5; opacity: 0.25; }
+
+    
+    .panel-toggle {
+      position: absolute;
+      top: 16px; right: 16px;
+      width: 32px; height: 32px;
+      background: #fff;
+      border: 1px solid #ECEEF2;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      z-index: 50;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .panel-toggle:hover { background: #F5F5F7; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .panel-toggle svg { transition: transform 0.28s ease; }
+    .panel-toggle.is-closed svg { transform: rotate(180deg); }
+
+    
+    .card { background: white; border: 1px solid #ECEEF2; border-radius: 12px; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .kpi-card {
+      background: white; border: 1px solid #ECEEF2; border-radius: 12px;
+      padding: 16px 18px;
+    }
+    .kpi-label { font-size: 12px; color: #9CA3AF; margin-bottom: 4px; display: flex; align-items: center; justify-content: space-between; }
+    .kpi-num { font-size: 24px; font-weight: 700; color: #111; letter-spacing: -0.5px; font-variant-numeric: tabular-nums; margin-bottom: 8px; }
+    .kpi-icon { color: #D1D5DB; }
+    .badge-up { display: inline-flex; align-items: center; gap: 2px; font-size: 11px; font-weight: 600; color: #059669; }
+    .badge-dn { display: inline-flex; align-items: center; gap: 2px; font-size: 11px; font-weight: 600; color: #DC2626; }
+    .badge-label { font-size: 11px; color: #9CA3AF; margin-left: 4px; }
+
+    .sec-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .sec-title { font-size: 14px; font-weight: 600; color: #111; }
+    .sec-sub { font-size: 11px; color: #9CA3AF; margin-top: 2px; }
+    .sec-link { font-size: 12px; color: #4F46E5; font-weight: 500; cursor: pointer; }
+    .period-tabs { display: flex; gap: 3px; }
+    .period-tab { font-size: 11px; color: #9CA3AF; border: none; background: transparent; border-radius: 6px; padding: 4px 10px; cursor: pointer; font-weight: 500; }
+    .period-tab.active { background: #4F46E5; color: white; }
+
+    
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table th { font-size: 11px; font-weight: 500; color: #9CA3AF; text-align: left; padding: 9px 14px; background: #FAFBFC; }
+    .data-table th:not(:first-child) { text-align: right; }
+    .data-table td { font-size: 13px; color: #374151; padding: 11px 14px; border-top: 1px solid #F3F4F6; }
+    .data-table td:not(:first-child) { text-align: right; }
+    .data-table tr:hover td { background: #FAFBFF; }
+    .pill-green { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; color: #059669; background: #ECFDF5; border-radius: 20px; padding: 2px 8px; }
+    .pill-blue  { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; color: #2563EB; background: #EFF6FF; border-radius: 20px; padding: 2px 8px; }
+    .pill-amber { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; color: #B45309; background: #FEF3C7; border-radius: 20px; padding: 2px 8px; }
+    .pill-gray  { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; color: #6B7280; background: #F3F4F6; border-radius: 20px; padding: 2px 8px; }
+    .game-icon { width: 28px; height: 28px; border-radius: 8px; display:flex;align-items:center;justify-content:center; font-size:11px; font-weight:700; flex-shrink:0; }
+
+    
+    .ret-row { margin-bottom: 20px; }
+    .ret-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    .ret-bar-bg { height: 7px; background: #F3F4F6; border-radius: 4px; overflow: hidden; }
+    .ret-bar-fill { height: 100%; border-radius: 4px; }
+    .exp-card { background: #F8F9FB; border-radius: 12px; padding: 16px; margin-bottom: 10px; }
+    .exp-status-running { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; color: #2563EB; background: #DBEAFE; border-radius: 20px; padding: 3px 9px; }
+    .exp-status-done    { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; color: #059669; background: #D1FAE5; border-radius: 20px; padding: 3px 9px; }
+    .dot-live { width: 5px; height: 5px; border-radius: 50%; background: #3B82F6; animation: blink 1.5s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+    .insight-box { background: #F0F4FF; border-radius: 10px; padding: 12px 14px; display:flex;gap:8px;align-items:flex-start; margin-top: 14px; }
+
+    .back-link { display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#9CA3AF;text-decoration:none; }
+    .back-link:hover { color:#4F46E5; }
+
+    
+    .page { display: none; }
+    .page.active { display: flex; min-height: 100%; }
+
+    
+    .exp-tab-btn { font-size:13px;font-weight:500;color:#9CA3AF;background:none;border:none;border-bottom:2px solid transparent;padding:0 2px 13px;cursor:pointer;transition:color 0.12s,border-color 0.12s;white-space:nowrap; }
+    .exp-tab-btn.active { color:#111;font-weight:700;border-bottom-color:#4F46E5; }
+    .ab-exp-btn { font-size:11px;font-weight:600;padding:5px 12px;border-radius:20px;border:1px solid #E0E2E8;background:white;color:#6B7280;cursor:pointer;transition:background 0.12s,color 0.12s,border-color 0.12s; }
+    .ab-exp-btn.ab-active { border-color:transparent;background:#4F46E5;color:white; }
+    .ab-select-wrap { position:relative;display:inline-flex;align-items:center; }
+    .ab-select { appearance:none;-webkit-appearance:none;background:white;border:1px solid #E0E2E8;border-radius:9px;padding:8px 38px 8px 14px;font-size:13px;font-weight:500;color:#111;cursor:pointer;font-family:'Pretendard',-apple-system,sans-serif;min-width:230px;transition:border-color 0.12s,box-shadow 0.12s; }
+    .ab-select:focus { outline:none;border-color:#4F46E5;box-shadow:0 0 0 3px rgba(79,70,229,0.1); }
+    .ab-select-chevron { position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:#9CA3AF; }
+    
+    .pair-chip { border-radius:6px;border:none;background:transparent;color:#9CA3AF;cursor:pointer;display:block;text-align:center;transition:background 0.12s,color 0.12s,box-shadow 0.12s;font-family:'Pretendard',-apple-system,sans-serif; }
+    .pair-chip:hover:not(.active) { background:rgba(255,255,255,0.6);color:#374151; }
+    .pair-chip.active { background:white;color:#4F46E5;box-shadow:0 1px 5px rgba(0,0,0,0.10); }
+
+    
+    .placeholder-page { flex: 1; padding: 32px; display: flex; flex-direction: column; gap: 20px; }
+    .placeholder-page h2 { font-size: 20px; font-weight: 700; color: #111; }
+    .placeholder-page .ph-sub { font-size: 13px; color: #9CA3AF; margin-top: 2px; }
+    .ph-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .ph-card { background: white; border: 1px solid #ECEEF2; border-radius: 12px; padding: 18px 20px; }
+    .ph-label { font-size: 12px; color: #9CA3AF; margin-bottom: 6px; }
+    .ph-num { font-size: 22px; font-weight: 700; color: #111; font-variant-numeric: tabular-nums; margin-bottom: 4px; }
+    .ph-desc { font-size: 11px; color: #6B7280; line-height: 1.6; }
+
+    
+    .revenue-page { gap: 18px; }
+    .revenue-hero { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+    .revenue-meta { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+    .revenue-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 600; color: #4F46E5;
+      background: #EEF2FF; border: 1px solid #C7D2FE;
+      border-radius: 999px; padding: 7px 11px;
+    }
+    .revenue-chip-dot { width: 7px; height: 7px; border-radius: 50%; background: #4F46E5; }
+    .revenue-chip-dot.live { background: #10B981; box-shadow: 0 0 0 4px rgba(16,185,129,0.14); }
+    .revenue-kpi-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .revenue-kpi-card {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFBFF 100%);
+      border: 1px solid #E8ECF6; border-radius: 14px;
+      padding: 16px 18px;
+    }
+    .revenue-kpi-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+    .revenue-kpi-label { font-size: 12px; color: #8B95A7; font-weight: 500; }
+    .revenue-kpi-value { font-size: 28px; line-height: 1; font-weight: 700; color: #111827; letter-spacing: -0.04em; }
+    .revenue-kpi-foot { display: flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 11px; color: #6B7280; }
+    .revenue-board-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(320px, 0.82fr); gap: 16px; align-items: stretch; }
+    .revenue-card { padding: 20px 22px; }
+    .revenue-board-grid > .revenue-card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .revenue-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 16px; }
+    .revenue-card-title { font-size: 15px; font-weight: 700; color: #111827; }
+    .revenue-card-sub { font-size: 12px; color: #9CA3AF; margin-top: 4px; line-height: 1.5; }
+    .revenue-card-meta { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+    .revenue-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 10px; font-weight: 700; color: #4F46E5;
+      background: #EEF2FF; border-radius: 999px; padding: 5px 9px;
+    }
+    .revenue-chart-wrap { height: 292px; position: relative; }
+    .revenue-chart-wrap.revenue-chart-tall { height: 320px; }
+    .revenue-chart-wrap.revenue-chart-mid { height: 248px; }
+    .revenue-side-metric-grid {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;
+      flex: 1; align-content: stretch; grid-auto-rows: minmax(0, 1fr);
+    }
+    .revenue-side-metric {
+      background: #F8FAFD; border: 1px solid #E7EBF3; border-radius: 12px;
+      padding: 14px 14px 13px;
+      display: flex; flex-direction: column; justify-content: space-between; min-height: 104px;
+    }
+    .revenue-side-metric-label { font-size: 10px; color: #8B95A7; margin-bottom: 6px; }
+    .revenue-side-metric-value { font-size: 18px; font-weight: 700; color: #111827; }
+    .revenue-side-metric-foot { font-size: 10px; color: #6B7280; margin-top: 4px; line-height: 1.5; }
+    .revenue-side-stack { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+    .revenue-insight-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 16px; }
+    .revenue-note {
+      background: #F8FAFD; border: 1px solid #E7EBF3; border-radius: 12px;
+      padding: 16px 16px 15px;
+    }
+    .revenue-note-label {
+      font-size: 10px; font-weight: 700; color: #4F46E5;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .revenue-note p { font-size: 12px; line-height: 1.7; color: #4B5563; }
+    .revenue-note strong { display: block; font-size: 13px; color: #111827; margin-bottom: 5px; }
+    .revenue-card-divider { height: 1px; background: #F1F3F7; margin: 18px 0; }
+    .forecast-hero {
+      padding: 18px;
+      border: 1px solid #DDE5FF;
+      background: linear-gradient(135deg, #EEF2FF 0%, #FFFFFF 72%);
+      border-radius: 14px;
+    }
+    .forecast-kicker { font-size: 11px; font-weight: 700; color: #4F46E5; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+    .forecast-main { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
+    .forecast-main-value { font-size: 30px; font-weight: 700; color: #111827; letter-spacing: -0.04em; }
+    .forecast-main-label { font-size: 13px; font-weight: 600; color: #6366F1; }
+    .forecast-copy { font-size: 12px; line-height: 1.65; color: #4B5563; }
+    .forecast-chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .forecast-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 10px; font-weight: 700; color: #4F46E5;
+      background: rgba(255,255,255,0.9); border: 1px solid #D6DDFF;
+      border-radius: 999px; padding: 5px 9px;
+    }
+    .forecast-split-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
+    .forecast-mini {
+      background: #FFFFFF; border: 1px solid #E8ECF6; border-radius: 12px;
+      padding: 12px 12px 11px;
+    }
+    .forecast-mini-label { font-size: 10px; color: #9CA3AF; margin-bottom: 5px; }
+    .forecast-mini-value { font-size: 16px; font-weight: 700; color: #111827; }
+    .forecast-mini-foot { font-size: 10px; color: #6B7280; margin-top: 5px; line-height: 1.5; }
+    .forecast-table-caption { font-size: 11px; color: #8B95A7; margin-bottom: 10px; line-height: 1.55; }
+    .forecast-steps { display: flex; flex-direction: column; gap: 10px; }
+    .forecast-step {
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+      padding-top: 10px; border-top: 1px solid #F1F3F7;
+    }
+    .forecast-step:first-child { border-top: none; padding-top: 0; }
+    .forecast-step-label { font-size: 12px; font-weight: 600; color: #111827; }
+    .forecast-step-copy { font-size: 11px; color: #6B7280; line-height: 1.55; margin-top: 4px; }
+    .forecast-step-source {
+      display: inline-block; margin-top: 5px;
+      font-size: 10px; color: #8B95A7;
+      background: #F8FAFC; border-radius: 999px; padding: 4px 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    .forecast-step-value { font-size: 12px; font-weight: 700; color: #111827; white-space: nowrap; }
+    .forecast-table { width: 100%; border-collapse: collapse; }
+    .forecast-table th {
+      font-size: 10px; font-weight: 700; color: #94A3B8;
+      text-align: left; padding: 10px 0; border-bottom: 1px solid #F1F3F7;
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .forecast-table td {
+      font-size: 12px; color: #374151; padding: 11px 0;
+      border-bottom: 1px solid #F8FAFC; vertical-align: top;
+    }
+    .forecast-table td code {
+      font-size: 11px; color: #4F46E5;
+      background: #EEF2FF; border-radius: 6px; padding: 3px 6px;
+    }
+    .event-list { display: flex; flex-direction: column; gap: 12px; }
+    .event-item {
+      display: grid; grid-template-columns: 76px minmax(0, 1fr) auto;
+      gap: 12px; align-items: start;
+      padding-top: 12px; border-top: 1px solid #F1F3F7;
+    }
+    .event-item:first-child { border-top: none; padding-top: 0; }
+    .event-date {
+      font-size: 11px; font-weight: 700; color: #4F46E5;
+      background: #EEF2FF; border-radius: 10px; padding: 8px 10px; text-align: center;
+    }
+    .event-copy strong { display: block; font-size: 13px; font-weight: 700; color: #111827; margin-bottom: 4px; }
+    .event-copy p { font-size: 11px; line-height: 1.6; color: #6B7280; }
+    .impact-pill {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 68px; font-size: 10px; font-weight: 700;
+      border-radius: 999px; padding: 7px 10px; white-space: nowrap;
+    }
+    .impact-pill.up { color: #065F46; background: #D1FAE5; }
+    .impact-pill.watch { color: #92400E; background: #FEF3C7; }
+    .impact-pill.risk { color: #991B1B; background: #FEE2E2; }
+    .event-summary-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 16px; }
+    .event-summary {
+      background: #F8FAFC; border: 1px solid #E7EBF3; border-radius: 12px;
+      padding: 12px 12px 11px;
+    }
+    .event-summary-label { font-size: 10px; color: #8B95A7; margin-bottom: 6px; }
+    .event-summary-value { font-size: 16px; font-weight: 700; color: #111827; }
+    .event-summary-foot { font-size: 10px; color: #6B7280; margin-top: 4px; line-height: 1.5; }
+
+    @media (max-width: 1400px) {
+      .revenue-kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .revenue-board-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 1080px) {
+      .revenue-side-metric-grid,
+      .revenue-insight-grid,
+      .forecast-split-grid { grid-template-columns: 1fr; }
+      .event-summary-grid { grid-template-columns: 1fr; }
+      .revenue-hero { flex-direction: column; }
+      .revenue-meta { justify-content: flex-start; }
+    }
+    
+    #abEditPanel label { display:flex; flex-direction:column; gap:3px; color:#6B7280; font-size:11px; }
+    #abEditPanel .ed-in { border:1px solid #E4E7EE; border-radius:6px; padding:6px 8px; font-size:12px; font-family:inherit; color:#111; }
+    #abEditPanel .ed-in:focus { outline:none; border-color:#C7D2FE; box-shadow:0 0 0 3px rgba(79,70,229,0.08); }
+    #abEditPanel label.ab-check { flex-direction:row; align-items:center; gap:6px; white-space:nowrap; cursor:pointer; }
+    
+    .ab-dd { position:relative; }   
+    .ab-select-btn { width:100%; display:flex; align-items:center; justify-content:space-between; gap:8px; border:1px solid #E4E7EE; border-radius:6px; background:white; padding:6px 8px; font-size:12px; font-family:inherit; color:#111; cursor:pointer; text-align:left; }
+    .ab-select-btn:hover { border-color:#C7D2FE; }
+    .ab-select-btn[aria-expanded="true"], .ab-select-btn:focus-visible { outline:none; border-color:#C7D2FE; box-shadow:0 0 0 3px rgba(79,70,229,0.08); }
+    .ab-select-btn:disabled { background:#F5F6FA; color:#6B7280; cursor:not-allowed; }
+    .ab-select-btn svg { flex-shrink:0; transition:transform .12s ease; }
+    .ab-select-btn[aria-expanded="true"] svg { transform:rotate(180deg); }
+    .ab-select-menu { position:absolute; z-index:70; left:0; right:0; top:calc(100% + 4px); background:white; border:1px solid #E4E7EE; border-radius:10px; box-shadow:0 10px 30px rgba(17,24,39,0.12); padding:4px; display:none; }
+    .ab-select-menu.open { display:block; }
+    .ab-select-item { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:7px 10px; border-radius:7px; font-size:12.5px; color:#374151; cursor:pointer; white-space:nowrap; }
+    .ab-select-item:hover, .ab-select-item.focus { background:#F5F6FA; color:#111; }
+    .ab-select-item.selected { color:#4338CA; font-weight:600; background:#EEF2FF; }
+    .ab-select-item .ck { visibility:hidden; color:#4F46E5; font-size:11px; }
+    .ab-select-item.selected .ck { visibility:visible; }
+    
+    .ab-info-box { border:1px solid #ECEEF2; border-radius:8px; overflow:hidden; background:white; }
+    .ab-info-row { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:8px 12px; border-bottom:1px solid #F3F4F6; }
+    .ab-info-row:last-child { border-bottom:none; }
+    .ab-info-row .k { font-size:11px; color:#9CA3AF; flex-shrink:0; }
+    .ab-info-row .v { font-size:12px; font-weight:600; color:#111; text-align:right; line-height:1.35; min-width:0; word-break:keep-all; }
+    .ab-info-row.col { flex-direction:column; align-items:flex-start; gap:3px; }
+    .ab-info-row.col .v { text-align:left; font-weight:500; font-size:11.5px; color:#374151; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; word-break:keep-all; }
+    .ab-info-row .v.muted { color:#C4C9D4; font-weight:500; }
+    .ab-info-row .v code { font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:11px; background:#F5F6FA; border-radius:4px; padding:1px 5px; color:#1F2937; overflow-wrap:anywhere; -webkit-box-decoration-break:clone; box-decoration-break:clone; }   
+    #expYearTabs { display:none; align-items:center; gap:10px; margin-bottom:12px; }
+    #expYearTabs .yr-sum { font-size:11px; color:#9CA3AF; white-space:nowrap; }
+    .ab-badge-warn { display:inline-flex; align-items:center; gap:4px; font-size:10px; font-weight:600; color:#B45309; background:#FEF3C7; border-radius:20px; padding:2px 8px; }
+    .ab-guard { color:#9CA3AF; font-weight:500; }
+    
+    #abExpPicker:hover { border-color:#C7D2FE !important; }
+    .ab-menu { position:fixed; z-index:60; background:white; border:1px solid #E4E7EE; border-radius:10px; box-shadow:0 10px 30px rgba(17,24,39,0.12); padding:6px; overflow-y:auto; }
+    .ab-menu-group { font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:#C4C9D4; padding:8px 10px 4px; }
+    .ab-menu-item { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:7px; cursor:pointer; }
+    .ab-menu-item:hover { background:#F5F6FA; }
+    .ab-menu-item.active { background:#EEF2FF; }
+    .ab-menu-item .mi-id { font-size:11px; color:#9CA3AF; font-variant-numeric:tabular-nums; min-width:38px; }
+    .ab-menu-item .mi-title { flex:1; min-width:0; font-size:12.5px; font-weight:600; color:#111; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .ab-menu-item .mi-meta { font-size:10px; color:#9CA3AF; white-space:nowrap; }
+    .ab-menu-item .mi-up { font-size:11px; font-weight:700; min-width:52px; text-align:right; }
+    .ab-pre-chip { flex:1; padding:5px 4px; height:auto; font-size:11px; }
+    .ab-hist { width:100%; border-collapse:collapse; font-size:12px; }
+    .ab-hist th { text-align:left; font-size:10px; color:#9CA3AF; font-weight:600; padding:6px 8px; border-bottom:1px solid #ECEEF2; }
+    .ab-hist td { padding:7px 8px; border-bottom:1px solid #F3F4F6; color:#374151; vertical-align:middle; }
+    .ab-hist .btn-mini { font-size:11px; padding:3px 9px; border-radius:6px; border:1px solid #E4E7EE; background:white; cursor:pointer; color:#4F46E5; font-weight:600; }
+    .ab-hist .btn-mini:hover { background:#EEF2FF; }
+    
+    .rc-label { font-size:9px; font-weight:700; color:#C4C9D4; letter-spacing:0.09em; text-transform:uppercase; }
+    .rc-field { display:flex; flex-direction:column; gap:3px; color:#6B7280; font-size:11px; }
+    .rc-in { border:1px solid #E4E7EE; border-radius:6px; padding:6px 8px; font-size:12px; font-family:inherit; color:#111; background:white; }
+    .rc-in:disabled { background:#F5F6FA; color:#6B7280; }
+    .rc-ta { border:1px solid #E4E7EE; border-radius:6px; padding:8px 10px; font-size:11.5px; line-height:1.45; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color:#111; background:#FAFBFC; resize:vertical; white-space:pre; overflow:auto; }
+    .rc-table { width:100%; border-collapse:collapse; font-size:12px; }
+    .rc-table th { text-align:left; font-size:10px; font-weight:600; color:#9CA3AF; padding:6px 8px; border-bottom:1px solid #F3F4F6; }
+    .rc-table td { padding:8px 8px; border-bottom:1px solid #F3F4F6; color:#374151; vertical-align:top; }
+    .rc-table tr.rc-sel td { background:#EEF2FF; }
+    .rc-chip { padding:5px 10px; height:auto; font-size:11px; }
+    .rc-badge { display:inline-block; font-size:9.5px; font-weight:600; border-radius:10px; padding:1px 7px; }
+    .rc-badge.new { background:#DCFCE7; color:#15803D; } .rc-badge.reg { background:#F3F4F6; color:#6B7280; } .rc-badge.mark { background:#DBEAFE; color:#1D4ED8; }
+    .rc-ok { color:#059669; } .rc-err { color:#DC2626; white-space:pre-wrap; }
+    #page-rulecohort .btn-mini { font-size:11px; padding:3px 9px; border-radius:6px; border:1px solid #E4E7EE; background:white; cursor:pointer; color:#4F46E5; font-family:inherit; }
+    #page-rulecohort .btn-mini:hover { background:#EEF2FF; }
+    
+    #page-abtesting .placeholder-page { gap: 12px; padding: 20px 28px 16px; }
+    #page-abtesting h2 { font-size: 18px; }
+    #page-abtesting .kpi-card { padding: 11px 16px; min-height: 0; }
+    #page-abtesting .kpi-num { font-size: 20px; margin-bottom: 4px; }
+    #page-abtesting .kpi-label { margin-bottom: 2px; }
+    #abDraftNote { display:none; margin:0 0 12px; padding:8px 10px; border-radius:8px; background:#FFFBEB; border:1px solid #FDE68A; color:#92400E; font-size:11px; line-height:1.5; }
+    #abRecomputeNote { display:none; margin:0 0 12px; padding:8px 10px; border-radius:8px; background:#FFFBEB; border:1px solid #FDE68A; color:#92400E; font-size:11px; line-height:1.5; }
+    
+    .ab-chart-card { position:relative; cursor:zoom-in; outline:none; transition:border-color .16s ease, box-shadow .16s ease; }
+    
+    .ab-chart-card:hover, .ab-chart-card:focus-visible { border-color:#C7D2FE !important; box-shadow:0 0 0 3px rgba(79,70,229,0.08); z-index:2; }
+    .ab-zoom-hint { opacity:0; transition:opacity .16s ease; font-size:9.5px; font-weight:600; color:#4F46E5; margin-left:6px; vertical-align:1px; white-space:nowrap; }
+    .ab-chart-card:hover .ab-zoom-hint, .ab-chart-card:focus-visible .ab-zoom-hint { opacity:1; }
+    #abDetail { position:fixed; inset:0; z-index:80; display:none; }
+    #abDetail.open { display:block; }
+    .ab-detail-backdrop { position:absolute; inset:0; background:rgba(17,24,39,0.45); }
+    #abDetailBox { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:min(1360px, 94vw); height:min(860px, 92vh); background:white; border-radius:14px; box-shadow:0 24px 64px rgba(17,24,39,0.25); display:flex; flex-direction:column; overflow:hidden; }
+    .ab-detail-head { display:flex; align-items:center; gap:14px; padding:12px 16px 10px; border-bottom:1px solid #EEF0F3; }
+    .ab-dtab { border:1px solid transparent; background:transparent; border-radius:8px; padding:6px 10px; font-size:12px; font-weight:600; color:#6B7280; cursor:pointer; font-family:inherit; white-space:nowrap; }
+    .ab-dtab:hover { background:#F5F6F8; color:#111; }
+    .ab-dtab.active { background:#EEF2FF; color:#4F46E5; border-color:#C7D2FE; }
+    #abDetailBar { display:flex; flex-wrap:wrap; gap:6px 0; align-items:center; padding:8px 16px; border-bottom:1px solid #EEF0F3; background:white; }
+    .ab-ctl { display:inline-flex; align-items:center; gap:8px; padding-right:14px; margin-right:14px; border-right:1px solid #EEF0F3; }
+    .ab-ctl:last-child { border-right:none; margin-right:0; padding-right:0; }
+    .ab-seg { display:inline-flex; background:#F3F4F6; border-radius:8px; padding:2px; gap:2px; }
+    .ab-ctl { display:flex; align-items:center; gap:4px; }
+    .ab-ctl-label { font-size:9px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#9CA3AF; margin-right:4px; }
+    .ab-chip { border:none; background:transparent; border-radius:6px; padding:4px 10px; font-size:11.5px; font-weight:600; color:#6B7280; cursor:pointer; font-family:inherit; line-height:1.2; white-space:nowrap; }
+    .ab-chip:hover { color:#111; }
+    .ab-chip.active { background:white; color:#4F46E5; box-shadow:0 1px 2px rgba(17,24,39,0.10); }
+    .ab-chip:disabled { opacity:0.35; cursor:not-allowed; }
+    .ab-detail-in { width:74px; border:1px solid #E4E7EE; border-radius:6px; padding:4px 6px; font-size:11px; font-family:inherit; color:#111; }
+    .ab-detail-in:disabled { opacity:0.4; }
+    .ab-detail-body { flex:1; min-height:0; position:relative; }
+    .ab-detail-plot { position:absolute; inset:10px 16px 6px; }
+    #abDetailTable { position:absolute; inset:10px 16px 6px; overflow:auto; display:none; }
+    #abDetailTable table { width:100%; border-collapse:collapse; font-size:11.5px; font-variant-numeric:tabular-nums; }
+    #abDetailTable th { position:sticky; top:0; background:#F9FAFB; text-align:right; font-weight:600; color:#6B7280; padding:6px 10px; border-bottom:1px solid #E4E7EE; font-size:10.5px; }
+    #abDetailTable td { text-align:right; padding:5px 10px; border-bottom:1px solid #F3F4F6; color:#111; }
+    #abDetailTable th:first-child, #abDetailTable td:first-child { text-align:left; color:#6B7280; }
+    #abDetailTable tr.d0 td { background:#EEF2FF; }
+    #abDetailFoot { padding:8px 16px 12px; font-size:11px; color:#6B7280; border-top:1px solid #EEF0F3; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .ab-detail-close { border:none; background:transparent; font-size:20px; line-height:1; color:#9CA3AF; cursor:pointer; padding:4px 7px; border-radius:6px; }
+    .ab-detail-close:hover { background:#F5F6F8; color:#111; }
+    .ab-detail-btn { border:1px solid #E4E7EE; background:white; border-radius:6px; padding:5px 10px; font-size:11px; font-weight:600; color:#4F46E5; cursor:pointer; font-family:inherit; text-decoration:none; white-space:nowrap; }
+    .ab-detail-btn:hover { border-color:#C7D2FE; background:#F5F7FF; }
+    
+    #abMrateCard { flex-shrink:0; border:1px solid #ECEEF2; border-radius:10px; background:white; padding:9px 14px 8px; }
+    .ab-mrate-head { display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+    .ab-mrate-title { font-size:10px; font-weight:600; color:#9CA3AF; letter-spacing:0.08em; text-transform:uppercase; }
+    .ab-mrate-title b { font-size:12.5px; font-weight:700; color:#111; letter-spacing:0; text-transform:none; margin-right:6px; }
+    .ab-info { display:inline-block; width:14px; height:14px; line-height:14px; text-align:center; border-radius:50%; background:#EEF2FF; color:#4F46E5; font-size:10px; font-weight:700; cursor:help; margin-left:4px; vertical-align:1px; }
+    .ab-mrate-tiles { display:flex; margin-top:10px; }   
+    .ab-mrate-tile { flex:1 1 0; min-width:0; padding:4px 16px 2px; border-left:1px solid #EEF0F3; }
+    .ab-mrate-tile:first-child { padding-left:0; border-left:none; }
+    .ab-mrate-label { font-size:10.5px; color:#9CA3AF; margin-bottom:4px; white-space:nowrap; display:flex; align-items:center; gap:5px; }
+    .ab-mrate-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+    .ab-mrate-dot.test { background:#E5484D; } .ab-mrate-dot.cont { background:#3B82F6; }
+    .ab-mrate-value { font-size:22px; font-weight:700; color:#111; letter-spacing:-0.5px; font-variant-numeric:tabular-nums; line-height:1.1; white-space:nowrap; }
+    .ab-mrate-bar { height:4px; border-radius:2px; background:#F1F2F5; margin:7px 0 6px; position:relative; overflow:hidden; }
+    .ab-mrate-bar > i { position:absolute; left:0; top:0; bottom:0; width:0; border-radius:2px; transition:width .35s ease; }
+    .ab-mrate-bar.test > i { background:#E5484D; } .ab-mrate-bar.cont > i { background:#3B82F6; }
+    .ab-mrate-sub { font-size:10.5px; color:#6B7280; margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-variant-numeric:tabular-nums; }
+    .ab-mrate-sub b { font-weight:600; color:#374151; }
+    .ab-pill { display:inline-block; font-size:10px; font-weight:600; padding:2px 8px; border-radius:999px; background:#F3F4F6; color:#6B7280; white-space:nowrap; }
+    .ab-pill.ok { background:#ECFDF5; color:#047857; } .ab-pill.partial { background:#FFFBEB; color:#B45309; }
+    .ab-pill.up { background:#ECFDF5; color:#047857; } .ab-pill.down { background:#FEF2F2; color:#B91C1C; }
+    
+    .ab-sa-head { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:8px; }
+    .ab-sa-empty { font-size:12px; color:#9CA3AF; padding:14px 2px; }
+    .ab-sa { width:100%; border-collapse:collapse; font-size:12px; font-variant-numeric:tabular-nums; }
+    .ab-sa th { text-align:right; font-weight:600; color:#6B7280; font-size:10.5px; padding:4px 8px; border-bottom:1px solid #E4E7EE; white-space:nowrap; }
+    .ab-sa td { text-align:right; padding:6px 8px; border-bottom:1px solid #F3F4F6; color:#111; white-space:nowrap; }
+    .ab-sa th:first-child, .ab-sa td:first-child { text-align:left; }
+    .ab-sa td.name { font-weight:600; }
+    .ab-sa td.name small { display:block; font-weight:400; font-size:10px; color:#9CA3AF; }
+    .ab-sa .muted { color:#9CA3AF; font-weight:400; }
+    .ab-sa-foot { display:flex; gap:18px; flex-wrap:wrap; font-size:11px; color:#6B7280; margin-top:8px; }
+    .ab-sa-foot b { color:#374151; }
+    
+    .ab-info[data-guide] { cursor:pointer; }
+    
+    .ab-chart-head-r { display:flex; align-items:center; justify-content:flex-end; gap:6px; }
+    .ab-chart-p { font-size:9.5px; color:#9CA3AF; margin-top:2px; font-variant-numeric:tabular-nums; text-align:right; min-height:12px; }
+    
+    #page-abguide .placeholder-page { gap:16px; padding:24px 32px 48px; }
+    #page-abguide .placeholder-page > * { max-width:1280px; }   
+    #page-abguide .g-hero { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; scroll-margin-top:12px; }
+    #page-abguide .g-step { background:white; border:1px solid #ECEEF2; border-radius:12px; padding:14px 16px 12px; display:flex; flex-direction:column; gap:6px; }
+    #page-abguide .g-step-k { font-size:10px; font-weight:700; letter-spacing:0.08em; color:#4F46E5; display:flex; align-items:center; gap:7px; }
+    #page-abguide .g-step-k i { font-style:normal; width:18px; height:18px; border-radius:6px; background:#EEF2FF; display:inline-flex; align-items:center; justify-content:center; font-size:10.5px; letter-spacing:0; }
+    #page-abguide .g-step h4 { font-size:14px; font-weight:700; color:#111; margin:0; letter-spacing:0; }
+    #page-abguide .g-step p { font-size:12px; color:#4B5563; line-height:1.62; margin:0; }
+    #page-abguide .g-step .g-where { font-size:10.5px; color:#9CA3AF; margin-top:auto; padding-top:6px; }
+    #page-abguide .g-legend { grid-column:1 / -1; background:white; border:1px solid #ECEEF2; border-radius:12px; padding:10px 16px; display:flex; flex-wrap:wrap; gap:8px 20px; align-items:center; font-size:11.5px; color:#4B5563; }
+    #page-abguide .g-legend b { font-size:10px; font-weight:700; letter-spacing:0.08em; color:#9CA3AF; }
+    #page-abguide .g-li { display:inline-flex; align-items:center; gap:6px; white-space:nowrap; }
+    #page-abguide .g-legend .g-rule { flex-basis:100%; font-size:11px; color:#9CA3AF; margin-top:-2px; }
+    #page-abguide .guide-wrap { display:grid; grid-template-columns:172px minmax(0,1fr); gap:20px; align-items:start; }
+    #page-abguide .guide-toc { position:sticky; top:14px; display:flex; flex-direction:column; gap:1px; padding:8px; background:white; border:1px solid #ECEEF2; border-radius:12px; }
+    #page-abguide .guide-toc a { display:flex; align-items:center; gap:8px; font-size:12px; color:#4B5563; padding:6px 8px; border-radius:7px; text-decoration:none; cursor:pointer; }
+    #page-abguide .guide-toc a i { font-style:normal; flex-shrink:0; width:17px; font-size:10.5px; font-weight:700; color:#C4C9D4; font-variant-numeric:tabular-nums; }
+    #page-abguide .guide-toc a:hover { background:#F5F6FA; color:#111; }
+    #page-abguide .guide-toc a.active { background:#EEF2FF; color:#4338CA; font-weight:600; }
+    #page-abguide .guide-toc a.active i { color:#4F46E5; }
+    #page-abguide .guide-sec { padding:18px 22px 16px; margin-bottom:14px; scroll-margin-top:12px; }
+    #page-abguide .g-head { display:flex; gap:12px; align-items:flex-start; margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid #F1F2F5; }
+    #page-abguide .g-num { flex-shrink:0; width:24px; height:24px; border-radius:8px; background:#EEF2FF; color:#4F46E5; font-size:12px; font-weight:700; display:inline-flex; align-items:center; justify-content:center; }
+    #page-abguide h3 { font-size:15px; font-weight:700; color:#111; margin:1px 0 2px; }
+    #page-abguide .g-lead { font-size:12px; color:#6B7280; margin:0; line-height:1.55; }
+    #page-abguide h4 { font-size:11px; font-weight:700; color:#6B7280; letter-spacing:0.04em; margin:16px 0 6px; }
+    #page-abguide p, #page-abguide li { font-size:12.5px; color:#374151; line-height:1.7; }
+    #page-abguide p { margin:4px 0 8px; }
+    #page-abguide ul { margin:0 0 4px 17px; padding:0; }
+    #page-abguide li { margin-bottom:3px; }
+    #page-abguide li::marker { color:#C4C9D4; }
+    #page-abguide .g-def { display:grid; grid-template-columns:172px minmax(0,1fr); margin:0; border-top:1px solid #F1F2F5; }
+    #page-abguide .g-def > dt, #page-abguide .g-def > dd { margin:0; padding:9px 0; border-bottom:1px solid #F1F2F5; font-size:12.5px; line-height:1.65; }
+    #page-abguide .g-def > dt { font-weight:600; color:#111; padding-right:14px; }
+    #page-abguide .g-def > dt small { display:block; font-weight:500; color:#9CA3AF; font-size:10.5px; margin-top:1px; }
+    #page-abguide .g-def > dd { color:#374151; }
+    #page-abguide .g-def.key { background:#FAFBFF; border:1px solid #E4E7F5; border-radius:10px; padding:2px 14px; margin:6px 0 4px; scroll-margin-top:12px; }
+    #page-abguide .g-def.key > dt:last-of-type, #page-abguide .g-def.key > dd:last-of-type { border-bottom:none; }
+    #page-abguide .g-f { font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:11.5px; background:#F5F6FA; border:1px solid #ECEEF2; border-radius:6px; padding:1px 6px; color:#1F2937; white-space:nowrap; }
+    #page-abguide .g-note { display:flex; gap:9px; background:#F8F9FF; border:1px solid #E4E7F5; border-radius:10px; padding:10px 12px; margin:10px 0 2px; font-size:12px; color:#374151; line-height:1.6; }
+    #page-abguide .g-note::before { content:'i'; flex-shrink:0; width:16px; height:16px; border-radius:50%; background:#4F46E5; color:white; font-size:10px; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-top:2px; }
+    #page-abguide .g-note.warn { background:#FFFBEB; border-color:#FDE68A; color:#78350F; }
+    #page-abguide .g-note.warn::before { content:'!'; background:#D97706; }
+    #page-abguide table.gt { width:100%; border-collapse:collapse; font-size:12.5px; margin:4px 0 6px; }
+    #page-abguide table.gt th { text-align:left; font-weight:600; color:#6B7280; font-size:11px; padding:7px 10px; border-bottom:1px solid #E4E7EE; background:#FAFAFB; }
+    #page-abguide table.gt td { padding:8px 10px; border-bottom:1px solid #F3F4F6; vertical-align:top; color:#374151; line-height:1.6; }
+    #page-abguide table.gt td:first-child { font-weight:600; color:#111; white-space:nowrap; }
+    #page-abguide code { font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:11px; background:#F3F4F6; padding:1px 4px; border-radius:4px; }
+    
+    #page-abguide .g-ph { font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:11px; background:#FEF3C7; color:#92400E; border-radius:4px; padding:0 4px; white-space:nowrap; }
+    #page-abguide .g-ph-legend { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:7px 22px; margin:2px 0 4px; font-size:12px; color:#374151; line-height:1.55; }
+    #page-abguide .g-q-bar { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:14px 0 6px; }
+    #page-abguide .g-q-group { font-size:10px; font-weight:700; letter-spacing:0.08em; color:#9CA3AF; }
+    #page-abguide .g-q-toggle { border:1px solid #E4E7EE; background:white; border-radius:6px; padding:3px 9px; font-size:11px; font-weight:600; color:#4F46E5; cursor:pointer; font-family:inherit; }
+    #page-abguide .g-q-toggle:hover { background:#EEF2FF; }
+    #page-abguide details.g-q { border:1px solid #ECEEF2; border-radius:10px; margin-bottom:6px; background:white; overflow:hidden; }
+    #page-abguide details.g-q[open] { border-color:#C7D2FE; box-shadow:0 0 0 3px rgba(79,70,229,0.06); }
+    #page-abguide details.g-q > summary { list-style:none; cursor:pointer; display:flex; align-items:center; gap:10px; padding:10px 12px; user-select:none; }
+    #page-abguide details.g-q > summary::-webkit-details-marker { display:none; }
+    #page-abguide details.g-q > summary:hover { background:#FAFBFC; }
+    #page-abguide .g-q-caret { flex-shrink:0; width:0; height:0; border-left:5px solid #9CA3AF; border-top:4px solid transparent; border-bottom:4px solid transparent; transition:transform .12s ease; }
+    #page-abguide details.g-q[open] .g-q-caret { transform:rotate(90deg); border-left-color:#4F46E5; }
+    #page-abguide .g-q-title { font-size:12.5px; font-weight:600; color:#111; white-space:nowrap; }
+    #page-abguide .g-q-feeds { display:flex; flex-wrap:wrap; gap:4px; min-width:0; }
+    #page-abguide .g-q-feeds span { font-size:10px; font-weight:600; color:#4338CA; background:#EEF2FF; border-radius:999px; padding:1px 7px; white-space:nowrap; }
+    #page-abguide .g-q-meta { margin-left:auto; font-size:10.5px; color:#9CA3AF; white-space:nowrap; font-variant-numeric:tabular-nums; }
+    #page-abguide .g-q-body { border-top:1px solid #F1F2F5; padding:10px 12px 12px; }
+    #page-abguide .g-q-body ul { margin-bottom:8px; }
+    #page-abguide .g-sql-wrap { position:relative; }
+    #page-abguide .g-sql { margin:0; background:#0F172A; color:#E2E8F0; border-radius:8px; padding:12px 14px; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:11.5px; line-height:1.55; overflow:auto; max-height:440px; white-space:pre; tab-size:2; }
+    #page-abguide .g-sql .g-ph { background:#FDE68A; color:#78350F; font-weight:600; font-size:11.5px; }
+    #page-abguide .g-copy { position:absolute; top:8px; right:8px; border:1px solid rgba(226,232,240,0.25); background:rgba(15,23,42,0.85); color:#E2E8F0; border-radius:6px; padding:3px 9px; font-size:10.5px; font-weight:600; cursor:pointer; font-family:inherit; }
+    #page-abguide .g-copy:hover { background:#1E293B; }
+    #page-abguide .g-q-empty { font-size:12px; color:#9CA3AF; padding:10px 2px; }
+    #abMonitorCard { transition:opacity .12s ease; }
+    #abMonitorCard.ab-loading { opacity:0.55; }
+    #abSaBody.ab-loading { opacity:0.55; transition:opacity .12s ease; }
+  </style>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3E%3Crect width=%2716%27 height=%2716%27 rx=%274%27 fill=%27%234F46E5%27/%3E%3C/svg%3E">
+</head>
+<body>
+<div class="shell">
+
+  
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <rect x="1.5" y="1.5" width="5.5" height="5.5" rx="1.3" fill="white" fill-opacity="0.9"/>
+          <rect x="9" y="1.5" width="5.5" height="5.5" rx="1.3" fill="white"/>
+          <rect x="1.5" y="9" width="5.5" height="5.5" rx="1.3" fill="white"/>
+          <rect x="9" y="9" width="5.5" height="5.5" rx="1.3" fill="white" fill-opacity="0.5"/>
+        </svg>
+      </div>
+      <span class="logo-name">AB Dashboard</span>
+    </div>
+
+    <nav style="flex:1;overflow-y:auto;padding-bottom:8px;">
+      
+
+      <div class="nav-section-label">A/B Testing</div>
+      <a class="nav-item active" data-page="abpair">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M4 2.5v4.5L2 11.5h11l-2-4.5V2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 2.5h7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M7.5 5v5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="1.5 1.5"/></svg>
+        Pairwise AB
+        <span class="nav-badge" id="navAbPairBadge" style="display:none"></span>
+      </a>
+      <a class="nav-item" data-page="abrule">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1.5 2.5h12L9 8v4.5l-3 1.5V8L1.5 2.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        Non-pairwise AB
+        <span class="nav-badge" id="navAbRuleBadge" style="display:none"></span>
+      </a>
+      <a class="nav-item" data-page="abiaa">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1.5" y="3" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M6 5.8v3.4l3-1.7z" fill="currentColor"/></svg>
+        광고 AB
+        <span class="nav-badge" id="navAbIaaBadge" style="display:none"></span>
+      </a>
+      <a class="nav-item" data-page="rulecohort">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="2" y="2" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M5 7.5h5M7.5 5v5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        규칙 코호트 등록
+      </a>
+      <a class="nav-item" data-page="abguide">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="5.75" stroke="currentColor" stroke-width="1.3"/><path d="M5.8 6a1.7 1.7 0 1 1 2.4 1.55c-.5.25-.7.55-.7 1.05" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="7.5" cy="10.6" r=".7" fill="currentColor"/></svg>
+        가이드
+      </a>
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="user-avatar">DS</div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:#111;">Demo</div>
+        <div style="font-size:11px;color:#9CA3AF;">예시 데이터</div>
+      </div>
+    </div>
+  </aside>
+
+  
+  <div class="main-area">
+
+    
+    
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span class="page-title" id="pageTitle">A/B Testing</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span id="abTopStatus" style="font-size:11px;color:#9CA3AF;"></span>
+      </div>
+    </div>
+
+    <div class="content-scroll">
+
+      <div class="page active" id="page-abtesting">
+        <div class="placeholder-page">
+
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;">
+            <div><h2 id="abPageTitle">Pairwise AB</h2><div class="ph-sub" id="abPageSub">마킹표 is_pair 분할 실험 · 결과 분석 · 일 1회 갱신(14:10 KST)</div><div id="abStatus" style="font-size:11px;color:#9CA3AF;margin-top:4px;"></div><div id="abFreshness" style="font-size:11px;color:#6B7280;margin-top:2px;"></div></div>
+            <button class="btn-primary" id="abEditToggle" style="margin-top:4px;" onclick="toggleEditPanel()">실험 편집</button>
+          </div>
+
+          
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
+            <div class="kpi-card" style="background:linear-gradient(135deg,#EFF6FF,#fff 55%);border-color:#BFDBFE;">
+              <div class="kpi-label" style="margin-bottom:6px;">진행중 실험
+                <span style="display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:600;color:#2563EB;background:#DBEAFE;border-radius:20px;padding:2px 7px;"><span class="dot-live" style="background:#3B82F6;"></span>LIVE</span>
+              </div>
+              <div class="kpi-num" style="color:#1D4ED8;" id="kpiRunning">–</div>
+              <div style="font-size:11px;color:#93C5FD;margin-top:2px;" id="kpiRunningSub"></div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label" style="margin-bottom:6px;" id="kpiDoneLabel">올해 완료 실험</div>
+              <div style="display:flex;align-items:baseline;gap:5px;">
+                <div class="kpi-num" id="kpiDone">–</div><div style="font-size:15px;font-weight:500;color:#9CA3AF;">건</div>
+              </div>
+              <div style="margin-top:6px;font-size:11px;color:#9CA3AF;" id="kpiDoneSub"></div>
+            </div>
+          </div>
+
+          
+          <div class="card" id="abEditPanel" style="display:none;padding:16px 18px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <div class="sec-title">실험 편집 <span id="abEditTitle" style="font-weight:400;color:#9CA3AF;font-size:12px;"></span></div>
+              <div id="abEditMsg" style="font-size:11px;color:#DC2626;"></div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px 12px;">
+              <label style="grid-column:span 2;">제목<input id="ed-title" class="ed-in"></label>
+              <label>시작 시각 D0 (UTC, YYYY-MM-DD HH:MM:SS)<input id="ed-exposure_start_ts" class="ed-in" placeholder="2026-06-15 03:00:00"></label>
+              <label>종료·전면 적용 시각 (UTC, YYYY-MM-DD HH:MM:SS)<input id="ed-end_ts" class="ed-in" placeholder="비우면 진행중"></label>
+              <label>결과<select id="ed-result" class="ed-in"><option value="">미정</option><option value="adopted">채택</option><option value="rejected">기각</option></select></label>
+              <label>실험 종류<select id="ed-exp_kind" class="ed-in"><option value="iap">IAP 매출(기본)</option><option value="iaa">광고 매출 포함(광고 AB 탭)</option></select></label>
+              <label style="grid-column:span 2;">대상자 설명<input id="ed-target_desc" class="ed-in" placeholder="예: 가입 365일 이상 비결제자 · 모바일"></label>
+              <label style="grid-column:span 4;">메모<input id="ed-notes" class="ed-in"></label>
+            </div>
+            <div style="display:flex;gap:14px;margin-top:12px;justify-content:space-between;align-items:center;">
+              <div id="abEditHint" style="font-size:11px;color:#6B7280;line-height:1.55;">시작 시각을 저장하면 진행중으로 올라가 지표 적재가 시작되고, 종료 시각을 저장하면 완료 실험으로 올라갑니다(반영까지 10~15분). 결과가 '채택'이면 종료 시각은 전면 적용 시각으로 기록됩니다.</div>
+              <div style="display:flex;gap:10px;flex-shrink:0;align-items:center;">
+                <label class="ab-check" title="값을 바꾸지 않고 지표만 다시 적재합니다(원천이 늦게 들어온 날 등)"><input id="ed-needs_recompute" type="checkbox">지표 다시 계산</label>
+                <button class="period-tab" onclick="toggleEditPanel()">닫기</button>
+                <button class="btn-primary" onclick="submitEdit()">저장</button>
+              </div>
+            </div>
+          </div>
+
+          
+          <div class="card" id="abMonitorCard" style="padding:0;overflow:hidden;">
+            <div style="display:flex;align-items:stretch;">
+
+              
+              <div style="width:240px;flex-shrink:0;border-right:1px solid #ECEEF2;padding:18px 16px;display:flex;flex-direction:column;gap:0;background:#FAFBFC;">
+
+                
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                  <div style="font-size:13px;font-weight:700;color:#111;">AB Test 모니터링</div>
+                  <div style="display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:600;color:#C4C9D4;background:#ECEEF2;border-radius:5px;padding:4px 8px;">
+                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><circle cx="4" cy="4" r="3" stroke="currentColor" stroke-width="1.2"/><path d="M4 2.2v1.9l1.1 1.1" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg> 일 1회 · 14:10 KST</div>
+                </div>
+
+                
+                <div style="font-size:9px;font-weight:700;color:#C4C9D4;letter-spacing:0.09em;text-transform:uppercase;margin-bottom:6px;">실험 선택</div>
+
+                
+                <label style="display:flex;align-items:center;gap:7px;background:white;border:1px solid #E4E7EE;border-radius:8px;padding:8px 10px;cursor:pointer;margin-bottom:14px;" id="abExpPicker" role="button" tabindex="0" title="실험 선택">
+                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="flex-shrink:0;color:#B4BBCA;"><path d="M2.5 2v3.5L1 9.5h9L8.5 5.5V2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.5 2h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M5.5 4v4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-dasharray="1 1.2"/></svg>
+                  <span id="abExpPickerText" style="flex:1;min-width:0;font-size:12px;font-weight:600;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">실험 선택</span>
+                  <select id="abExpSelect" style="display:none" aria-hidden="true"></select>
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="flex-shrink:0;color:#C4C9D4;"><path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                </label>
+
+                
+                <div style="font-size:9px;font-weight:700;color:#C4C9D4;letter-spacing:0.09em;text-transform:uppercase;margin-bottom:6px;">is_pair</div>
+
+                
+                <div id="isPairGroup" style="display:flex;gap:4px;background:#ECEEF2;border-radius:8px;padding:3px;margin-bottom:14px;">
+                  <button id="isPairBtn0" onclick="toggleIsPair(0)" class="pair-chip" style="flex:1;padding:6px 4px;height:auto;" title="비결제자 + 그 외">
+                    <span style="display:block;font-size:13px;font-weight:700;line-height:1.2;">0</span>
+                    <span style="display:block;font-size:9px;line-height:1.3;opacity:0.6;">비결제</span>
+                  </button>
+                  <button id="isPairBtn1" onclick="toggleIsPair(1)" class="pair-chip active" style="flex:1;padding:6px 4px;height:auto;" title="결제 pairwise 그룹">
+                    <span style="display:block;font-size:13px;font-weight:700;line-height:1.2;">1</span>
+                    <span style="display:block;font-size:9px;line-height:1.3;opacity:0.7;">pairwise</span>
+                  </button>
+                  <button id="isPairBtn2" onclick="toggleIsPair(2)" class="pair-chip" style="flex:1;padding:6px 4px;height:auto;" title="결제 상위 8명">
+                    <span style="display:block;font-size:13px;font-weight:700;line-height:1.2;">2</span>
+                    <span style="display:block;font-size:9px;line-height:1.3;opacity:0.6;">상위 8명</span>
+                  </button>
+                </div>
+
+                <div id="abRuleHelp" style="display:none;font-size:10px;color:#9CA3AF;line-height:1.5;margin-bottom:14px;"></div>
+                <div id="abRecomputeNote"></div>
+                <div id="abDraftNote"></div>
+
+                
+                <div style="font-size:9px;font-weight:700;color:#C4C9D4;letter-spacing:0.09em;text-transform:uppercase;margin-bottom:8px;">실험 정보</div>
+
+                
+                <div class="ab-info-box">
+                  <div class="ab-info-row"><span class="k">실험 번호</span><span class="v" id="param-mid-val">–</span></div>
+                  <div class="ab-info-row"><span class="k">방식</span><span class="v" id="param-type-val">–</span></div>
+                  <div class="ab-info-row col"><span class="k">대상자</span><span class="v" id="param-target-val">–</span></div>
+                  <div class="ab-info-row col"><span class="k">분할 · 실험군 조건</span><span class="v" id="param-split-val">–</span></div>
+                  <div class="ab-info-row"><span class="k">시작일</span><span class="v" id="param-start-val">–</span></div>
+                  <div class="ab-info-row"><span class="k">종료</span><span class="v" id="param-rollout-val">–</span></div>
+                  <div class="ab-info-row"><span class="k">진행 일수</span><span class="v" id="param-day-val">–</span></div>
+                  <div class="ab-info-row"><span class="k">상태</span><span class="v" id="param-state-val">–</span></div>
+                </div>
+
+
+                <div id="abPreGap" style="display:none;margin-top:8px;"></div>
+                
+                <div style="margin-top:auto;padding-top:14px;display:flex;flex-direction:column;gap:6px;">
+                  <div style="display:flex;align-items:center;gap:7px;font-size:10px;color:#9CA3AF;">
+                    <span style="display:inline-block;width:16px;height:2.5px;background:#E5484D;border-radius:2px;flex-shrink:0;"></span>실험군
+                  </div>
+                  <div style="display:flex;align-items:center;gap:7px;font-size:10px;color:#9CA3AF;">
+                    <svg width="16" height="5" style="flex-shrink:0;"><line x1="0" y1="2.5" x2="16" y2="2.5" stroke="#3B82F6" stroke-width="2" stroke-dasharray="3.5 2.5"/></svg>대조군
+                  </div>
+                  <div style="display:flex;align-items:center;gap:7px;font-size:10px;color:#C4C9D4;">
+                    <span style="display:inline-block;width:16px;height:8px;background:rgba(0,0,0,0.035);border-radius:2px;border:1px solid #E5E7EB;flex-shrink:0;"></span><span id="abPreLegend">실험 전 구간 (D-28~D-1)</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:7px;font-size:10px;color:#9CA3AF;">
+                    <svg width="16" height="5" style="flex-shrink:0;"><line x1="0" y1="2.5" x2="16" y2="2.5" stroke="#D97706" stroke-width="2" stroke-dasharray="3.5 2.5"/></svg>종료·전면 적용
+                  </div>
+                  <div style="display:flex;align-items:center;gap:7px;font-size:10px;color:#9CA3AF;">
+                    <svg width="16" height="10" style="flex-shrink:0;"><rect x="0" y="0.5" width="16" height="4.5" fill="#D1D5DB"/><rect x="0" y="5" width="16" height="4.5" fill="#6B7280"/><line x1="0" y1="5" x2="16" y2="5" stroke="#9CA3AF" stroke-width="1"/></svg><span><span title="0선 위·밝은 면 = 실험군 우세 · 아래·짙은 면 = 대조군 우세 · 색·형태는 기존 대시보드과 동일(일별 AU만 막대)" style="cursor:help;">차이(실험군 − 대조군) <span class="ab-info" data-guide="charts">i</span></span>
+                  </div>
+                </div>
+              </div>
+
+              
+              <div style="flex:1;min-width:0;padding:12px 14px 12px;display:flex;flex-direction:column;gap:10px;">
+                
+                <div id="abMrateCard">
+                  <div class="ab-mrate-head">
+                    <div class="ab-mrate-title"><b id="abMrateTitle">매출 유지율 R1/R0</b><span class="ab-info" id="abMrateInfo" data-guide="r0r1" title="R0 = 유저별 D0(테스트 시작 후 첫 로그인) 전 28일(D−28~D−1) 매출 합 · R1 = D0 후 28일(D0~D+27) 매출 합 · R1/R0 = 그룹 매출 유지율 · 차이 = 실험군 − 대조군 · 기대 매출 효과 = 차이 × 두 그룹 R0 합계 · 선택한 is_pair 범위 기준 · R1 창이 다 차기 전에는 적재된 날까지의 부분값">i</span></div>
+                    <span><span id="abMrateBalance" class="ab-pill" style="display:none;margin-right:6px;"></span><span id="abMrateAux" class="ab-pill" style="display:none;margin-right:6px;"></span><span id="abMrateNote" class="ab-pill"></span></span>
+                  </div>
+                  <div class="ab-mrate-tiles">
+                    <div class="ab-mrate-tile"><div class="ab-mrate-label"><span class="ab-mrate-dot test"></span><span id="abMrateTLabel">실험군 R1/R0</span></div><div class="ab-mrate-value" id="abMrateT">–</div><div class="ab-mrate-bar test" title="막대 끝 = 1.0(R1 = R0)"><i id="abMrateTBar"></i></div><div class="ab-mrate-sub" id="abMrateTSub"></div></div>
+                    <div class="ab-mrate-tile"><div class="ab-mrate-label"><span class="ab-mrate-dot cont"></span><span id="abMrateCLabel">대조군 R1/R0</span></div><div class="ab-mrate-value" id="abMrateC">–</div><div class="ab-mrate-bar cont" title="막대 끝 = 1.0(R1 = R0)"><i id="abMrateCBar"></i></div><div class="ab-mrate-sub" id="abMrateCSub"></div></div>
+                    <div class="ab-mrate-tile"><div class="ab-mrate-label"><span id="abMrateDiffLabel">차이(실험군−대조군)</span></div><div class="ab-mrate-value" id="abMrateDiff">–</div><div style="margin:7px 0 6px;"><span class="ab-pill" id="abMrateDiffPill"></span></div><div class="ab-mrate-sub" id="abMrateDiffSub"></div></div>
+                    <div class="ab-mrate-tile" id="abMrateTotTile" style="display:none;"><div class="ab-mrate-label" id="abMrateTotLabel" title="광고 코호트의 D0 이후 (IAP + 전면광고 + 리워드 광고) 매출 합계 = Total ARPU × 유저 수 — 가이드 §8">누적 총매출 · IAP + 광고</div><div class="ab-mrate-value" id="abMrateTot">–</div><div class="ab-mrate-sub" id="abMrateTotSub" style="margin-top:12px;"></div></div>
+                    <div class="ab-mrate-tile"><div class="ab-mrate-label" id="abMrateBLabel" title="두 집단 R0 합계 × 대조군 대비 %(SA 환산 손익) — 가이드 §3">기대 매출 효과</div><div class="ab-mrate-value" id="abMrateBenefit">–</div><div class="ab-mrate-sub" id="abMrateBenefitSub" style="margin-top:12px;"></div></div>
+                    <div class="ab-mrate-tile"><div class="ab-mrate-label" id="abMrateRLabel">R0 합계</div><div class="ab-mrate-value" id="abMrateR0">–</div><div class="ab-mrate-sub" id="abMrateR0Sub" style="margin-top:12px;"></div></div>
+                  </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;flex:1;min-height:0;">
+
+                  <div class="ab-chart-card" data-metric="rev" role="button" tabindex="0" title="클릭하면 크게 보기 (보기·집계·축 변경, 표·CSV)" style="background:white;border:1px solid #ECEEF2;border-radius:10px;padding:11px 14px;display:flex;flex-direction:column;">
+                    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;">
+                      <div>
+                        <div id="abCardTag-rev" style="font-size:9px;font-weight:700;color:#C4C9D4;letter-spacing:0.07em;text-transform:uppercase;">Revenue</div>
+                        <div style="font-size:12px;font-weight:600;color:#111;margin-top:2px;"><span id="abCardTitle-rev">누적 매출</span><span class="ab-zoom-hint">⤢ 크게 보기</span></div>
+                      </div>
+                      <div style="text-align:right;">
+                        <div class="ab-chart-head-r"><div style="font-size:13px;font-weight:700;color:#4F46E5;letter-spacing:-0.02em;" id="abUplift-rev">–</div><span id="abChartPill-rev"></span></div>
+                        <div class="ab-chart-p" id="abChartP-rev"></div>
+                      </div>
+                    </div>
+                    <div style="flex:1;position:relative;min-height:112px;"><canvas id="abRevChart"></canvas></div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px;padding-top:5px;border-top:1px solid #F3F4F6;">
+                      <span id="abDiffTip-rev" title="영역 = 차트 시작일(실험 전 값이 있으면 D−28, 없으면 D0)부터 그날까지 누적한 실험군 값 − 누적한 대조군 값(그날 하루의 증분이 아님). 0선 위 밝은 면 = 실험군 우세, 아래 짙은 면 = 대조군 우세" style="flex-shrink:0;white-space:nowrap;cursor:help;font-size:9px;font-weight:700;color:#C4C9D4;letter-spacing:0.07em;text-transform:uppercase;"><span id="abDiffSwatch-rev" style="display:inline-block;width:16px;height:10px;vertical-align:-1px;margin-right:6px;"></span><span id="abDiffLabel-rev">누적 차이 · 실험군 − 대조군</span></span>
+                      <span id="abDiffLast-rev" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10.5px;font-weight:600;color:#6B7280;font-variant-numeric:tabular-nums;">–</span>
+                    </div>
+                    <div style="height:90px;position:relative;margin-top:2px;"><canvas id="abRevDiff"></canvas></div>
+                  </div>
+
+                  <div class="ab-chart-card" data-metric="au" role="button" tabindex="0" title="클릭하면 크게 보기 (보기·집계·축 변경, 표·CSV)" style="background:white;border:1px solid #ECEEF2;border-radius:10px;padding:11px 14px;display:flex;flex-direction:column;">
+                    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;">
+                      <div>
+                        <div id="abCardTag-au" style="font-size:9px;font-weight:700;color:#C4C9D4;letter-spacing:0.07em;text-transform:uppercase;">Active Users</div>
+                        <div style="font-size:12px;font-weight:600;color:#111;margin-top:2px;"><span id="abCardTitle-au">일별 AU</span><span class="ab-zoom-hint">⤢ 크게 보기</span></div>
+                      </div>
+                      <div style="text-align:right;">
+                        <div class="ab-chart-head-r"><div style="font-size:13px;font-weight:700;color:#4F46E5;letter-spacing:-0.02em;" id="abUplift-au">–</div><span id="abChartPill-au"></span></div>
+                        <div class="ab-chart-p" id="abChartP-au"></div>
+                      </div>
+                    </div>
+                    <div style="flex:1;position:relative;min-height:112px;"><canvas id="abAuChart"></canvas></div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px;padding-top:5px;border-top:1px solid #F3F4F6;">
+                      <span id="abDiffTip-au" title="막대 = 그날 하루의 실험군 AU − 대조군 AU(위 밝은 막대 = 실험군 우세, 아래 짙은 막대 = 대조군 우세)" style="flex-shrink:0;white-space:nowrap;cursor:help;font-size:9px;font-weight:700;color:#C4C9D4;letter-spacing:0.07em;text-transform:uppercase;"><span id="abDiffSwatch-au" style="display:inline-block;width:16px;height:10px;vertical-align:-1px;margin-right:6px;"></span><span id="abDiffLabel-au">일별 차이 · 실험군 − 대조군</span></span>
+                      <span id="abDiffLast-au" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10.5px;font-weight:600;color:#6B7280;font-variant-numeric:tabular-nums;">–</span>
+                    </div>
+                    <div style="height:90px;position:relative;margin-top:2px;"><canvas id="abAuDiff"></canvas></div>
+                  </div>
+
+                  <div class="ab-chart-card" data-metric="pur" role="button" tabindex="0" title="클릭하면 크게 보기 (보기·집계·축 변경, 표·CSV)" style="background:white;border:1px solid #ECEEF2;border-radius:10px;padding:11px 14px;display:flex;flex-direction:column;">
+                    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;">
+                      <div>
+                        <div id="abCardTag-pur" style="font-size:9px;font-weight:700;color:#C4C9D4;letter-spacing:0.07em;text-transform:uppercase;">Purchase Rate</div>
+                        <div style="font-size:12px;font-weight:600;color:#111;margin-top:2px;"><span id="abCardTitle-pur">구매 전환율</span><span class="ab-zoom-hint">⤢ 크게 보기</span></div>
+                      </div>
+                      <div style="text-align:right;">
+                        <div class="ab-chart-head-r"><div style="font-size:13px;font-weight:700;color:#4F46E5;letter-spacing:-0.02em;" id="abUplift-pur">–</div><span id="abChartPill-pur"></span></div>
+                        <div class="ab-chart-p" id="abChartP-pur"></div>
+                      </div>
+                    </div>
+                    <div style="flex:1;position:relative;min-height:112px;"><canvas id="abPurChart"></canvas></div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px;padding-top:5px;border-top:1px solid #F3F4F6;">
+                      <span id="abDiffTip-pur" title="영역 = 차트 시작일(실험 전 값이 있으면 D−28, 없으면 D0)부터 그날까지 누적한 실험군 값 − 누적한 대조군 값(그날 하루의 증분이 아님). 0선 위 밝은 면 = 실험군 우세, 아래 짙은 면 = 대조군 우세" style="flex-shrink:0;white-space:nowrap;cursor:help;font-size:9px;font-weight:700;color:#C4C9D4;letter-spacing:0.07em;text-transform:uppercase;"><span id="abDiffSwatch-pur" style="display:inline-block;width:16px;height:10px;vertical-align:-1px;margin-right:6px;"></span><span id="abDiffLabel-pur">누적 차이 · 실험군 − 대조군</span></span>
+                      <span id="abDiffLast-pur" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10.5px;font-weight:600;color:#6B7280;font-variant-numeric:tabular-nums;">–</span>
+                    </div>
+                    <div style="height:90px;position:relative;margin-top:2px;"><canvas id="abPurDiff"></canvas></div>
+                  </div>
+
+                  <div class="ab-chart-card" data-metric="arpu" role="button" tabindex="0" title="클릭하면 크게 보기 (보기·집계·축 변경, 표·CSV)" style="background:white;border:1px solid #ECEEF2;border-radius:10px;padding:11px 14px;display:flex;flex-direction:column;">
+                    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;">
+                      <div>
+                        <div id="abCardTag-arpu" style="font-size:9px;font-weight:700;color:#C4C9D4;letter-spacing:0.07em;text-transform:uppercase;">ARPU</div>
+                        <div style="font-size:12px;font-weight:600;color:#111;margin-top:2px;"><span id="abCardTitle-arpu">유저당 매출</span><span class="ab-zoom-hint">⤢ 크게 보기</span></div>
+                      </div>
+                      <div style="text-align:right;">
+                        <div class="ab-chart-head-r"><div style="font-size:13px;font-weight:700;color:#4F46E5;letter-spacing:-0.02em;" id="abUplift-arpu">–</div><span id="abChartPill-arpu"></span></div>
+                        <div class="ab-chart-p" id="abChartP-arpu"></div>
+                      </div>
+                    </div>
+                    <div style="flex:1;position:relative;min-height:112px;"><canvas id="abArpuChart"></canvas></div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px;padding-top:5px;border-top:1px solid #F3F4F6;">
+                      <span id="abDiffTip-arpu" title="영역 = 차트 시작일(실험 전 값이 있으면 D−28, 없으면 D0)부터 그날까지 누적한 실험군 값 − 누적한 대조군 값(그날 하루의 증분이 아님). 0선 위 밝은 면 = 실험군 우세, 아래 짙은 면 = 대조군 우세" style="flex-shrink:0;white-space:nowrap;cursor:help;font-size:9px;font-weight:700;color:#C4C9D4;letter-spacing:0.07em;text-transform:uppercase;"><span id="abDiffSwatch-arpu" style="display:inline-block;width:16px;height:10px;vertical-align:-1px;margin-right:6px;"></span><span id="abDiffLabel-arpu">누적 차이 · 실험군 − 대조군</span></span>
+                      <span id="abDiffLast-arpu" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10.5px;font-weight:600;color:#6B7280;font-variant-numeric:tabular-nums;">–</span>
+                    </div>
+                    <div style="height:90px;position:relative;margin-top:2px;"><canvas id="abArpuDiff"></canvas></div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          
+          <div class="card" id="abSaCard" style="padding:14px 18px 12px;margin-top:14px;">
+            <div class="ab-sa-head">
+              <div class="ab-mrate-title"><b>세부 분석</b>유저 단위 · 정기 적재 기준<span class="ab-info" data-guide="verdict" title="분석팀의 AB 테스트 지표 가이드 그대로(유저 단위 마트, 정기 적재 때만 갱신). 위 판정 요약·차트는 일 단위 마트(캡 없음)라 값이 소폭 다를 수 있음 · 결제자 상위 2%(R0/R1 은 1%)를 컷값으로 치환(제외 아님)한 값으로 판정하고 원본은 병기 · 유저를 복원추출해 차이를 다시 계산하는 것을 B회 반복해 95% 신뢰구간과 p 를 얻음 · 세그먼트는 D0 시점 결제 상태(테스트 중 결제로 바꾸지 않음) · 리텐션 D+k 는 k일을 못 채운 유저 제외 · R0/R1 은 R0 결제자만, 비율 이중차분과 환산 손익(R0 합계 × 차이) · 균형 점검이 어긋나면 R0/R1 은 참고용">i</span></div>
+              <div id="abSaSeg" class="ab-seg"></div>
+              <span id="abSaNote" class="ab-pill"></span>
+            </div>
+            <div id="abSaBody"><div class="ab-sa-empty">유저 단위 자료를 불러오는 중…</div></div>
+          </div>
+
+          
+          <div class="card" style="overflow:hidden;">
+            <div style="padding:18px 22px 0;border-bottom:1px solid #F3F4F6;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div style="display:flex;gap:24px;">
+                  <button class="exp-tab-btn active" id="expTabRunning" onclick="switchExpTab('running')">
+                    진행중
+                    <span style="display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;font-size:10px;font-weight:700;background:#EEF2FF;color:#4F46E5;border-radius:9px;padding:0 4px;margin-left:5px;" id="expCountRunning">0</span>
+                  </button>
+                  <button class="exp-tab-btn" id="expTabDone" onclick="switchExpTab('done')">
+                    완료
+                    <span style="display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;font-size:10px;font-weight:700;background:#F3F4F6;color:#6B7280;border-radius:9px;padding:0 4px;margin-left:5px;" id="expCountDone">0</span>
+                  </button>
+                </div>
+                <span id="expYearTabs"></span>
+                <span class="sec-link" id="abHistoryToggle" style="margin-bottom:14px;display:inline-block;" onclick="toggleHistory()" title="archived 포함 전체 실험 목록·편집">이력 전체 보기 →</span>
+              </div>
+            </div>
+
+            
+            <div id="expListRunning">
+              <table class="data-table">
+                <thead><tr><th>실험명</th><th>타겟</th><th>진행률</th><th>현재 Uplift</th><th>신뢰도</th><th>상태</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+
+            
+            <div id="expListDone" style="display:none;">
+              <table class="data-table">
+                <thead><tr><th>실험명</th><th>타겟</th><th>기간</th><th>최종 Uplift</th><th>결과</th><th>완료일</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <div id="abHistoryPanel" style="display:none;margin-top:14px;"></div>
+          </div>
+
+        </div>
+      </div>
+
+      
+
+      
+      <div class="page" id="page-rulecohort">
+        <div class="placeholder-page">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;">
+            <div><h2>규칙 코호트 등록</h2><div class="ph-sub">마킹표 없이 SQL 조각으로 대상자를 정의하는 실험 · 후보는 실험 정의 목록 · 저장 전 드라이런 · 저장 즉시 적재 런 실행</div></div>
+            <span id="rcStatus" style="font-size:11px;color:#9CA3AF;margin-top:6px;"></span>
+          </div>
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:14px;align-items:start;">
+            <div class="card" style="padding:16px 18px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px;">
+                <div><div class="rc-label">후보 · 실험 정의 목록</div><div style="font-size:11px;color:#9CA3AF;margin-top:2px;">날짜는 마킹 정의 생성일(수정일) — 실제 시작일과 다를 수 있다 · 공개 시각(D0)은 직접 입력</div></div>
+                <div style="display:flex;gap:6px;align-items:center;">
+                  <div id="rcCandToggle" style="display:flex;gap:4px;background:#ECEEF2;border-radius:8px;padding:3px;">
+                    <button class="pair-chip rc-chip active" data-all="0" onclick="rcSetAll(0)">미등록</button>
+                    <button class="pair-chip rc-chip" data-all="1" onclick="rcSetAll(1)">전체</button>
+                  </div>
+                  <button class="btn-outline" style="height:28px;padding:0 10px;font-size:11px;" onclick="rcManual()">직접 입력</button>
+                </div>
+              </div>
+              <div style="max-height:460px;overflow:auto;">
+                <table class="rc-table" id="rcCandidates"><thead><tr><th>#</th><th>제목</th><th>분기식</th><th>생성일</th><th></th></tr></thead><tbody><tr><td colspan="5" style="color:#9CA3AF;">불러오는 중…</td></tr></tbody></table>
+              </div>
+            </div>
+            <div class="card" style="padding:16px 18px;" id="rcFormCard">
+              <div class="rc-label" id="rcFormTitle">등록 폼</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+                <label class="rc-field">실험 번호<input id="rc-markingidx" class="rc-in" placeholder="예 9201"></label>
+                <label class="rc-field">실제 마킹 번호 — 같은 번호를 다시 쓴 실험일 때만<input id="rc-marking_no" class="rc-in" placeholder="비워 두면 위 번호 그대로 (예: 키 9201, 실제 201)"></label>
+                <label class="rc-field">제목<input id="rc-title" class="rc-in" placeholder="실험 이름"></label>
+                <label class="rc-field">분기식(표시용)<input id="rc-split_desc" class="rc-in" placeholder="실험군 : user_id % 2 = 0"></label>
+                <label class="rc-field">공개 시각 D0 (UTC, YYYY-MM-DD HH:MM:SS)<input id="rc-exposure_start_ts" class="rc-in" placeholder="2026-06-20 02:00:00"></label>
+                <label class="rc-field">예정 일수<input id="rc-planned_days" class="rc-in" placeholder="14"></label>
+                <label class="rc-field">헤드라인 지표<select id="rc-primary_metric" class="rc-in"><option value="arpu">ARPU</option><option value="rev">누적 매출</option><option value="pur">구매 전환율</option><option value="au">일별 AU</option><option value="tarpu">Total ARPU(광고 포함)</option></select></label>
+              </div>
+              <label class="rc-field" style="margin-top:10px;">매출용 SQL 조각 — marking_users CTE 본문: 열 user_id, is_pair(-1 고정), is_test, mkdt · 플레이스홀더 {start_dt} · WITH·세미콜론·주석 금지<textarea id="rc-rev_sql" class="rc-ta" rows="9" spellcheck="false" placeholder="SELECT user_id, -1 AS is_pair, CASE WHEN MOD(user_id, 2) = 0 THEN 1 ELSE 0 END AS is_test, MIN(login_time) AS mkdt FROM ... WHERE login_time >= '{start_dt}' GROUP BY 1"></textarea></label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:11px;color:#6B7280;margin-top:8px;"><input type="checkbox" id="rc-same" checked onchange="rcToggleSame()"> AU용 SQL도 같은 조각 사용</label>
+              <label class="rc-field" id="rcAuWrap" style="display:none;margin-top:8px;">AU용 SQL 조각 — a1 서브쿼리 본문: 열 user_id, is_pair, is_test(mkdt 선택)<textarea id="rc-au_sql" class="rc-ta" rows="6" spellcheck="false"></textarea></label>
+              <label class="rc-field" style="margin-top:10px;">메모<input id="rc-note" class="rc-in" placeholder="변경 사유 등"></label>
+              <div style="display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap;">
+                <button class="btn-outline" style="height:32px;padding:0 14px;" onclick="rcDryRun()">드라이런</button>
+                <button class="btn-primary" style="height:32px;padding:0 14px;" id="rcSaveBtn" onclick="rcSave()">저장</button>
+                <button class="btn-outline" style="height:32px;padding:0 10px;font-size:11px;" onclick="rcReset()">새로</button>
+                <span id="rcMsg" style="font-size:12px;color:#6B7280;"></span>
+              </div>
+              <div id="rcDryResult" style="display:none;margin-top:12px;border:1px solid #E4E7EE;border-radius:8px;padding:10px 12px;font-size:12px;line-height:1.6;"></div>
+            </div>
+          </div>
+          <div class="card" style="padding:16px 18px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+              <div class="rc-label">등록된 규칙 실험</div><span style="font-size:11px;color:#9CA3AF;">SQL 수정은 새 버전으로 저장되고 즉시 재계산 런이 돌아갑니다(실패 시 10분 센서) · 제목·D0 등 메타는 Non-pairwise AB 탭의 실험 편집에서</span>
+            </div>
+            <table class="rc-table" id="rcList"><thead><tr><th>#</th><th>제목</th><th>상태</th><th>D0 (UTC)</th><th>SQL 버전</th><th>마지막 저장</th><th></th></tr></thead><tbody></tbody></table>
+            <div id="rcHistory" style="display:none;margin-top:12px;"></div>
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="page" id="page-abguide">
+        <div class="placeholder-page">
+          <div><h2>가이드</h2><div class="ph-sub">A/B Testing 화면을 읽는 순서 · 용어 · 지표 정의 · 유의성 규칙 · 지표를 뽑는 쿼리</div></div>
+
+          
+          <div class="g-hero" id="g-start">
+            <div class="g-step"><div class="g-step-k"><i>1</i>대표값</div><h4>맨 위 타일에서 결론을 읽는다</h4>
+              <p>Pairwise · Non-pairwise 탭은 <b>매출 유지율 R1/R0</b>의 실험군 − 대조군, 광고 AB 탭은 <b>Total ARPU</b> 차이가 대표값이다. 타일 아래 작은 글씨가 검정 결과(p)다.</p>
+              <div class="g-where">화면 위쪽 · 타일 한 줄</div></div>
+            <div class="g-step"><div class="g-step-k"><i>2</i>추이</div><h4>차트 4장으로 흐름을 본다</h4>
+              <p>날짜가 지나며 두 집단의 격차가 어떻게 벌어지는지 본다. 차트 머리의 숫자는 실험 시작 이후의 차이, 옆의 알약은 그 지표의 검정 결과다.</p>
+              <div class="g-where">화면 가운데 · 카드를 누르면 크게 열린다</div></div>
+            <div class="g-step"><div class="g-step-k"><i>3</i>근거</div><h4>세부 분석 표로 확인한다</h4>
+              <p>고액 결제자 한 명이 결과를 흔들지 않게 보정한 값, 95% 신뢰구간, 세그먼트별 결과, 리텐션이 한 표에 있다. 대표값이 왜 그렇게 나왔는지 볼 때 쓴다.</p>
+              <div class="g-where">화면 아래쪽 · 유저 단위 계산</div></div>
+            <div class="g-legend">
+              <b>색</b>
+              <span class="g-li"><span class="ab-pill up">유의</span>좋아짐</span>
+              <span class="g-li"><span class="ab-pill down">유의(악화)</span>나빠짐</span>
+              <span class="g-li"><span class="ab-pill partial">경계</span>단독 인용 금지</span>
+              <span class="g-li"><span class="ab-pill">비유의</span>회색</span>
+              <b>선</b>
+              <span class="g-li"><svg width="18" height="6"><line x1="0" y1="3" x2="18" y2="3" stroke="#E5484D" stroke-width="2"/></svg>실험군</span>
+              <span class="g-li"><svg width="18" height="6"><line x1="0" y1="3" x2="18" y2="3" stroke="#3B82F6" stroke-width="2" stroke-dasharray="3.5 2.5"/></svg>대조군</span>
+              <span class="g-li"><svg width="16" height="10"><rect width="16" height="10" rx="2" fill="#F1F2F4"/></svg>실험 전 구간</span>
+              <span class="g-li"><svg width="18" height="6"><line x1="0" y1="3" x2="18" y2="3" stroke="#D97706" stroke-width="2" stroke-dasharray="3.5 2.5"/></svg>종료 · 전면 적용</span>
+              <span class="g-rule">숫자의 초록 · 빨강은 검정이 유의할 때만 칠한다. 경계 · 비유의 · 검정 없음은 회색이다.</span>
+            </div>
+          </div>
+
+          <div class="guide-wrap">
+            <nav class="guide-toc">
+              <a data-sec="g-layout"><i>1</i>화면 구성</a><a data-sec="g-terms"><i>2</i>용어</a><a data-sec="g-metrics"><i>3</i>지표 정의</a><a data-sec="g-verdict"><i>4</i>유의성 · 색 규칙</a><a data-sec="g-charts"><i>5</i>차트 읽는 법</a><a data-sec="g-data"><i>6</i>데이터 · 갱신</a><a data-sec="g-faq"><i>7</i>자주 묻는 것</a><a data-sec="g-iaa"><i>8</i>광고 AB 탭</a><a data-sec="g-queries"><i>9</i>지표 쿼리</a>
+            </nav>
+            <div>
+              <section class="card guide-sec" id="g-layout">
+                <div class="g-head"><span class="g-num">1</span><div><h3>1. 화면 구성</h3><p class="g-lead">탭 세 개가 같은 화면을 쓴다. 실험이 대상자를 어떻게 나눴는지에 따라 탭이 갈린다.</p></div></div>
+                <table class="gt"><tr><th>탭</th><th>어떤 실험</th><th>대표값</th></tr>
+                  <tr><td>Pairwise AB</td><td>마킹표(is_pair)로 대상자를 나눈 실험. 왼쪽 is_pair 칩으로 범위를 고르면 화면의 모든 숫자가 그 범위로 바뀐다.</td><td>매출 유지율 R1/R0</td></tr>
+                  <tr><td>Non-pairwise AB</td><td>마킹표 없이 SQL 규칙이나 대상자 테이블로 대상자를 정한 실험(칩 없음).</td><td>매출 유지율 R1/R0</td></tr>
+                  <tr><td>광고 AB</td><td>광고 매출을 포함해서 봐야 하는 실험. 대상자를 나눈 방식과 상관없이 이 탭에 보인다.</td><td>Total ARPU</td></tr></table>
+                <h4>위에서 아래로</h4>
+                <dl class="g-def">
+                  <dt>KPI 카드</dt><dd>진행중 실험 수와 올해 완료 실험 수 · 채택률(채택 ÷ 올해 완료). 탭마다 그 탭의 실험만 센다.</dd>
+                  <dt>실험 정보</dt><dd>왼쪽 패널. 실험 번호 · 방식(Pairwise / Non-pairwise, 광고 매출 포함 여부) · 대상자 · 분할 조건 · 기간 · 상태. 분석 숫자는 두지 않는다.</dd>
+                  <dt>대표값 타일</dt><dd>실험군 · 대조군 값, 차이, 기대 매출 효과, R0 합계. 값은 일 단위 마트로 만들고, 차이의 색과 p 는 세부 분석(유저 단위) 검정으로 정한다.</dd>
+                  <dt>차트 4장</dt><dd>누적 매출 · 일별 AU · 구매 전환율 · 유저당 매출(ARPU). 광고 AB 탭은 Total ARPU · 일별 AU · 광고 매출/유저 · 리텐션 D+k.</dd>
+                  <dt>세부 분석 표</dt><dd>상위 결제자 보정(캡) · 95% 신뢰구간 · 세그먼트 · 플레이 · 리텐션 D+1/3/7 · ARPPU · R1/R0 이중차분 · 균형 점검.</dd>
+                  <dt>실험 목록</dt><dd>진행중 / 완료 탭. 완료는 시작한 해별로 본다(오른쪽의 연도 칩, 기본은 올해 — 올해 실험 = 시작일이 올해인 실험). 오른쪽 위 '실험 편집'에서 시작 시각(D0) · 종료 시각 · 결과 · 대상자 설명을 넣는다.</dd>
+                </dl>
+                <div class="g-note">같은 지표가 차트와 세부 분석에서 조금 다르게 보이는 것은 정상이다. 차트는 일 단위 합계(보정 없음), 세부 분석은 유저 단위(상위 결제자 보정 · bootstrap)다. 결론이 갈리면 세부 분석을 따른다.</div>
+              </section>
+
+              <section class="card guide-sec" id="g-terms">
+                <div class="g-head"><span class="g-num">2</span><div><h3>2. 용어</h3><p class="g-lead">화면에 나오는 낱말의 뜻.</p></div></div>
+                <dl class="g-def">
+                  <dt>D0</dt><dd>유저별 실험 편입 시점 = 실험 시작 후 첫 로그인. 유저별 D±k 는 모두 이 날 기준이다(달력일 아님). 일별 AU 만 달력일이다.</dd>
+                  <dt>실험군 / 대조군</dt><dd>빨강 실선 / 파랑 점선. 마킹표(is_pair)나 SQL 규칙 · 대상자 테이블로 나눈 두 집단.</dd>
+                  <dt>is_pair 0 · 1 · 2</dt><dd>마킹표의 분할 등급. 0 = 비결제자 + 그 외, 1 = pairwise(결제 이력으로 짝지은 핵심 비교군), 2 = 결제 상위. 칩으로 범위를 고르면 화면의 모든 숫자가 그 범위로 바뀐다.</dd>
+                  <dt>규칙 코호트</dt><dd>마킹표 대신 SQL 조각으로 대상자를 정한 실험(칩 없음). 비결제자 대상이면 정의상 사전 매출이 0 이고, D0 에 AU 가 계단식으로 뛰는 것은 코호트 정의 때문이다. 로그인 시점 상태로 편입하는 규칙(특정 조건 달성 등)은 처치로 상태가 바뀐 유저가 늦게 들어올 수 있다(사후 선택).</dd>
+                  <dt>진행 일수</dt><dd>진행중이면 Day k = 시작 후 며칠째. 끝난 실험이면 시작부터 종료까지의 일수.</dd>
+                  <dt>신뢰도</dt><dd>실험 목록의 열. 헤드라인 지표(ARPU, 광고 AB 는 Total ARPU)의 1 − p 를 %로 적은 것이며 표본이 작으면 '참고'가 붙는다.</dd>
+                  <dt>종료 · 전면 적용</dt><dd>결과가 '채택'이면 전면 적용 시각(예정일 가능), 그 외는 중단 · 종료 시각. 차트의 주황 점선.</dd>
+                  <dt>후보</dt><dd>마킹표에서 자동 발견됐지만 시작 시각(D0)이 확정되지 않은 실험. 진행중 배지 "3 · 후보 1"의 뒤 숫자. 실험 편집에서 시작 시각을 확인해 저장하면 진행중으로 올라가 지표 적재가 시작된다.</dd>
+                  <dt>완료</dt><dd>종료 시각이 입력된 실험. 종료 시각을 넣으면 후보였던 실험도 완료로 올라가고, 시작~종료 구간의 지표를 한 번 적재해 그 값으로 고정한다(10~15분). D0 가 비어 있으면 올라가지 않는다.</dd>
+                  <dt>재계산 대기</dt><dd>설정 · SQL 을 바꾼 뒤 센서가 적재를 다시 돌 때까지(최대 10분) 이전 값이 보이는 상태.</dd>
+                </dl>
+              </section>
+
+              <section class="card guide-sec" id="g-metrics">
+                <div class="g-head"><span class="g-num">3</span><div><h3>3. 지표 정의</h3><p class="g-lead">차트와 표의 숫자가 무엇을 무엇으로 나눈 값인지. 실제 쿼리는 9. 지표 쿼리에 있다.</p></div></div>
+                <dl class="g-def">
+                  <dt>누적 매출</dt><dd>D0 이후 유저별 결제 매출 합(차트는 기존 대시보드처럼 D−28 부터 누적). 머리 숫자는 D0 이후 성분의 실험군 − 대조군 %.</dd>
+                  <dt>일별 AU</dt><dd>달력일 기준 그날 접속해 플레이한 코호트 유저 수(활동 로그 기준).</dd>
+                  <dt>구매 전환율<small>결제율</small></dt><dd>D0 이후 한 번이라도 결제한 유저 ÷ 코호트. 차이는 %p, 상대 차이는 %.</dd>
+                  <dt>유저당 매출<small>ARPU</small></dt><dd><span class="g-f">누적 매출 ÷ 코호트 전체</span> — 결제 안 한 유저도 분모에 든다.</dd>
+                  <dt>ARPPU</dt><dd><span class="g-f">누적 매출 ÷ 결제 유저</span></dd>
+                  <dt>리텐션 D+k</dt><dd>D0 후 k일째(유저별 D0 기준 달력일)에 로그인한 유저 ÷ k일째 날을 채운 유저. 못 채운 유저는 분모에서 뺀다. k 가 클수록 분모가 먼저 들어온 유저로 좁혀져 곡선 자체는 오른쪽에서 올라갈 수 있으니, 수준이 아니라 군 간 차이(%p)로 읽는다.</dd>
+                  <dt>플레이/일</dt><dd>유저당 하루 평균 플레이 수(세부 분석).</dd>
+                </dl>
+                <h4>매출 유지율 R1/R0 — Pairwise · Non-pairwise 탭의 대표값</h4>
+                <dl class="g-def key" id="g-r0r1">
+                  <dt>R0 / R1</dt><dd>유저별 D0 전 28일(D−28~D−1) 매출 합 / D0 후 28일(D0~D+27) 매출 합.</dd>
+                  <dt>매출 유지율 R1/R0</dt><dd><span class="g-f">집단의 ΣR1 ÷ ΣR0</span>. 차이 = 실험군 − 대조군, '대조군 대비 %' = 비율 이중차분. R1 창이 덜 찼으면 적재된 날까지의 부분값이며 매일 갱신된다. R0 = 0 인 코호트(비결제자)는 비율 대신 R1 금액 차이를 본다.</dd>
+                  <dt>기대 매출 효과</dt><dd><span class="g-f">두 집단 R0 합계 × 비율 이중차분</span>(분석팀 환산 손익). 전면 적용하면 28일 매출이 얼마나 달라질지의 환산값이다. 보조로 비율 차 × ΣR0 를 함께 적는다.</dd>
+                  <dt>R0 균형</dt><dd>실험군 · 대조군의 1인당 사전 28일 매출이 ±5% 안이면 OK. 어긋나면 R1/R0 결과는 참고용이다.</dd>
+                </dl>
+              </section>
+
+              <section class="card guide-sec" id="g-verdict">
+                <div class="g-head"><span class="g-num">4</span><div><h3>4. 유의성 · 색 규칙</h3><p class="g-lead">분석팀의 AB 테스트 지표 가이드를 그대로 따른다.</p></div></div>
+                <dl class="g-def">
+                  <dt>유의 · 경계 · 비유의</dt><dd>p &lt; 0.05 <b>유의</b> / 0.05~0.12 <b>경계</b>(단독 인용 금지) / 그 외 <b>비유의</b>.</dd>
+                  <dt>결론은 대표값으로</dt><dd>결론은 대표값(R1/R0 차이, 광고 AB 는 Total ARPU)으로 낸다. 차트 머리의 알약은 대표값이 왜 그렇게 움직였는지 보는 참고다 — 지표가 여럿이면 하나쯤은 우연히 유의해지므로, 참고 지표의 '유의' 하나만으로 채택하지 않는다.</dd>
+                  <dt>MDE<small>최소 탐지 효과</small></dt><dd>비유의일 때 함께 본다. "차이 없음"이 아니라 "이만한 차이는 지금 표본으로 못 잡는다"는 뜻이다.</dd>
+                  <dt>효과 크기</dt><dd>비율 지표 Cohen h, 평균 지표 Cohen d. 0.2 미만은 작다.</dd>
+                  <dt>캡<small>winsorization</small></dt><dd>매출 평균은 결제자 상위 2%(R0/R1 은 1%)를 그 분위 값으로 치환해 고액 결제자 한 명이 결과를 흔드는 것을 막는다. 제외가 아니라 치환이며, 결론은 캡 값 · 매출 전망은 원본으로 낸다. 세부 분석 표의 '원본(캡 없음)' 열이 원본이다.</dd>
+                  <dt>신뢰구간 · p</dt><dd>유저를 복원추출해 두 집단 차이를 다시 계산하는 것을 4,000회 반복(bootstrap)해 95% 구간과 p 를 얻는다. 비율 지표는 z 검정.</dd>
+                  <dt>세그먼트</dt><dd>세부 분석 칩. D0 시점 상태로 고정한다 — 신규(D0 당일 가입) / 비결제(결제 이력 없음) / 활성 결제자(28일 내 결제) / 휴면 결제자. 테스트 중 결제로 바꾸지 않는다. 결제자 대상 실험은 신규 · 비결제가 0명이라 칩이 꺼진다.</dd>
+                  <dt>R1/R0 이중차분</dt><dd>R0 결제자만, 캡 99분위, <span class="g-f">(R1/R0 실험군 − R1/R0 대조군) ÷ R1/R0 대조군</span>. 환산 손익 = 두 집단 R0 합계 × 차이.</dd>
+                  <dt>균형 점검</dt><dd>결제자 비율 · 1인당 R0 평균(±5%) · SMD(0.1 미만), 시작→D0 평균 차 1일 이내. 어긋나면 R1/R0 결과는 참고용이다.</dd>
+                  <dt>부작용 점검</dt><dd>좋아지길 바라는 지표가 아니라 나빠지면 안 되는 지표 — 리텐션 D+1/3/7 과 AU. 세부 분석 표의 리텐션 행과 일별 AU 차트에서 본다. 유의하게 나빠지면 '악화' 빨강 알약이 붙고 롤백을 검토한다.</dd>
+                  <dt>색</dt><dd>숫자의 초록(좋아짐) · 빨강(나빠짐)은 검정이 <b>유의</b>할 때만 칠한다. 경계 · 비유의 · 검정 없음은 회색 — 부호만으로 색을 칠하지 않는다. R1/R0 타일은 세부 분석의 이중차분 검정이 온 뒤에 색이 붙는다. 차트의 면 색(초록 · 주황 · 보라 면)은 지표를 구분하는 색이지 유의성이 아니다.</dd>
+                </dl>
+              </section>
+
+              <section class="card guide-sec" id="g-charts">
+                <div class="g-head"><span class="g-num">5</span><div><h3>5. 차트 읽는 법</h3><p class="g-lead">카드 하나 = 위의 수준 차트 + 아래의 차이 스트립.</p></div></div>
+                <dl class="g-def">
+                  <dt>위 · 수준 차트</dt><dd>실험군 빨강 실선 · 대조군 파랑 점선, 한 축.</dd>
+                  <dt>아래 · 차이 스트립</dt><dd>실험군 − 대조군. 0선 위 밝은 면 = 실험군 우세, 아래 짙은 면 = 대조군 우세. 누적 3종은 그날까지의 누적 차이(하루 증분 아님), 일별 AU 는 그날의 차이(막대).</dd>
+                  <dt>배경 · 세로선</dt><dd>회색 음영 = 실험 전 구간(D−28~D−1, 값이 있는 지표만) · 세로 점선 = D0 · 주황 점선 = 종료 · 전면 적용. 실험 전 값이 없으면 D0 부터 그린다.</dd>
+                  <dt>머리 숫자 · 알약</dt><dd>머리 숫자 = D0 이후 성분의 차이(차트의 누적은 D−28 부터). 알약 = 그 지표의 검정 결과, 아래 작은 글씨 = p. 일별 AU 는 검정이 없다.</dd>
+                  <dt>끝의 직접 라벨</dt><dd>"D+14까지" = 누적 차이, "D+14 당일" = 그날 AU 차이.</dd>
+                  <dt>상세 보기</dt><dd>카드를 누르면 열린다. 보기(실험군 · 대조군 / 차이 / 상대 차이 % / 표), 집계(누적 / 일별 = 누적의 하루 증분 / 7일 평균), X축(전체 · D0 이후 · 최근 14 · 7일 · 드래그로 구간 선택, 더블클릭 = 전체), Y축(자동 · 0부터 · 로그 = 양수 값만, 2배 · 4배 같은 배수 변화가 같은 간격으로 보임 · 최소 · 최대 직접 입력). CSV · PNG 저장, '새 탭에서 열기'는 옵션을 주소에 실어 공유 링크가 된다.</dd>
+                </dl>
+              </section>
+
+              <section class="card guide-sec" id="g-data">
+                <div class="g-head"><span class="g-num">6</span><div><h3>6. 데이터 · 갱신</h3><p class="g-lead">언제 채워지고, 무엇을 바꾸면 다시 계산되는지.</p></div></div>
+                <dl class="g-def">
+                  <dt>정기 적재</dt><dd>레지스트리 동기화 14:00 KST, 지표 적재 14:10 KST(일 1회). 설정 · SQL 을 바꾸면 센서가 10분 안에 재계산하고 그동안 '재계산 대기' 배너가 뜬다. '지금 재계산'은 원천이 아직 안 도착한 날은 그 전날까지만 채운다.</dd>
+                  <dt>세부 분석 자료</dt><dd>유저 단위 자료는 정기 적재와 완료 처리 때 채운다. 새로 진행중이 된 실험은 다음 날 14:10 이후에 세부 분석이 생긴다.</dd>
+                  <dt>세부 분석 계산</dt><dd>계산이 무겁다(조합 하나에 수십 초~수 분). 적재가 끝나면 각 실험의 기본 화면과 is_pair 조합을 미리 계산해 둔다. 세그먼트 칩(신규 · 비결제 등)은 처음 누를 때 계산하므로 잠시 걸린다.</dd>
+                  <dt>시각 기준</dt><dd>매출은 결제 시각 기준 UTC, 일별 AU 는 달력일. 서머타임 전환기엔 같은 UTC 시각 비교가 흔들리므로 일 단위로 판단한다.</dd>
+                  <dt>실험 등록</dt><dd>마킹표에 유저가 마킹된 실험은 자동 발견되고, 시작 시각이 확인되면 바로 진행중으로 올라간다(진행중 최대 10개, 새 실험 우선). 마킹 없이 규칙 · 명단으로 대상자를 정한 실험은 자동 발견되지 않는다 — '규칙 코호트 등록' 탭의 후보(전체 보기)에서 골라 대상자 SQL 을 저장하면 즉시 적재된다.</dd>
+                  <dt>대상자 테이블</dt><dd>대상자를 SQL 규칙이 아니라 대상자 테이블(명단)로 관리하는 실험도 '규칙 코호트 등록' 탭에서 올린다. 그 테이블에서 유저 · 실험군 여부 · 편입 시각을 읽는 짧은 SQL 을 넣으면 된다(조건을 다시 계산하지 않고 실제 명단 그대로).</dd>
+                  <dt>목록의 숫자</dt><dd>'현재 uplift'는 헤드라인 지표(기본 ARPU)의 D0 이후 차이, '신뢰도'는 1 − p.</dd>
+                </dl>
+              </section>
+
+              <section class="card guide-sec" id="g-faq">
+                <div class="g-head"><span class="g-num">7</span><div><h3>7. 자주 묻는 것</h3><p class="g-lead">화면을 보다가 막히는 지점들.</p></div></div>
+                <dl class="g-def">
+                  <dt>차트 숫자와 세부 분석 숫자가 다르다</dt><dd>차트는 일 단위 마트(캡 없음), 세부 분석은 유저 단위(캡 · bootstrap)다. 결론이 갈리면 세부 분석을 따른다.</dd>
+                  <dt>R1/R0 가 기존 표와 조금 다르다</dt><dd>유저별 D0 정의는 같고(테스트 시작 후 첫 로그인), 남은 차이는 마트의 달력일 경계(D0 당일 로그인 전 결제가 R1 에 들어감)뿐이다.</dd>
+                  <dt>비유의인데 숫자가 크다</dt><dd>MDE 를 본다. 표본 · 기간이 모자라 큰 차이도 못 잡는 상태일 수 있다. 창이 다 찰 때까지 기다린다.</dd>
+                  <dt>대표값은 비유의인데 차트 알약 하나가 유의하다</dt><dd>지표가 여럿이면 하나쯤은 우연히 유의해진다. 대표값이 아니면 채택 근거가 아니다.</dd>
+                  <dt>진행중 배지가 "3 · 후보 1" 이다</dt><dd>뒤 숫자는 후보(미확정)다. KPI 의 진행중 실험 수에는 들어가지 않는다.</dd>
+                  <dt>종료 시각을 넣었는데 완료로 안 보인다</dt><dd>시작 시각(D0)이 비어 있으면 완료로 올라가지 않는다 — 실험 편집에서 D0 를 먼저 넣는다. 올라간 뒤 지표가 보이기까지는 10~15분(센서가 적재)이다.</dd>
+                  <dt>세부 분석이 한참 걸린다</dt><dd>그 조합(범위 · 세그먼트)을 처음 계산하는 중이다. 한 번 계산한 결과는 다음 적재 전까지 보관하므로 다시 열면 바로 뜬다.</dd>
+                </dl>
+              </section>
+
+              <section class="card guide-sec" id="g-iaa">
+                <div class="g-head"><span class="g-num">8</span><div><h3>8. 광고 AB 탭</h3><p class="g-lead">광고 매출을 포함해서 봐야 하는 실험. IAP 지표만 보면 결과가 거꾸로 읽힌다.</p></div></div>
+                <p>전면광고 · 리워드 광고 실험은 효과의 대부분이 광고 매출이다. 실험 편집에서 실험 종류를 '광고 매출 포함'으로 두면 광고 AB 탭으로 옮겨지고 지표 세트가 바뀐다(다음 적재부터 광고 성분이 채워진다).</p>
+                <dl class="g-def">
+                  <dt>Total ARPU</dt><dd><span class="g-f">(IAP + 전면광고 + 리워드 광고 매출) ÷ 광고 코호트 유저 수</span>. D0 이후 누적, 유저별 D0 기준. 이 탭의 대표값이다(분석팀 광고 실험 보고서 방식). 세부 분석에서는 IAP 만 결제자 98분위 캡을 적용한다.</dd>
+                  <dt>광고 코호트</dt><dd>광고 매출 원천(광고 네트워크 노출 단위, 일 단위)은 약 2일 늦게 도착한다. 광고 지표는 "광고 매출 MM-DD 까지" 기준으로 그 다음날 전에 편입된 유저만 세고(분모), IAP 도 같은 상한으로 잘라 분자 · 분모가 같은 시점의 코호트가 되게 한다. 그래서 IAP 차트는 더 뒤까지 가고 광고 차트는 거기서 끝난다.</dd>
+                  <dt>타일</dt><dd>실험군 · 대조군 Total ARPU(부제 = 전면 · 리워드 · IAP 구성) · 차이(검정 포함) · <b>누적 총매출 차이 · IAP + 광고</b>(광고 코호트의 D0 이후 매출 합계의 군 차이, 부제 = 군별 합계) · <b>리텐션 D+k</b>(가장 먼 완결 k 의 %p 차이와 양호/악화). 비결제자 코호트는 사전 매출(R0)이 0 이라 '기대 매출 효과'(ΣR0 × R1/R0 차이)를 낼 수 없어 그 자리에 리텐션을 둔다. 도달 · eCPM 은 머리의 알약(처치가 실제로 걸렸는지 · 단가 추세 확인용).</dd>
+                  <dt>광고 매출/유저</dt><dd>차트. <span class="g-f">(전면광고 + 리워드 광고 매출) ÷ 광고 코호트</span>, D0 이후 누적. 실험마다 광고 종류가 달라도 뜻이 같아 광고 탭 공통 차트로 둔다. 검정은 유저별 광고 매출 합의 제곱합(Welch) — 이 열이 없는 옛 적재는 '재적재 대기'.</dd>
+                  <dt>리텐션 D+k</dt><dd>차트. 유저별 D0 기준 k일째 로그인한 유저 ÷ k일째 날을 채운 유저(k = 1 부터, 완결된 날만). 광고가 이탈을 늘리는지 보는 지표라 군 간 차이(%p)로 읽는다. 머리 숫자는 D+7(미도달이면 D+3, D+1)의 차이와 '양호/악화' 알약.</dd>
+                  <dt>전면 · 리워드 분해</dt><dd>세부 분석 표의 전면광고 매출/유저 · 리워드 광고 매출/유저 행에서 본다(타일 · 차트에는 두지 않는다 — 실험별로 뜻이 달라질 수 있는 분해라). 리워드의 '사전 → 보정'은 사후 uplift% − 사전 uplift%(사전 시청률 불균형을 보정한 잠식, 분석팀 광고 실험 보고서).</dd>
+                  <dt>IAP 결제율 · IAP ARPU · IAP ARPPU</dt><dd>세부 분석 표의 결제 지표는 광고 매출을 뺀 결제(IAP)만이다. 광고 실험에서는 보통 소폭 음(−)이며, 광고 매출을 포함한 유저당 값은 Total ARPU 뿐이다.</dd>
+                  <dt>eCPM · 도달<small>머리 알약</small></dt><dd>eCPM = 전면광고 매출 ÷ 노출 × 1,000(최근 3일, 1일차와 비교 — 단가가 떨어지면 누적 효과가 초반 단가에 기대 있다는 뜻). 도달 = D0 이후 전면광고를 1회 이상 본 실험군 유저 비율.</dd>
+                  <dt>리텐션 기준<small>기획 운영 기준</small></dt><dd>잔존율이 사전에 정한 임계값보다 크게 떨어지면 리스크로 본다. AU 도 함께 본다.</dd>
+                  <dt>분석 보고서와 다른 점</dt><dd>보고서는 7일을 채운 진입자만 7일 누적으로 보지만, 대시보드는 현행 정의대로 전 진입자의 누적을 날마다 갱신한다. 늦게 들어온 유저가 분모에 섞여 절대값이 작게 나오고 단가 하락도 반영된다. 방향 · 상대 비교는 같다.</dd>
+                </dl>
+              </section>
+
+              <section class="card guide-sec" id="g-queries">
+                <div class="g-head"><span class="g-num">9</span><div><h3>9. 지표 쿼리</h3><p class="g-lead">차트와 타일의 숫자를 뽑는 SQL 원문. 적재가 실제로 실행하는 그대로이며, 실험마다 달라지는 것은 노랗게 칠한 자리 네 곳뿐이다.</p></div></div>
+                <div class="g-ph-legend">
+                  <div><span class="g-ph">{cohort_sql}</span> 대상자 SQL — 누가 실험군 · 대조군인지. 실험마다 다른 유일한 부분이다.</div>
+                  <div><span class="g-ph">{start_dt}</span> 실험 시작 시각(D0, UTC).</div>
+                  <div><span class="g-ph">{upper_dt}</span> 집계 상한 — 진행중이면 오늘 0시(UTC), 완료 실험이면 종료 시각.</div>
+                  <div><span class="g-ph">{markingidx}</span> 실험 번호(마킹표 실험의 대상자 SQL 에만 쓰인다).</div>
+                </div>
+                <div class="g-note">대상자 SQL 은 유저마다 한 줄 — 유저 번호 · is_pair · 실험군 여부 · 편입 시각 네 열을 낸다. 마킹표 실험은 아래 '대상자 SQL'의 고정 조각을 쓰고, 규칙 실험은 '규칙 코호트 등록' 탭에 실험별로 저장된 SQL 을 쓴다.</div>
+                <div id="guideQueries"><div class="g-q-empty">쿼리 목록을 불러오는 중…</div></div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="abDetail" role="dialog" aria-modal="true" aria-labelledby="abDetailTitle">
+  <div class="ab-detail-backdrop" onclick="closeAbDetail()"></div>
+  <div id="abDetailBox">
+    <div class="ab-detail-head">
+      <div id="abDetailTabs" style="display:flex;gap:4px;flex-shrink:0;">
+        <button class="ab-dtab" data-metric="rev">누적 매출</button><button class="ab-dtab" data-metric="au">일별 AU</button><button class="ab-dtab" data-metric="pur">구매 전환율</button><button class="ab-dtab" data-metric="arpu">유저당 매출</button>
+      </div>
+      <div id="abDetailTitle" style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;font-weight:600;color:#111;">–</div>
+      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+        <a id="abDetailNewTab" class="ab-detail-btn" href="#" target="_blank" rel="noopener" title="지금 보기(지표·보기·집계·축·is_pair)를 그대로 새 브라우저 탭에서 연다 — 주소를 복사해 공유해도 같은 화면">새 탭에서 열기 ↗</a>
+        <button class="ab-detail-btn" onclick="abDetailPng()" title="현재 차트를 PNG 로 저장">PNG</button>
+        <button class="ab-detail-btn" onclick="abDetailCsv()" title="표시 구간의 실험군·대조군·차이·상대 차이를 CSV 로 저장">CSV</button>
+        <button class="ab-detail-close" onclick="closeAbDetail()" aria-label="닫기" title="닫기 (Esc)">×</button>
+      </div>
+    </div>
+    <div id="abDetailBar">
+      <div class="ab-ctl"><span class="ab-ctl-label">보기</span><div class="ab-seg"><button class="ab-chip" data-ctl="view" data-val="level" title="두 군의 값(카드 위 차트)">실험군 · 대조군</button><button class="ab-chip" data-ctl="view" data-val="diff" title="실험군 − 대조군(카드 아래 스트립)">차이</button><button class="ab-chip" data-ctl="view" data-val="rel" title="실험군 ÷ 대조군 − 1">상대 차이 %</button><button class="ab-chip" data-ctl="view" data-val="table" title="값 표(복사·CSV)">표</button></div></div>
+      <div class="ab-ctl"><span class="ab-ctl-label">집계</span><div class="ab-seg"><button class="ab-chip" data-ctl="agg" data-val="cum" title="차트 시작일부터 그날까지 누적(기존 대시보드 정의)">누적</button><button class="ab-chip" data-ctl="agg" data-val="daily" title="그날 하루 값(누적의 하루 증분, AU 는 원본)">일별</button><button class="ab-chip" data-ctl="agg" data-val="ma7" title="일별 값의 7일 이동평균(앞쪽은 가용 일수)">7일 평균</button></div></div>
+      <div class="ab-ctl"><span class="ab-ctl-label">X축<span class="ab-info" title="차트를 드래그하면 그 구간만 보고, 더블클릭하면 전체로 돌아갑니다">i</span></span><div class="ab-seg"><button class="ab-chip" data-ctl="xr" data-val="all" title="차트 시작일부터 마지막 날까지">전체</button><button class="ab-chip" data-ctl="xr" data-val="post" title="실험 시작일부터">D0 이후</button><button class="ab-chip" data-ctl="xr" data-val="last14" title="">최근 14일</button><button class="ab-chip" data-ctl="xr" data-val="last7" title="">최근 7일</button></div><span id="abDetailXCustom" class="ab-pill" style="display:none;margin-left:6px;"></span></div>
+      <div class="ab-ctl"><span class="ab-ctl-label">Y축</span><div class="ab-seg"><button class="ab-chip" data-ctl="y" data-val="auto" title="카드와 같은 규칙(0 근처에서 출발하면 0부터)">자동</button><button class="ab-chip" data-ctl="y" data-val="zero" title="항상 0 포함">0부터</button><button class="ab-chip" data-ctl="y" data-val="log" title="세로축 눈금이 10배 단위(1·10·100…)로 늘어나는 축 — 값이 수십 배 차이 나는 걸 한 축에 볼 때 씁니다. 양수 값의 실험군·대조군 보기에서만">로그 스케일</button><button class="ab-chip" data-ctl="y" data-val="custom" title="최소·최대를 직접 입력해 축을 고정">직접</button></div><span id="abDetailYCustom" style="display:none;align-items:center;gap:4px;margin-left:6px;"><input id="abDetailYMin" class="ab-detail-in" placeholder="최소" title="y축 최소값(비우면 자동) — Enter 또는 적용"><input id="abDetailYMax" class="ab-detail-in" placeholder="최대" title="y축 최대값(비우면 자동)"><button class="ab-detail-btn" onclick="abDetailApplyY()" title="입력한 최소·최대로 y축 고정">적용</button></span></div>
+    </div>
+    <div class="ab-detail-body">
+      <div class="ab-detail-plot"><canvas id="abDetailCanvas"></canvas></div>
+      <div id="abDetailTable"></div>
+    </div>
+    <div id="abDetailFoot"><span id="abDetailSummary">–</span><span id="abDetailBasis" style="color:#9CA3AF;">–</span></div>
+  </div>
+</div>
+
+<script>if(!location.search){try{history.replaceState(null,"","?page=abpair&exp=9101")}catch(e){}}</script>
+<script src="demo-data.js"></script>
+<script src="demo-api.js"></script>
+<script src="abmath.js"></script>
+<script src="abcache.js"></script>
+<script src="rulecohort.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

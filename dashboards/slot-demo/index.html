@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>신규 슬롯 트래킹 대시보드 · 데모</title>
+<meta name="robots" content="noindex,nofollow">
+<script src="vendor/chart.umd.min.js"></script>
+<script src="data.js"></script>
+<style>
+/* 신규 슬롯 트래킹 대시보드 · 데모 — 목적: 오픈 후 매출 비중 흐름으로 추가 출시 필요 여부를 판단. 입력: data.js(합성), 출력: 정적 렌더링. 외부 요청 없음 */
+:root{
+  --bg:#F8F9FB; --card:#fff; --line:#ECEEF2; --hair:#EEF0F3;
+  --ink:#111827; --ink2:#4B5563; --muted:#9CA3AF; --muted2:#6B7280;
+  --brand:#4F46E5; --brand-soft:#EEF2FF;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --ref:#6B7280; --other:#C4C9D4;
+  --good:#059669; --bad:#DC2626; --good-bg:#ECFDF5; --bad-bg:#FEF2F2;
+}
+*{font-family:'Pretendard',-apple-system,'Noto Sans KR','Noto Sans CJK KR','Malgun Gothic','Apple SD Gothic Neo',sans-serif;box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink)}
+body{font-size:13px;line-height:1.5;-webkit-text-size-adjust:100%}
+.num{font-variant-numeric:tabular-nums}
+
+.topbar{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.topbar-in{max-width:1240px;margin:0 auto;padding:0 24px;min-height:54px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.logo{width:30px;height:30px;border-radius:9px;background:var(--brand);display:flex;align-items:center;justify-content:center;flex:none}
+.title{font-size:16px;font-weight:700;letter-spacing:-.2px}
+.asof{margin-left:auto;font-size:12px;color:var(--muted2)}
+.asof b{font-weight:600;color:var(--ink2)}
+.wrap{max-width:1240px;margin:0 auto;padding:12px 24px 64px;display:flex;flex-direction:column;gap:12px}
+
+/* 파라미터 */
+.params{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:10px}
+.param{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 12px;min-width:0}
+.param label,.param .pl{display:block;font-size:11px;color:var(--muted);margin-bottom:3px}
+.param .pv{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.param .ps{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px;color:var(--muted2);margin-top:1px}
+select{width:100%;font-size:13.5px;font-weight:600;color:var(--ink);border:1px solid #E0E2E8;border-radius:8px;padding:5px 8px;background:#fff;cursor:pointer}
+select:focus-visible,button:focus-visible{outline:2px solid var(--brand);outline-offset:1px}
+
+/* 판정 카드 */
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px}
+.verdict{overflow:hidden}
+.v-head{display:flex;align-items:center;gap:14px;padding:12px 16px;border-bottom:1px solid var(--hair);flex-wrap:wrap}
+.v-badge{display:inline-flex;align-items:center;gap:7px;font-weight:700;font-size:15px;padding:6px 14px;border-radius:999px;white-space:nowrap}
+.v-badge.review{background:var(--brand);color:#fff}
+.v-badge.hold{background:#F3F4F6;color:var(--ink2);border:1px solid #E5E7EB}
+.v-sum{font-size:12.5px;color:var(--ink2);flex:1;min-width:240px}
+.v-sum b{color:var(--ink)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr)}
+.kpi{padding:10px 14px 11px;border-right:1px solid var(--hair);min-width:0}
+.kpi:last-child{border-right:0}
+.k-label{font-size:11.5px;color:var(--muted2);margin-bottom:2px}
+.k-num{font-size:22px;font-weight:700;letter-spacing:-.5px;line-height:1.2}
+.k-num small{font-size:12px;font-weight:600;color:var(--muted2);letter-spacing:0;margin-left:3px}
+.k-chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:1px 8px;border-radius:999px;margin:4px 0 3px}
+.k-chip.n{background:#F3F4F6;color:var(--ink2)}
+.k-chip.g{background:var(--good-bg);color:var(--good)}
+.k-chip.b{background:var(--bad-bg);color:var(--bad)}
+.k-sub{font-size:11px;color:var(--muted2);line-height:1.45}
+.rule{padding:9px 16px;border-top:1px solid var(--hair);background:#FAFBFC;font-size:11.5px;color:var(--muted2)}
+
+.note{display:flex;gap:8px;font-size:11.5px;color:var(--muted2);background:#fff;border:1px dashed #DDE1E8;border-radius:10px;padding:8px 12px}
+.note b{color:var(--ink2)}
+
+/* 섹션 */
+.sec{padding:16px 18px}
+.sec-h{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.sec-t{font-size:14px;font-weight:600}
+.sec-t i{font-style:normal;color:var(--brand);margin-right:6px;font-weight:700}
+.sec-s{font-size:11.5px;color:var(--muted2);margin-top:2px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--ink2)}
+.legend span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.sw{display:inline-block;width:18px;height:0;border-top:2px solid;vertical-align:middle}
+.sw.thick{border-top-width:4px}
+.sw.band{height:10px;width:18px;border:0;background:rgba(107,114,128,.16);border-radius:2px}
+.sw.box{width:10px;height:10px;border:0;border-radius:2px}
+.chart-box{position:relative;height:340px}
+#s2{display:flex;flex-direction:column}#bul{flex:1;display:flex;flex-direction:column;justify-content:space-around}
+.track{height:18px!important}.rangebar{top:7px!important}
+.chart-box.sm{height:220px}
+.chart-box.md{height:300px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:stretch}
+.four>div,.two>div,.sec,.card{min-width:0}
+.four{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.mini-t{font-size:12.5px;font-weight:600;margin-bottom:4px}
+.mini-t span{font-weight:400;color:var(--muted2);font-size:11px;margin-left:4px}
+.foot{font-size:11px;color:var(--muted2);margin-top:8px}
+
+/* 불릿 바 */
+.bul{margin-bottom:14px}
+.bul:last-of-type{margin-bottom:0}
+.bul-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.bul-h b{font-size:12.5px}
+.delta{font-size:11.5px;font-weight:700}
+.delta.n{color:var(--ink2)}.delta.g{color:var(--good)}.delta.b{color:var(--bad)}
+.brow{display:grid;grid-template-columns:62px 1fr 92px;gap:8px;align-items:center;margin:4px 0;font-size:11.5px}
+.brow .bl{color:var(--muted2)}
+.track{position:relative;height:14px;background:#F3F4F6;border-radius:4px}
+.fill{position:absolute;left:0;top:0;bottom:0;border-radius:4px}
+.rangebar{position:absolute;top:5px;height:4px;background:rgba(17,24,39,.25);border-radius:2px}
+.bv{text-align:right;font-weight:600;white-space:nowrap}
+.cmp{font-size:11px;color:var(--muted2);margin-top:4px}
+
+/* 표 */
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:12px}
+th{font-weight:600;font-size:11px;color:var(--muted2);text-align:right;padding:6px 9px;border-bottom:1px solid var(--line);white-space:nowrap;background:#fff}
+th:first-child,td:first-child{text-align:left}
+th.grp{text-align:center;border-bottom:1px solid var(--hair);color:var(--ink2)}
+td{padding:3px 9px;text-align:right;border-bottom:1px solid var(--hair);white-space:nowrap}
+td.dim{color:#C4C9D4}
+td.part{font-style:italic}
+tr:last-child td{border-bottom:0}
+.tag{font-size:10px;color:var(--muted2);margin-left:4px;font-style:normal}
+.vb{display:flex;align-items:center;gap:6px;justify-content:flex-end}
+.vb i{display:block;height:6px;border-radius:3px;background:var(--s1);opacity:.55}
+.sep{border-left:1px solid var(--line)}
+.tbtn{font-size:11.5px;color:var(--ink2);background:#fff;border:1px solid #E0E2E8;border-radius:8px;padding:4px 10px;cursor:pointer}
+.tbtn[aria-pressed=true]{background:var(--brand-soft);color:var(--brand);border-color:#C7D2FE}
+.hide{display:none}
+
+.demo-banner{position:fixed;right:12px;bottom:10px;z-index:100000;background:rgba(17,24,39,.86);color:#fff;font-size:11.5px;letter-spacing:.01em;padding:6px 12px;border-radius:999px;pointer-events:none;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+
+@media (max-width:1100px){.four{grid-template-columns:1fr 1fr}}
+@media (max-width:900px){
+  .two{grid-template-columns:1fr}
+}
+@media (max-width:700px){
+  .params{grid-template-columns:1fr 1fr}.params .param:first-child{grid-column:1/-1}
+  .kpis{grid-template-columns:1fr 1fr}
+  .kpi:nth-child(2){border-right:0}
+  .kpi:nth-child(-n+2){border-bottom:1px solid var(--hair)}
+}
+@media (max-width:860px){
+  .topbar-in{padding:6px 16px}.wrap{padding:12px 16px 64px}
+  .kpi{padding:10px 12px}.k-num{font-size:21px}
+  .chart-box{height:300px}
+}
+@media (max-width:560px){
+  .params{grid-template-columns:1fr}
+  .asof{margin-left:0;width:100%}
+  .four{grid-template-columns:1fr}
+  .sec{padding:14px 12px}
+  .vb i{display:none}th,td{padding-left:5px;padding-right:5px;font-size:11.5px}
+  .chart-box{height:270px}.chart-box.md{height:260px}
+  .brow{grid-template-columns:54px 1fr 80px}
+  .v-head{padding:10px 12px}.v-sum{min-width:0;flex-basis:100%}
+}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div class="logo" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 6"/><polyline points="15 6 21 6 21 12"/></svg></div>
+  <h1 class="title">신규 슬롯 트래킹</h1>
+  <div class="asof num">데이터 기준 <b id="asof"></b> KST</div>
+</div></header>
+
+<main class="wrap">
+  <section class="params" aria-label="파라미터">
+    <div class="param"><label for="sel">금주 오픈 슬롯</label><select id="sel"></select></div>
+    <div class="param"><span class="pl">전주 오픈 슬롯</span><div class="pv" id="p-prev"></div></div>
+    <div class="param"><span class="pl">기준 슬롯 (최근 8개)</span><div class="pv" id="p-base"></div><div class="ps">최근 8개 슬롯 평균 · 금주 슬롯 제외</div></div>
+  </section>
+
+  <section class="card verdict" aria-label="추가 출시 판정">
+    <div class="v-head">
+      <span class="v-badge" id="v-badge"></span>
+      <div class="v-sum" id="v-sum"></div>
+    </div>
+    <div class="kpis" id="kpis"></div>
+  </section>
+
+
+  <section class="card sec" id="s1">
+    <div class="sec-h">
+      <div><div class="sec-t"><i>1</i>시간 단위 매출 비중 흐름 (6시간 이동평균)</div>
+      <div class="sec-s">오픈 후 경과 시간별 · 매출 비중 = 해당 슬롯 매출 ÷ 같은 시간 전체 슬롯 매출 (%)</div></div>
+      <div class="legend" id="lg1"></div>
+    </div>
+    <div class="chart-box"><canvas id="c1" aria-label="시간 단위 매출 비중 흐름"></canvas></div>
+  </section>
+
+  <div class="note"><span aria-hidden="true">※</span><span><b>해석 유의</b> · 판정 기준은 오픈 직후 매출 비중의 절대 수준과 이후 하락 속도를 최근 8개 슬롯 같은 경과 시간 평균과 비교한 값이며, 색상은 8개 슬롯 범위를 벗어난 경우에만 표시. 최근 8개 슬롯 중 추가 출시 주간이 포함되면 평균 비교의 신뢰도가 낮아짐. 추가 출시는 통상 목요일에 이루어지므로 <b>화~목 시점의 판독이 가장 신뢰할 수 있음</b>.</span></div>
+
+  <div class="two">
+    <section class="card sec" id="s2">
+      <div class="sec-t"><i>2</i>오픈 후 누적 AU · 스핀 비교</div>
+      <div class="sec-s" style="margin-bottom:12px" id="s2sub"></div>
+      <div id="bul"></div>
+      <div class="foot">같은 경과 시간 기준 최근 8개 슬롯 평균보다 낮으면 최근 슬롯 대비 영향력이 약한 것으로 판단. 회색 선 = 최근 8개 슬롯 범위(최소~최대).</div>
+    </section>
+    <section class="card sec" id="s3">
+      <div class="sec-t"><i>3</i>일별 매출 비중</div>
+      <div class="sec-s" style="margin-bottom:8px">오픈일 기준 D+0 ~ D+13 · 일평균 (%) · “–” = 아직 도달하지 않은 일자</div>
+      <div class="tbl-wrap"><table id="t3"></table></div>
+    </section>
+  </div>
+
+  <section class="card sec" id="s4">
+    <div class="sec-h">
+      <div><div class="sec-t"><i>4</i>스핀 구간별 유저 수 (리텐션)</div>
+      <div class="sec-s"><b>% Previous</b> = 직전 구간 유저 중 해당 구간에 도달한 비율. 예) spin_100의 % Previous가 27%이면, spin_50 이상 유저 중 27%가 100회 이상 플레이.</div></div>
+    </div>
+    <div class="tbl-wrap"><table id="t4"></table></div>
+  </section>
+
+  <section class="card sec" id="s5">
+    <div class="sec-h">
+      <div><div class="sec-t"><i>5</i>스핀 단계별 ARPU · 결제 전환율 · 승률(RTP) · 단위 승률</div>
+      <div class="sec-s">가로축 = 스핀 구간(누적 스핀 도달 기준) · 금주 슬롯과 기준 슬롯(최근 8개 평균) 비교</div></div>
+      <div class="legend" id="lg5"></div>
+    </div>
+    <div class="four">
+      <div><div class="mini-t">ARPU<span>달러</span></div><div class="chart-box sm"><canvas id="c5a"></canvas></div></div>
+      <div><div class="mini-t">결제 전환율<span>%</span></div><div class="chart-box sm"><canvas id="c5b"></canvas></div></div>
+      <div><div class="mini-t">승률 (RTP)<span>누적 %</span></div><div class="chart-box sm"><canvas id="c5c"></canvas></div></div>
+      <div><div class="mini-t">단위 승률<span>구간별 %</span></div><div class="chart-box sm"><canvas id="c5d"></canvas></div></div>
+    </div>
+    <div class="foot">단위 승률은 해당 구간 내 스핀만 집계하므로 스핀 수가 적은 초반에 변동이 크고 이후 수렴.</div>
+  </section>
+
+  <section class="card sec" id="s6">
+    <div class="sec-h">
+      <div><div class="sec-t"><i>6</i>큐레이션별 매출 비중 · 스핀 비중</div>
+      <div class="sec-s">최근 14일 일별 · 전체 슬롯 대비 100% 기준 · 금주 슬롯 오픈일 표시(*)</div></div>
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><div class="legend" id="lg6"></div><button class="tbtn" id="tg6" aria-pressed="false">표로 보기</button></div>
+    </div>
+    <div class="two" id="s6c">
+      <div><div class="mini-t">매출 비중<span>%</span></div><div class="chart-box md"><canvas id="c6a"></canvas></div></div>
+      <div><div class="mini-t">스핀 비중<span>%</span></div><div class="chart-box md"><canvas id="c6b"></canvas></div></div>
+    </div>
+    <div class="two hide" id="s6t"><div class="tbl-wrap"><table id="t6a"></table></div><div class="tbl-wrap"><table id="t6b"></table></div></div>
+  </section>
+</main>
+<div class="demo-banner">포트폴리오용 데모 · 모든 수치는 예시 데이터입니다</div>
+<script src="app.js"></script>
+</body>
+</html>
